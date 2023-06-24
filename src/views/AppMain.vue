@@ -8,13 +8,16 @@
         <img :src="require('@/assets/resource/theme/img/character/character1.png')"/>
       </div>
 
+      <!--퀘스트 보드 -->
+      <quest-board v-show="questBoardActive"></quest-board>
+
       <!-- 탐색 박스 -->
       <div class="homeside">
         <div class="findbtn">
           <div class="findimg"></div>
           <div>탐색하기</div>
         </div>
-        <div class="questbtn">
+        <div class="questbtn" @click="qusetActive">
           <div class="qusetimg"></div>
           <div>퀘스트</div>
         </div>
@@ -27,13 +30,26 @@
 <script>
 import UserInfomation from "@/components/inc/header/UserInfomation";
 import TheFooter from "@/components/inc/footer/TheFooter";
+import QuestBoard from "@/components/main/QuestBoard"
 
 export default {
 
+  data() {
+    return {
+      questBoardActive: false,
+    }
+  },
   components : {
     UserInfomation,
     TheFooter,
+    QuestBoard
   },
+  methods: {
+    qusetActive() {
+      if (this.questBoardActive) this.questBoardActive = false;
+      else this.questBoardActive = true;
+    }
+  }
   
 }
 </script>

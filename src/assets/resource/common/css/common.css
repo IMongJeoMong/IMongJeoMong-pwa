@@ -1,3 +1,3 @@
-/* html, body{font-size: 10px; color: #000; font-family: 'GmarketSans', 'Roboto', sans-serif; letter-spacing: -0.0025em;} */
 * { margin: 0; padding: 0; box-sizing: border-box; list-style: none;}
 a { text-decoration: none; color: inherit; outline-style: none;}
+input{-webkit-appearance: none; outline: none;}
