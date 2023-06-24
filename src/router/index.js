@@ -1,36 +1,32 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "@/views/HomeView";
-import MapView from "@/views/MapView";
-import ShopView from "@/views/ShopView";
-import MyPageView from "@/views/MyPageView";
+import AppMain from "@/views/AppMain"
+import AppMap from "@/views/AppMap";
+import AppMypage from "@/views/AppMypage";
+import AppShop from "@/views/AppShop";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    redirect : "/home",
-  },
-  {
-    path: "/home",
-    name: "home",
-    component: HomeView,
+    name:'Main',
+    component: AppMain,
   },
   {
     path: "/map",
-    name: "map",
-    component: MapView,
+    name: "Map",
+    component: AppMap,
   },
   {
     path: "/shop",
-    name: "shop",
-    component: ShopView,
+    name: "Shop",
+    component: AppShop,
   },
   {
     path: "/mypage",
-    name: "mypage",
-    component: MyPageView,
+    name: "Mypage",
+    component: AppMypage,
   },
 ];
 

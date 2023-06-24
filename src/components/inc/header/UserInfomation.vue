@@ -1,0 +1,200 @@
+<template lang="">
+    <div id="topInfoBox">
+        <div class="topInfo">
+            <div class="level_gauge_bar">
+                <div class="player_level">{{level}}</div>
+                <div class="level_gauge_bar_bg"></div>
+                <div class="level_gauge_bar_progress" ref="levelGaugeBarProgress"></div>
+            </div>
+            <div class="coin_bar">
+                <div class="coin_img"></div>
+                <div class="coin_bar_number">{{coin}} P</div>
+            </div>
+            <div class="alarm_btn">
+                <div class="alarm_cnt">{{alarm}}</div>
+                <div class="alarm_bg"></div>
+            </div>
+        </div>
+        <div v-show="news" class="alarmBox">
+            <div>
+                {{ msgStart }}{{ keyword }}{{ msgEnd }}
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+
+    data() {
+        return {
+            news: true,
+            msgStart: "주변에",
+            keyword: " 성심당 ",
+            msgEnd: "(이)가 발견되었습니다!",
+            level: 10,
+            exp: 14,
+            coin: 10320,
+            alarm: 10,
+        }
+    },
+    mounted() {
+        setTimeout(() => {
+            this.$refs.levelGaugeBarProgress.style.width = this.exp + '%';
+        }, 500);
+    }
+    
+}
+</script>
+<style scoped>
+    #topInfoBox{
+        position: absolute;
+        top:20px;
+        width:100%;
+        height:100%;
+    }
+    .topInfo{
+        display: flex;
+        justify-content: space-around;
+        height: 35px;
+    }
+
+    .level_gauge_bar{
+        width:50%;
+        position: relative;
+    }
+
+    .player_level{
+        position: absolute;
+        top:-7px;
+        left:-5px;
+        z-index:15;
+        width:32px;
+        height:32px;
+        /* border: 1px solid black; */
+        background-image: url("/src/assets/resource/common/img/icon/userLevelIcon.png");
+        background-position: center;
+        background-size: cover;
+        /* 그림 쉐도우 */
+        filter: drop-shadow(-1px 2px 2px #0a0a0a76);
+        /* 텍스트 쉐도우 */
+        text-shadow: 2px 2px 2px gray;
+
+        color:white;
+        font-weight: bold;
+        text-align:center;
+        line-height: 29px;
+    }
+    .level_gauge_bar_bg{
+        width:100%;
+        height:20px;
+        position: absolute;
+        z-index:5;
+        border-radius: 8px;
+        border:2px solid #164C97;
+        background-color: white;
+
+        box-shadow: 2px 2px inset rgba(16, 16, 16, 0.266);
+    }
+
+    .level_gauge_bar_progress{
+        /* 여기 width 값만 바뀌면 될듯 */
+        width: 0;
+        height:20px;
+        position: absolute;
+        float:left;
+        z-index:10;
+        overflow: hidden;
+        border-radius: 10px;
+        border:2px solid #164C97;
+        background-color: #164C97;
+        box-shadow: 2px 0px 3px rgba(16, 16, 16, 0.266);
+        transition: width 1s ease;
+    }
+
+    .coin_bar{
+        width: 85px;
+        position: relative;
+        /* border:1px solid black; */
+    }
+
+    .coin_img{
+        position: absolute;
+        float:left;
+        z-index:10;
+        top:-3px;
+        width:25px;
+        height:25px;
+        background-image: url("/src/assets/resource/common/img/icon/coinIcon.png");
+        background-position: center;
+        background-size: cover;
+    }
+
+    .coin_bar_number{
+        width: 100%;
+        height:20px;
+        /* 이걸로 코인 글씨 높이 변경 */
+        line-height: 15px;
+        position: absolute;
+        z-index:5;
+        border:2px solid #FF9100;
+        border-radius: 8px;
+        background-color: white;
+        text-align: right;
+        padding-right:5px;
+        font-weight: bold;
+        color:#FF9100;
+        font-size: 13px;
+    }
+
+    .alarm_btn{
+        width:35px;
+        position: relative;
+    }
+
+    .alarm_bg{
+        width:32px;
+        height:32px;
+        position: absolute;
+        z-index:5;
+        top:-6px;
+        background-position: center;
+        background-size: cover;
+        background-image:url("/src/assets/resource/common/img/icon/alarmIcon.png");;
+
+    }
+
+    .alarm_cnt{
+        position: absolute;
+        width:17px;
+        height: 17px;
+        line-height: 15px;
+        top:-5px;
+        z-index: 10;
+        right:0px;
+        background-color: red;
+        border-radius: 100%;
+        color:white;
+        font-size:12px;
+        font-weight: bold;
+        
+
+    }
+
+    .alarmBox{
+        width:85%;
+        height: 10%;
+        margin: 20px auto;
+        background-color:rgba(0, 0, 0, 0.204);
+        border-radius: 20px;
+    }
+
+    .alarmBox > div{
+        overflow: hidden;
+        height: calc(100% - 40px);
+        padding:20px;
+        display: flex;
+        flex-wrap:wrap;
+        font-size:20px;
+        color:white;
+    }
+</style>

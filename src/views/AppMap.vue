@@ -11,11 +11,19 @@
             </div>
         </div>
         <div id="map" style="width:100%; height:100%; margin:0px auto;"></div>
+
+        <the-footer></the-footer>
+
     </div>
 </template>
 <script>
-export default {
+import TheFooter from "@/components/inc/footer/TheFooter";
 
+export default {
+    
+    components : {
+        TheFooter,
+    },
     mounted() {
         //VUE 카카오맵 동적
         if (window.kakao && window.kakao.maps) {
@@ -89,7 +97,7 @@ export default {
         position: fixed;
         top:0px;
         width: 100%;
-        height: 94%;
+        height: 100%;
     }
 
     #id {
