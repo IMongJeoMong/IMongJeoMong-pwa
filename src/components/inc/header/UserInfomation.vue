@@ -39,9 +39,11 @@ export default {
     },
     mounted() {
         setTimeout(() => {
-            this.$refs.levelGaugeBarProgress.style.width = this.exp + '%';
+            if (this.$refs.levelGaugeBarProgress) {
+                this.$refs.levelGaugeBarProgress.style.width = this.exp + '%';
+            }
         }, 500);
-    }
+    },
     
 }
 </script>
