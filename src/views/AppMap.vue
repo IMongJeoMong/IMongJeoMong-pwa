@@ -39,8 +39,7 @@ export default {
             longitude: null,
             carActive: false,
             bicycleActive: false,
-
-            overlayS: false,
+            overlayS: true,
         }
     },
     components : {
@@ -130,7 +129,7 @@ export default {
             });
             document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
         },
-        //맵 로드
+        //맵 로드 (변경할예정!)
         loadMap() {
 
             var container = document.getElementById("map");
@@ -160,12 +159,48 @@ export default {
                 this.map = new kakao.maps.Map(container, options);
             }
 
+            //현재 내위치
+            this.changeMap(this.mylocation);
+
         },
         //맵의 마커 초기화
         clearMarker() {
             for(let marker of this.markers) {
                 marker.setMap(null);
             }
+        },
+
+        //일정이 바뀔때 맵을 변경 (현재는 위치가 잇다면 - 변경할예정)
+        changeMap(mylocation) {
+            //마커가 있으면 없애줘
+            if (this.markers) this.clearMarker()
+
+            if (mylocation) {
+                let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+                
+                // 마커 이미지의 이미지 크기 입니다
+                var imageSize = new kakao.maps.Size(24, 35);
+
+                // 마커 이미지를 생성합니다
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({
+                    map: this.map, // 마커를 표시할 지도
+                    position: new kakao.maps.LatLng(this.latitude, this.longitude), // 마커를 표시할 위치
+                    title: "내위치", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    image: markerImage, // 마커 이미지
+                    //클릭이벤트를 위한 임의 키값 생성
+                });
+
+                this.markers.push(marker);
+                
+
+                //첫번째 값이동을위 한 세팅
+                let center = new kakao.maps.LatLng(this.latitude, this.longitude);
+                this.map.panTo(center)
+            }
+
         },
     }
 }
@@ -213,8 +248,8 @@ export default {
     }
 
     .filterbox > div {
-        height:35px;
-        line-height:32px;
+        height:30px;
+        line-height:30px;
         width:auto;
         margin:5px;
         background-color: white;
