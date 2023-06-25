@@ -79,8 +79,9 @@ export default {
     
     .sidebar > li > a > img {
         display: block;
-        width: 35%;
+        width: 30%;
         margin: 5px auto;
+        margin-bottom: 15px;
     }
 
     .sidebar > li.main > a > img {content:url("/src/assets/resource/common/img/icon/homeIcon.png");} 
@@ -99,6 +100,7 @@ export default {
         width:90px;
         margin:0px auto;
         color: white;
+        font-size: 18px;
     }
     .sidebar > li >  a.router-link-exact-active > span {
         color: rgb(187,212,248);
