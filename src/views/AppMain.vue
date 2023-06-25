@@ -3,7 +3,7 @@
     <div class="background" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/background/background1.png') + ')'}">
       <!-- 상단 정보 -->
       <UserInfomation class="topInfomation"></UserInfomation>
-      <!-- 캐릭터 -->
+      <!-- 캐릭터 따로 빼도 될듯 ?-->
       <div class="characterbox">
         <img :src="require('@/assets/resource/theme/img/character/character1.png')"/>
       </div>
