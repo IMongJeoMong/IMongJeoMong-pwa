@@ -50,6 +50,7 @@ export default {
 <style scoped>
     #topInfoBox{
         position: absolute;
+        z-index:15;
         top:20px;
         width:100%;
         height:100%;
