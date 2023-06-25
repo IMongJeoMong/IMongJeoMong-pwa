@@ -17,7 +17,7 @@
         </div>
         <div v-show="news" class="alarmBox">
             <div>
-                {{ msgStart }}{{ keyword }}{{ msgEnd }}
+                {{ msgStart }}{{ keyword }}<br/>{{ msgEnd }}
             </div>
         </div>
     </div>
@@ -28,11 +28,11 @@ export default {
     data() {
         return {
             news: true,
-            msgStart: "주변에",
-            keyword: " 성심당 ",
-            msgEnd: "(이)가 발견되었습니다!",
+            msgStart: "주변에 ",
+            keyword: "성심당",
+            msgEnd: " (이)가 발견되었습니다!",
             level: 10,
-            exp: 14,
+            exp: 80,
             coin: 10320,
             alarm: 10,
         }
@@ -70,8 +70,8 @@ export default {
         top:-7px;
         left:-5px;
         z-index:15;
-        width:32px;
-        height:32px;
+        width:40px;
+        height:40px;
         /* border: 1px solid black; */
         background-image: url("/src/assets/resource/common/img/icon/userLevelIcon.png");
         background-position: center;
@@ -83,30 +83,31 @@ export default {
 
         color:white;
         font-weight: bold;
+        padding-top:6px;
+        font-size: 20px;
         text-align:center;
         line-height: 29px;
     }
     .level_gauge_bar_bg{
         width:100%;
-        height:20px;
+        height:25px;
         position: absolute;
         z-index:5;
-        border-radius: 8px;
+        border-radius: 30px;
         border:2px solid #164C97;
         background-color: white;
-
         box-shadow: 2px 2px inset rgba(16, 16, 16, 0.266);
     }
 
     .level_gauge_bar_progress{
         /* 여기 width 값만 바뀌면 될듯 */
         width: 0;
-        height:20px;
+        height:25px;
         position: absolute;
         float:left;
         z-index:10;
         overflow: hidden;
-        border-radius: 10px;
+        border-radius: 30px;
         border:2px solid #164C97;
         background-color: #164C97;
         box-shadow: 2px 0px 3px rgba(16, 16, 16, 0.266);
@@ -114,7 +115,7 @@ export default {
     }
 
     .coin_bar{
-        width: 85px;
+        width: 100px;
         position: relative;
         /* border:1px solid black; */
     }
@@ -124,8 +125,8 @@ export default {
         float:left;
         z-index:10;
         top:-3px;
-        width:25px;
-        height:25px;
+        width:30px;
+        height:30px;
         background-image: url("/src/assets/resource/common/img/icon/coinIcon.png");
         background-position: center;
         background-size: cover;
@@ -133,19 +134,19 @@ export default {
 
     .coin_bar_number{
         width: 100%;
-        height:20px;
+        height:25px;
         /* 이걸로 코인 글씨 높이 변경 */
-        line-height: 15px;
+        line-height: 25px;
         position: absolute;
         z-index:5;
         border:2px solid #FF9100;
-        border-radius: 8px;
+        border-radius: 20px;
         background-color: white;
         text-align: right;
         padding-right:5px;
         font-weight: bold;
         color:#FF9100;
-        font-size: 13px;
+        font-size: 15px;
     }
 
     .alarm_btn{
@@ -154,23 +155,21 @@ export default {
     }
 
     .alarm_bg{
-        width:32px;
-        height:32px;
+        width:40px;
+        height:40px;
         position: absolute;
         z-index:5;
         top:-6px;
         background-position: center;
         background-size: cover;
         background-image:url("/src/assets/resource/common/img/icon/alarmIcon.png");;
-
     }
 
     .alarm_cnt{
         position: absolute;
-        width:17px;
-        height: 17px;
+        width:20px;
+        height: 20px;
         line-height: 15px;
-        top:-5px;
         z-index: 10;
         right:0px;
         background-color: red;
@@ -178,25 +177,20 @@ export default {
         color:white;
         font-size:12px;
         font-weight: bold;
-        
-
+        padding-top: 3px;
     }
 
     .alarmBox{
         width:85%;
         height: 10%;
         margin: 20px auto;
-        background-color:rgba(0, 0, 0, 0.204);
+        background-color:rgba(0, 0, 0, 0.418);
         border-radius: 20px;
     }
 
     .alarmBox > div{
-        overflow: hidden;
-        height: calc(100% - 40px);
-        padding:20px;
-        display: flex;
-        flex-wrap:wrap;
-        font-size:20px;
+        font-size:22px;
         color:white;
+        padding-top: 20px;
     }
 </style>
