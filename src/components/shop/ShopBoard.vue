@@ -7,40 +7,8 @@
         <!-- 데이터 받으면 for문으로 -->
         <div class="shopbox_content">
             <div>
-                <div class="shopbox_content_item">
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/item/item1.png') + ')'}"></div>
-                    <div class="shopbox_content_item_coin">{{ coin }}</div>
-                </div>
-                <div class="shopbox_content_item">
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/item/item1.png') + ')'}"></div>
-                    <div class="shopbox_content_item_coin">{{ coin }}</div>
-                </div>
-                <div class="shopbox_content_item">
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/item/item1.png') + ')'}"></div>
-                    <div class="shopbox_content_item_coin">{{ coin }}</div>
-                </div>
-                <div class="shopbox_content_item">
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/item/item1.png') + ')'}"></div>
-                    <div class="shopbox_content_item_coin">{{ coin }}</div>
-                </div>
-                <div class="shopbox_content_item">
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/item/item1.png') + ')'}"></div>
-                    <div class="shopbox_content_item_coin">{{ coin }}</div>
-                </div>
-                <div class="shopbox_content_item">
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/item/item1.png') + ')'}"></div>
-                    <div class="shopbox_content_item_coin">{{ coin }}</div>
-                </div>
-                <div class="shopbox_content_item">
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/item/item1.png') + ')'}"></div>
-                    <div class="shopbox_content_item_coin">{{ coin }}</div>
-                </div>
-                <div class="shopbox_content_item">
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/item/item1.png') + ')'}"></div>
-                    <div class="shopbox_content_item_coin">{{ coin }}</div>
-                </div>
-                <div class="shopbox_content_item">
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/item/item1.png') + ')'}"></div>
+                <div v-for="(item, index) in itemList" :key="index" class="shopbox_content_item" @click="Preview(item.name)">
+                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require(`@/assets/resource/common/img/item/shop/shop_${item.name}.png`) + ')'}"></div>
                     <div class="shopbox_content_item_coin">{{ coin }}</div>
                 </div>
             </div>
@@ -54,7 +22,17 @@ export default {
         return {
             shoppingActive: true,
             holdActive: false,
-            coin : 100,
+            coin: 100,
+            itemList:
+                [
+                    { name: "balloon" },
+                    { name: "heart" },
+                    { name: "lollipop" },
+                    { name: "monocle" },
+                    { name: "sunglasses1" },
+                    { name: "sunglasses2" }
+                ],
+
         }
     },
     methods: {
@@ -62,8 +40,10 @@ export default {
             this.shoppingActive = !this.shoppingActive;
             this.holdActive = !this.holdActive;
         },
-    }
-  
+        Preview(itemName) {
+            this.$store.commit("PreviewStore/SET_PREVIEW_ITEM", itemName);
+        },
+    },
 }
 </script>
 <style>

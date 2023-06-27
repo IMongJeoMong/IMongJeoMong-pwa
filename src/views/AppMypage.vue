@@ -1,16 +1,21 @@
 <template>
     <div class="mypage_box">
+        <div class="mypage_box_title">마이페이지</div>
         <div class="mypage_box_header">
-            <div ><span>업적</span><span class="mypage_box_icon">></span></div>
+            <div>
+                <span class="mypage_box_icon mypage_challenge"></span>
+                <span class="mypage_box_text">업적</span>
+                <span class="mypage_box_icon mypage_box_btnicon"></span>
+            </div>
         </div>
         <div class="mypage_box_main">
-            <div><span>트로피</span><span class="mypage_box_icon">></span></div>
-            <div><span>?</span><span class="mypage_box_icon">></span></div>
-            <div><span>?</span><span class="mypage_box_icon">></span></div>
+            <div><span class="mypage_box_icon mypage_background"></span><span class="mypage_box_text">흭득한 배경</span><span class="mypage_box_icon mypage_box_btnicon"></span></div>
+            <div><span class="mypage_box_icon mypage_charter"></span><span class="mypage_box_text">흭득한 캐릭터</span><span class="mypage_box_icon mypage_box_btnicon"></span></div>
+            <div><span class="mypage_box_icon mypage_trophy"></span><span class="mypage_box_text">흭득한 트로피</span><span class="mypage_box_icon mypage_box_btnicon"></span></div>
         </div>
         <div class="mypage_box_footer">
-            <div><span>회원정보 수정</span><span class="mypage_box_icon">></span></div>
-            <div><span>업데이트 정보</span><span class="mypage_box_icon">></span></div>
+            <div><span class="mypage_box_icon mypage_user"></span><span class="mypage_box_text">회원정보 수정</span><span class="mypage_box_icon mypage_box_btnicon"></span></div>
+            <div><span class="mypage_box_icon mypage_update"></span><span class="mypage_box_text">업데이트 정보</span><span class="mypage_box_icon mypage_box_btnicon"></span></div>
         </div>
         <the-footer></the-footer>
    </div>
@@ -30,43 +35,83 @@ export default {
         position: fixed;
         width:100%;
         height:100%;
-        background-color: #EEEEEE;
+        background-color: #FFFFFF;
     }
+
 
     .mypage_box > div > div{
         width:80%;
         height:50px;
         margin:10px auto;
-        line-height: 50px;
+        border: 2px solid #7496C3;
+        color: #164C97;
         border-radius: 10px;
-        background-color: white;
+        background-color: #F3F8FE;
         display: flex;
         justify-content: space-between;
-    }
-
-    .mypage_box > div > div > span {
-        padding:0px 10%;
-        font-size:large;
+        line-height: 50px;
     }
 
     .mypage_box_icon{
+        display:inline-block;
+        width:20%;
+        background-position: center;
+        background-size: 26px 25px;
+        background-repeat: no-repeat;
+        
+    }
+
+    .mypage_challenge{ 
+        background-image : url("/src/assets/resource/theme/img/icon/Mypage_challenge_icon.png");
+        background-size: 22px 26px;
+    }
+    .mypage_box_btnicon{ background-image : url("/src/assets/resource/theme/img/icon/Mypage_btn_icon.png");}
+    .mypage_background{ background-image : url("/src/assets/resource/theme/img/icon/Mypage_background_icon.png");}
+    .mypage_charter {background-image : url("/src/assets/resource/theme/img/icon/Mypage_charter_icon.png");}
+    .mypage_trophy {background-image : url("/src/assets/resource/theme/img/icon/Mypage_trophy_icon.png");}
+    .mypage_user {background-image : url("/src/assets/resource/theme/img/icon/Mypage_user_icon.png");}
+    .mypage_update {background-image : url("/src/assets/resource/theme/img/icon/Mypage_update_icon.png");}
+
+    .mypage_box_text {
+        width:60%;
+        font-size:large;
+        text-align: left;
+    }
+
+    .mypage_box_btnicon{
+        width:20%;
         color:#164C97;
         font-weight: bold;
     }
 
+    .mypage_box_title{
+        display:flex;
+        align-items: end;
+        height: 10%;
+        text-align: left;
+        padding-left: 10%;
+        color:#164C97;
+        font-size: 30px;
+    }
+
     .mypage_box_header{
-        margin-top:40px;
+        margin-top:5%;
         height:10%;
     }
 
+    .mypage_box_header > div{
+        height:100%;
+    }
+
     .mypage_box_main{
-        height:50%;
+        margin-top:5%;
+        height:calc(50% - 130px);
     }
 
     .mypage_box_footer{
         position:absolute;
         width:100%;
-        bottom:120px;
+        bottom:130px;
     }
     
 </style>

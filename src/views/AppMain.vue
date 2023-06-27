@@ -3,10 +3,8 @@
     <div class="background" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/background/background1.png') + ')'}">
       <!-- 상단 정보 -->
       <UserInfomation class="topInfomation"></UserInfomation>
-      <!-- 캐릭터 따로 빼도 될듯 ?-->
-      <div class="characterbox">
-        <img :src="require('@/assets/resource/theme/img/character/character1.png')"/>
-      </div>
+      <!-- 캐릭터 -->
+      <user-character class="characterbox"></user-character>
 
       <!--퀘스트 보드 -->
       <quest-board v-show="questBoardActive"></quest-board>
@@ -17,7 +15,7 @@
           <div class="findimg"></div>
           <div>탐색하기</div>
         </div>
-        <div class="questbtn" @click="qusetActive">
+        <div class="questbtn" @click="qusetActive()">
           <div class="qusetimg"></div>
           <div>퀘스트</div>
         </div>
@@ -30,7 +28,8 @@
 <script>
 import UserInfomation from "@/components/inc/header/UserInfomation";
 import TheFooter from "@/components/inc/footer/TheFooter";
-import QuestBoard from "@/components/main/QuestBoard"
+import QuestBoard from "@/components/main/QuestBoard";
+import UserCharacter from "@/components/user/UserCharacter";
 
 export default {
 
@@ -42,7 +41,8 @@ export default {
   components : {
     UserInfomation,
     TheFooter,
-    QuestBoard
+    QuestBoard,
+    UserCharacter,
   },
   methods: {
     qusetActive() {
@@ -78,7 +78,7 @@ export default {
   .characterbox{
     position: absolute;
     top:30%;
-    left:15%;
+    left:10%;
     width:75%;
     filter: drop-shadow(5px 7px 3px #0a0a0a76);
   }
@@ -129,6 +129,7 @@ export default {
 
   /* 퀘스트 버튼 */
   .questbtn{
+    z-index:15;
     width: 15%;
     height: 60px;
     border-radius: 10px;
