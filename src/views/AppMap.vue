@@ -6,7 +6,7 @@
                     <div class="searchicon"></div>
                     <input class="searchinput" placeholder="장소를 검색해주세요"/>
                 </div>
-                <div class="listbtn"><div></div></div>
+                <div class="listbtn"><div @click="listView()"></div></div>
             </div>
             <div class="filterbox">
                 <div class="car" @click="filterActive('car')" ref="carContainer">
@@ -39,7 +39,9 @@ export default {
             longitude: null,
             carActive: false,
             bicycleActive: false,
-            overlayS: true,
+            overlayS: false,
+            //마커 위치정보들이 저장될 공간!
+            markers: [],
         }
     },
     components : {
@@ -171,21 +173,21 @@ export default {
         },
 
         //일정이 바뀔때 맵을 변경 (현재는 위치가 잇다면 - 변경할예정)
-        changeMap(mylocation) {
+        async changeMap(mylocation) {
             //마커가 있으면 없애줘
             if (this.markers) this.clearMarker()
 
             if (mylocation) {
-                let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+                let imageSrc = await "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
                 
                 // 마커 이미지의 이미지 크기 입니다
-                var imageSize = new kakao.maps.Size(24, 35);
+                var imageSize = await new kakao.maps.Size(24, 35);
 
                 // 마커 이미지를 생성합니다
-                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+                var markerImage = await new kakao.maps.MarkerImage(imageSrc, imageSize);
 
                 // 마커를 생성합니다
-                var marker = new kakao.maps.Marker({
+                var marker = await new kakao.maps.Marker({
                     map: this.map, // 마커를 표시할 지도
                     position: new kakao.maps.LatLng(this.latitude, this.longitude), // 마커를 표시할 위치
                     title: "내위치", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
@@ -193,15 +195,23 @@ export default {
                     //클릭이벤트를 위한 임의 키값 생성
                 });
 
-                this.markers.push(marker);
+                await this.markers.push(marker);
                 
 
                 //첫번째 값이동을위 한 세팅
-                let center = new kakao.maps.LatLng(this.latitude, this.longitude);
+                let center = await new kakao.maps.LatLng(this.latitude, this.longitude);
                 this.map.panTo(center)
             }
 
         },
+
+
+        //리스트 보는화면으로
+        async listView() {
+            console.log("실행되나요?");
+            this.searchListActivate = await true;
+            this.$router.push({ name: "MapList" });
+        }
     }
 }
 </script>
