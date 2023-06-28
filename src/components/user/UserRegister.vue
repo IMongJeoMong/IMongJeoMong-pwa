@@ -3,47 +3,23 @@
         <div>
             <div class="login_log"></div>
             <div class="login_box">
+                <div>아이디</div>
                 <div class="login_id_box">
-                    <div>아이디</div>
                     <input type="text" />
                 </div>
+                <div>비밀번호</div>
                 <div class="login_pw_box">
-                    <div>비밀번호</div>
                     <input type="password" />
                 </div>
             </div>
-            <div class="login_find_box">
-                <div class="login_find_box_auto_login">
-                    <div class="togglebox">
-                        <span class="toggleContainer">
-                            <input type="checkbox" id="onoff" class="onoff" hidden>
-                            <label for="onoff" class="onoffToggle">
-                                <span class="onoffBall"></span>
-                            </label>
-                        </span>
-                        <span class="toggleContainer_text">자동로그인</span>
-                    </div>
-                    <div class="findbox">
-                        <span>아이디</span>
-                        <span>|</span>
-                        <span>비밀번호 찾기</span>
-                    </div>
-                </div>
-            </div>
+            
             <div class="local_btn_box">
                 <div class="register_btn">
-                    <div>회원가입</div>
+                    <div>취소</div>
                 </div>
                 <div class="login_btn">
-                    <div>로그인</div>
+                    <div>회원가입</div>
                 </div>
-            </div>
-            <div class="social_register_box">
-                <div>SNS 계정으로 시작하기</div>
-            </div>
-            <div class="social_login_box">
-                <div class="kakao_login_btn"></div>
-                <div class="naver_login_btn"></div>
             </div>
         </div>
     </div>

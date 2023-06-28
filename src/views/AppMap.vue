@@ -20,14 +20,17 @@
             </div>
         </div>
         <div class="mylocationbox" @click="loadMap()"></div>
-        <marker-small-overlay v-show="overlayS"></marker-small-overlay>
+        <marker-small-overlay v-show="overlayS" class="samll_overlay"></marker-small-overlay>
+        <marker-overlay v-show="overlay" class="default_overlay"></marker-overlay>
+
         <div id="map" style="width:100%; height:100%; margin:0px auto;"></div>
         <the-footer></the-footer>
     </div>
 </template>
 <script>
 import TheFooter from "@/components/inc/footer/TheFooter";
-import MarkerSmallOverlay from "@/components/map/MarkerSmallOverlay"
+import MarkerSmallOverlay from "@/components/map/MarkerSmallOverlay";
+import MarkerOverlay from "@/components/map/MarkerOverlay";
 
 export default {
 
@@ -39,6 +42,39 @@ export default {
             longitude: null,
             carActive: false,
             bicycleActive: false,
+
+            attractionList: [
+                {
+                    name: "성심당",
+                    address: "주소입니당",
+                    lat: 36.12314, 
+                    lng: 123.12323,
+                    description: "관광지 설명",
+                    contentId: 10,
+                    imagePath: "http",
+                },
+                {
+                    name: "성심당",
+                    address: "주소입니당",
+                    lat: 36.12314, 
+                    lng: 123.12323,
+                    description: "관광지 설명",
+                    contentId: 10,
+                    imagePath: "http",
+                },
+                {
+                    name: "성심당",
+                    address: "주소입니당",
+                    lat: 36.12314, 
+                    lng: 123.12323,
+                    description: "관광지 설명",
+                    contentId: 10,
+                    imagePath: "http",
+                },
+            ],
+
+            //오버레이
+            overlay: true,
             overlayS: false,
             //마커 위치정보들이 저장될 공간!
             markers: [],
@@ -47,6 +83,7 @@ export default {
     components : {
         TheFooter,
         MarkerSmallOverlay,
+        MarkerOverlay,
     },
     async mounted() {
 
@@ -68,36 +105,18 @@ export default {
     methods: {
 
         filterActive(type){
-            if (type === 'car') {
-                if (this.carActive) {
-                    this.carActive = false;
-                    this.$refs.carContainer.style.backgroundColor = "#164C97";
-                    this.$refs.carContainer.style.color = "white";
-                    this.$refs.carContainer.childNodes[0].style.backgroundImage = "url("+require('/src/assets/resource/theme/img/icon/carSelectIcon.png')+")";
-                }
-                else {
-                    this.carActive = true;
-                    this.$refs.carContainer.style.color = "#164C97";
-                    this.$refs.carContainer.style.backgroundColor = "white";
-                    this.$refs.carContainer.childNodes[0].style.backgroundImage = "url("+require('/src/assets/resource/theme/img/icon/carIcon.png')+")";
-                }
-            }
-            if (type === "bicycle") {
-                if (this.bicycleActive) {
-                    this.bicycleActive = false;
-                    this.$refs.bicycleContainer.style.backgroundColor = "#164C97";
-                    this.$refs.bicycleContainer.style.color = "white";
-                    this.$refs.bicycleContainer.childNodes[0].style.backgroundImage = "url("+require('/src/assets/resource/theme/img/icon/bicycleSelectIcon.png')+")";
-                }
-                else {
-                    this.bicycleActive = true;
-                    this.$refs.bicycleContainer.style.color = "#164C97";
-                    this.$refs.bicycleContainer.style.backgroundColor = "white";
-                    this.$refs.bicycleContainer.childNodes[0].style.backgroundImage = "url("+require('/src/assets/resource/theme/img/icon/bicycleIcon.png')+")";
-                }
-            }
-        },
+            const elementRef = this.$refs[`${type}Container`];
+            const isActive = this[`${type}Active`];
+            const newBackgroundColor = isActive ? "#164C97" : "white";
+            const newColor = isActive ? "white" : "#164C97";
+            const newIcon = isActive ? `${type}SelectIcon.png` : `${type}Icon.png`;
 
+            this[`${type}Active`] = !isActive;
+            elementRef.style.backgroundColor = newBackgroundColor;
+            elementRef.style.color = newColor;
+            elementRef.childNodes[0].style.backgroundImage = `url(${require(`/src/assets/resource/theme/img/icon/${newIcon}`)})`;
+        },
+        
         //현재 위치 가져오기
         async geofind() {
             if(!("geolocation" in navigator)) {
@@ -178,10 +197,10 @@ export default {
             if (this.markers) this.clearMarker()
 
             if (mylocation) {
-                let imageSrc = await "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+                let imageSrc = await require("/src/assets/resource/theme/img/icon/map_myposition.png");
                 
                 // 마커 이미지의 이미지 크기 입니다
-                var imageSize = await new kakao.maps.Size(24, 35);
+                var imageSize = await new kakao.maps.Size(58, 60);
 
                 // 마커 이미지를 생성합니다
                 var markerImage = await new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -215,7 +234,20 @@ export default {
     }
 }
 </script>
+
 <style>
+
+    .samll_overlay{
+        position: absolute;
+        bottom: 110px;
+        z-index: 20;
+    }
+
+    .default_overlay{
+        position: absolute;
+        z-index: 20;
+        bottom: 110px;
+    }
 
     .mapbox{ z-index:1px; position: fixed; top:0px; width: 100%; height: 100%; }
 

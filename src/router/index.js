@@ -6,8 +6,9 @@ import AppMypage from "@/views/AppMypage";
 import AppShop from "@/views/AppShop";
 import AppUser from "@/views/AppUser";
 import UserLogin from "@/components/user/UserLogin";
-import TestVue from "@/components/map/MapSearchList";
+import TestVue from "@/components/map/MarkerOverlay";
 import MapSearchList from "@/components/map/MapSearchList";
+import UserRegister from "@/components/user/UserRegister";
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,11 @@ const routes = [
         path: 'login',
         name: 'UserLogin',
         component: UserLogin,
+      },
+      {
+        path: 'register',
+        name: 'Register',
+        component: UserRegister,
       }
     ]
   },
