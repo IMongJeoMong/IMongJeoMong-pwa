@@ -9,11 +9,11 @@
             <div class="compensation_box">
                 <div class="compensation_box_exp">
                     <div class="compensation_box_exp_icon"></div>
-                    <div>{{exp}} Exp</div>
+                    <div class="compensation_box_text">{{exp}} Exp</div>
                 </div>
                 <div class="compensation_box_coin">
                     <div class="compensation_box_coin_icon"></div>
-                    <div>{{coin}} p</div>
+                    <div class="compensation_box_text">{{coin}} p</div>
                 </div>
             </div>
         </div>
@@ -35,11 +35,10 @@ export default {
 }
 </script>
 <style>
+
+
     .marker_overlay_small{
-        position: absolute;
         left:2.5%;
-        bottom: 110px;
-        z-index: 20;
         width: 95%;
         height: 120px;
         background-color: white;
@@ -140,5 +139,9 @@ export default {
         width:20px;
         padding-right:5%;
         background-image: url("/src/assets/resource/common/img/icon/coinIcon.png");
+    }
+
+    .compensation_box_text{
+        line-height: 20px;
     }
 </style>
