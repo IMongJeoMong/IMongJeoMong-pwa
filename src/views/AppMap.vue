@@ -6,7 +6,7 @@
                     <div class="searchicon"></div>
                     <input class="searchinput" placeholder="장소를 검색해주세요"/>
                 </div>
-                <div class="listbtn"><div></div></div>
+                <div class="listbtn"><div @click="listView()"></div></div>
             </div>
             <div class="filterbox">
                 <div class="car" @click="filterActive('car')" ref="carContainer">
@@ -20,14 +20,17 @@
             </div>
         </div>
         <div class="mylocationbox" @click="loadMap()"></div>
-        <marker-small-overlay v-show="overlayS"></marker-small-overlay>
+        <marker-small-overlay v-show="overlayS" class="samll_overlay"></marker-small-overlay>
+        <marker-overlay v-show="overlay" class="default_overlay"></marker-overlay>
+
         <div id="map" style="width:100%; height:100%; margin:0px auto;"></div>
         <the-footer></the-footer>
     </div>
 </template>
 <script>
 import TheFooter from "@/components/inc/footer/TheFooter";
-import MarkerSmallOverlay from "@/components/map/MarkerSmallOverlay"
+import MarkerSmallOverlay from "@/components/map/MarkerSmallOverlay";
+import MarkerOverlay from "@/components/map/MarkerOverlay";
 
 export default {
 
@@ -40,12 +43,47 @@ export default {
             carActive: false,
             bicycleActive: false,
 
+            attractionList: [
+                {
+                    name: "성심당",
+                    address: "주소입니당",
+                    lat: 36.12314, 
+                    lng: 123.12323,
+                    description: "관광지 설명",
+                    contentId: 10,
+                    imagePath: "http",
+                },
+                {
+                    name: "성심당",
+                    address: "주소입니당",
+                    lat: 36.12314, 
+                    lng: 123.12323,
+                    description: "관광지 설명",
+                    contentId: 10,
+                    imagePath: "http",
+                },
+                {
+                    name: "성심당",
+                    address: "주소입니당",
+                    lat: 36.12314, 
+                    lng: 123.12323,
+                    description: "관광지 설명",
+                    contentId: 10,
+                    imagePath: "http",
+                },
+            ],
+
+            //오버레이
+            overlay: true,
             overlayS: false,
+            //마커 위치정보들이 저장될 공간!
+            markers: [],
         }
     },
     components : {
         TheFooter,
         MarkerSmallOverlay,
+        MarkerOverlay,
     },
     async mounted() {
 
@@ -67,36 +105,18 @@ export default {
     methods: {
 
         filterActive(type){
-            if (type === 'car') {
-                if (this.carActive) {
-                    this.carActive = false;
-                    this.$refs.carContainer.style.backgroundColor = "#164C97";
-                    this.$refs.carContainer.style.color = "white";
-                    this.$refs.carContainer.childNodes[0].style.backgroundImage = "url("+require('/src/assets/resource/theme/img/icon/carSelectIcon.png')+")";
-                }
-                else {
-                    this.carActive = true;
-                    this.$refs.carContainer.style.color = "#164C97";
-                    this.$refs.carContainer.style.backgroundColor = "white";
-                    this.$refs.carContainer.childNodes[0].style.backgroundImage = "url("+require('/src/assets/resource/theme/img/icon/carIcon.png')+")";
-                }
-            }
-            if (type === "bicycle") {
-                if (this.bicycleActive) {
-                    this.bicycleActive = false;
-                    this.$refs.bicycleContainer.style.backgroundColor = "#164C97";
-                    this.$refs.bicycleContainer.style.color = "white";
-                    this.$refs.bicycleContainer.childNodes[0].style.backgroundImage = "url("+require('/src/assets/resource/theme/img/icon/bicycleSelectIcon.png')+")";
-                }
-                else {
-                    this.bicycleActive = true;
-                    this.$refs.bicycleContainer.style.color = "#164C97";
-                    this.$refs.bicycleContainer.style.backgroundColor = "white";
-                    this.$refs.bicycleContainer.childNodes[0].style.backgroundImage = "url("+require('/src/assets/resource/theme/img/icon/bicycleIcon.png')+")";
-                }
-            }
-        },
+            const elementRef = this.$refs[`${type}Container`];
+            const isActive = this[`${type}Active`];
+            const newBackgroundColor = isActive ? "#164C97" : "white";
+            const newColor = isActive ? "white" : "#164C97";
+            const newIcon = isActive ? `${type}SelectIcon.png` : `${type}Icon.png`;
 
+            this[`${type}Active`] = !isActive;
+            elementRef.style.backgroundColor = newBackgroundColor;
+            elementRef.style.color = newColor;
+            elementRef.childNodes[0].style.backgroundImage = `url(${require(`/src/assets/resource/theme/img/icon/${newIcon}`)})`;
+        },
+        
         //현재 위치 가져오기
         async geofind() {
             if(!("geolocation" in navigator)) {
@@ -130,7 +150,7 @@ export default {
             });
             document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
         },
-        //맵 로드
+        //맵 로드 (변경할예정!)
         loadMap() {
 
             var container = document.getElementById("map");
@@ -160,6 +180,9 @@ export default {
                 this.map = new kakao.maps.Map(container, options);
             }
 
+            //현재 내위치
+            this.changeMap(this.mylocation);
+
         },
         //맵의 마커 초기화
         clearMarker() {
@@ -167,10 +190,64 @@ export default {
                 marker.setMap(null);
             }
         },
+
+        //일정이 바뀔때 맵을 변경 (현재는 위치가 잇다면 - 변경할예정)
+        async changeMap(mylocation) {
+            //마커가 있으면 없애줘
+            if (this.markers) this.clearMarker()
+
+            if (mylocation) {
+                let imageSrc = await require("/src/assets/resource/theme/img/icon/map_myposition.png");
+                
+                // 마커 이미지의 이미지 크기 입니다
+                var imageSize = await new kakao.maps.Size(58, 60);
+
+                // 마커 이미지를 생성합니다
+                var markerImage = await new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+                // 마커를 생성합니다
+                var marker = await new kakao.maps.Marker({
+                    map: this.map, // 마커를 표시할 지도
+                    position: new kakao.maps.LatLng(this.latitude, this.longitude), // 마커를 표시할 위치
+                    title: "내위치", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    image: markerImage, // 마커 이미지
+                    //클릭이벤트를 위한 임의 키값 생성
+                });
+
+                await this.markers.push(marker);
+                
+
+                //첫번째 값이동을위 한 세팅
+                let center = await new kakao.maps.LatLng(this.latitude, this.longitude);
+                this.map.panTo(center)
+            }
+
+        },
+
+
+        //리스트 보는화면으로
+        async listView() {
+            console.log("실행되나요?");
+            this.searchListActivate = await true;
+            this.$router.push({ name: "MapList" });
+        }
     }
 }
 </script>
+
 <style>
+
+    .samll_overlay{
+        position: absolute;
+        bottom: 110px;
+        z-index: 20;
+    }
+
+    .default_overlay{
+        position: absolute;
+        z-index: 20;
+        bottom: 110px;
+    }
 
     .mapbox{ z-index:1px; position: fixed; top:0px; width: 100%; height: 100%; }
 
@@ -213,8 +290,8 @@ export default {
     }
 
     .filterbox > div {
-        height:35px;
-        line-height:32px;
+        height:30px;
+        line-height:30px;
         width:auto;
         margin:5px;
         background-color: white;
