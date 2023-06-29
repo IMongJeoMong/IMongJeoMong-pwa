@@ -29,7 +29,7 @@ export default {
     .questboard{
         background-color: #144284;
         position: absolute;
-        z-index:15;
+        z-index:20;
         top:20%;
         left:10%;
         width:80%;

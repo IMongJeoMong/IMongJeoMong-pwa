@@ -1,12 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import SideMenuStore from "@/store/modules/SideMenuStore";
+import PreviewStore from "@/store/modules/PreviewStore";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-    SideMenuStore,
+    PreviewStore,
   }
 });
