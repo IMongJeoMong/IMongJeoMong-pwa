@@ -2,13 +2,15 @@
     <div>
         <div class="search_list_box_title">내 주변 장소</div>
         <!-- for문으로 구현예정 -->
-        <div class="search_list_box">
-            <div v-if="testImg == null"  :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}" class="search_list_box_img"></div>
-            <div v-else :style="{'background-image': 'url(' + require(`${testImg}.png`) + ')'}" class="search_list_box_img"></div>
+        <div v-for="(att, index) in getattInfoList" :key = "index" class="search_list_box">
+            <div v-if="att.imagePath == null"  :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}" class="search_list_box_img"></div>
+            <div v-else :style="{'background-image': 'url('+ att.imagePath + ')'}" class="search_list_box_img"></div>
             <div class="search_list_box_info">
                 <div class="search_list_box_info_header">
-                    <div class="info_header_title">성심당</div>
-                    <div class="info_header_box">
+                    <div class="info_header_title">{{ att.name }}</div>
+                    
+                </div>
+                <div class="info_header_box">
                         <div class="info_header_box_exp">
                             <div class="info_header_box_exp_icon"></div>
                             <div>{{exp}} Exp</div>
@@ -18,14 +20,13 @@
                             <div>{{coin}} p</div>
                         </div>
                     </div>  
-                </div>
                 <div class="search_list_box_info_main">
                     <div>{{dis}} m</div>
                     <div>|</div>
-                    <div class="location_text">{{ location }}</div>
+                    <div class="location_text">{{ att.address }}</div>
                 </div>
                 <div class="search_list_box_info_footer">
-                   {{ content }}
+                   {{ att.description }}
                 </div>
             </div>
         </div>
@@ -34,20 +35,21 @@
 </template>
 <script>
 import TheFooter from "@/components/inc/footer/TheFooter";
+import { mapGetters } from "vuex";
 
 export default {
     data() {
         return{
-            testImg : null,
             exp:100,
             coin: 1000,
             dis: 140,
-            location: "대전 중구 대종로ㅁㄴㅇㄹㄹㄴㅁㅇㄻㄴㅇㄹ",
-            content:"안녕하ㅔ요 여기는 성심당이예요 오늘따라 날시가 좋네요 진짜극혐이예요 줄바꿈이 잘되띾요? 아바도 잘되겠죠 그래야만 해요"
         }
     },
     components: {
         TheFooter,
+    },
+    computed: {
+        ...mapGetters('AttractionInfoStore', ["getattInfoList"]),
     }
 }
 </script>
@@ -64,9 +66,9 @@ export default {
     }
 
     .search_list_box{
-        margin: 0 auto;
+        margin: 20px auto;
         width: 90%;
-        height: 100px;
+        height: 130px;
         border:3px solid #82ACE6;
         border-radius: 10px;
         background-color: #F3F8FE;
@@ -75,17 +77,17 @@ export default {
     }
 
     .search_list_box_img{
-        width:30%;
+        width:35%;
         margin:5px;
         background-position: center;
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: cover;
         border-radius: 10px;
         /* border: 1px solid yellow; */
     }
 
     .search_list_box_info{
-        width: 65%;
+        width: 60%;
         display:flex;
         flex-flow: column;
         
@@ -113,6 +115,7 @@ export default {
 
     .search_list_box_info_main > .location_text{
         width: 70%;
+        text-overflow: ellipsis;
     }
 
     .search_list_box_info_footer {
@@ -123,6 +126,8 @@ export default {
         word-break:unset;
         font-size: 12px;
         font-weight: 100;
+        text-align: left;
+        text-overflow: ellipsis;
     }
     
 
@@ -132,8 +137,9 @@ export default {
         color: #164C97;
         font-size: 20px;
         text-align: left;
-        width:40%;
-        overflow:hidden
+        width:90%;
+        height: 25px;
+        overflow:hidden;
     }
 
     .info_header_box{
