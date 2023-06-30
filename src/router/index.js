@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import AppMain from "@/views/AppMain"
 import AppMap from "@/views/AppMap";
 import AppMypage from "@/views/AppMypage";
+import AppMypageChallenge from "@/views/AppMypage_challenge.vue";
+import AppMypageVisited from "@/views/AppMypage_visited.vue";
 import AppShop from "@/views/AppShop";
 import AppUser from "@/views/AppUser";
 import UserLogin from "@/components/user/UserLogin";
@@ -37,6 +39,16 @@ const routes = [
     path: "/mypage",
     name: "Mypage",
     component: AppMypage,
+  },
+  {
+    path: "/mypage/challenge",
+    name: "MypageChallenge",
+    component: AppMypageChallenge,
+  },
+  {
+    path: "/mypage/visited",
+    name: "MypageVisited",
+    component: AppMypageVisited,
   },
   {
     path: "/user",
