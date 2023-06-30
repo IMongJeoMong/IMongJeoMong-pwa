@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="mylocationbox" @click="loadMap()"></div>
-        <marker-small-overlay v-show="overlayS" class="samll_overlay"></marker-small-overlay>
-        <marker-overlay v-show="overlay" class="default_overlay"></marker-overlay>
+        <marker-small-overlay v-show="overlayS" class="samll_overlay" :attInfo="overlayInfo"  v-click-outside="onClickOutside" @overlayOpen="overlayChange"></marker-small-overlay>
+        <marker-overlay  v-show="overlay" class="default_overlay" :attInfo="overlayInfo" v-click-outside="onClickOutside2"></marker-overlay>
 
         <div id="map" style="width:100%; height:100%; margin:0px auto;"></div>
         <the-footer></the-footer>
@@ -31,53 +31,100 @@
 import TheFooter from "@/components/inc/footer/TheFooter";
 import MarkerSmallOverlay from "@/components/map/MarkerSmallOverlay";
 import MarkerOverlay from "@/components/map/MarkerOverlay";
+import {directive as clickOutside} from 'v-click-outside'
 
 export default {
+    //clickOutside 함수 선언!
+    directives: {
+        clickOutside
+    },
 
     data(){
         return {
             mylocation: false,
             mapLevel: 3,
-            latitude: null,
-            longitude: null,
             carActive: false,
             bicycleActive: false,
-
+            bicycleStyle: {
+                color: "#FDAE02",
+                activeColor: "white",
+                backColor: "white",
+                activebackColor: "#FDAE02",
+            },
+            carStyle: {
+                color: "#33B122",
+                activeColor: "white",
+                backColor: "white",
+                activebackColor: "#33B122",
+            },
+            mypositionList: [
+                {
+                    name: "현재 위치",
+                    lat: null,
+                    lng: null,
+                }
+            ],
             attractionList: [
                 {
-                    name: "성심당",
-                    address: "주소입니당",
-                    lat: 36.12314, 
-                    lng: 123.12323,
-                    description: "관광지 설명",
-                    contentId: 10,
-                    imagePath: "http",
+                    name: "유성 관광특구",
+                    address: "대전광역시 유성구 대덕대로 480",
+                    lat: 36.3776292298, 
+                    lng: 127.3878559242,
+                    description: "여기는 관광특구입니다 쩔죠 대박이죠 너무 좋아요 그러니 모드 칭찬합시다!",
+                    contentId: 1958042,
+                    imagePath: "http://tong.visitkorea.or.kr/cms/resource/06/1201206_image3_1.jpg",
+                    contentTypeId : 12,
                 },
                 {
-                    name: "성심당",
-                    address: "주소입니당",
-                    lat: 36.12314, 
-                    lng: 123.12323,
-                    description: "관광지 설명",
-                    contentId: 10,
-                    imagePath: "http",
+                    name: "유성 족욕체험장",
+                    address: "대전광역시 유성구 봉명동",
+                    lat: 36.3550449502, 
+                    lng: 127.3454325546,
+                    description: "여기는 유성 족욕체험장 입니다요 ~ 에헤이!!",
+                    contentId: 2605899,
+                    imagePath: "http://tong.visitkorea.or.kr/cms/resource/91/2605891_image2_1.jpg",
+                    contentTypeId : 12,
                 },
                 {
-                    name: "성심당",
-                    address: "주소입니당",
-                    lat: 36.12314, 
-                    lng: 123.12323,
-                    description: "관광지 설명",
-                    contentId: 10,
-                    imagePath: "http",
+                    name: "유성온천공원",
+                    address: "대전광역시 유성구 계룡로123번길",
+                    lat: 36.3552810320, 
+                    lng: 127.3453047821,
+                    description: "여기는 유성 온천입니다용용요",
+                    contentId: 2760707,
+                    imagePath: "http://tong.visitkorea.or.kr/cms/resource/00/2760700_image2_1.jpg",
+                    contentTypeId: 12,
+                },
+            ],
+            bicycleList: [
+                {
+                    id: 142,
+                    lat: 36.35213,
+                    lng: 127.346011,
+                    address: "유성구 봉명동 328-22",
+                },
+
+            ],
+            carList: [
+                {
+                    id: 605,
+                    name: "청주해장국[대전 유성 16호점]",
+                    lat: 36.35551841647418,
+                    lng: 127.34520542527122,
+                    address: "대전 유성구 봉명동 538-16",
                 },
             ],
 
             //오버레이
-            overlay: true,
+            overlay: false,
             overlayS: false,
+            overlayInfo : null,
+
             //마커 위치정보들이 저장될 공간!
-            markers: [],
+            mypositionMarkers: [],
+            attractionMarkers: [],
+            bicycleMarkers: [],
+            carMarkers: [],
         }
     },
     components : {
@@ -101,20 +148,40 @@ export default {
             //없다면 카카오 스크립트 추가후 맵 실행
             this.loadKakaoScript();
         }
+
+        //VUE-X
+        this.$store.commit('AttractionInfoStore/SET_ATTINFO_LIST', this.attractionList);
     },
     methods: {
 
-        filterActive(type){
-            const elementRef = this.$refs[`${type}Container`];
-            const isActive = this[`${type}Active`];
-            const newBackgroundColor = isActive ? "#164C97" : "white";
-            const newColor = isActive ? "white" : "#164C97";
-            const newIcon = isActive ? `${type}SelectIcon.png` : `${type}Icon.png`;
+        overlayChange() {
+            this.overlayS = false;  
+            this.overlay = true;
+        },
 
-            this[`${type}Active`] = !isActive;
+        onClickOutside() {
+            this.overlayS = false;
+        },
+
+        onClickOutside2() {
+            this.overlay = false;  
+        },
+
+        async filterActive(type) {
+            let elementRef = this.$refs[`${type}Container`];
+            let isActive = !this[`${type}Active`];
+            let isStyle = this[`${type}Style`];
+            let newBackgroundColor = isActive ? isStyle.activebackColor : isStyle.backColor;
+            let newColor = isActive ? isStyle.activeColor : isStyle.color;
+            let newIcon = isActive ? `${type}SelectIcon.png` : `${type}Icon.png`;
+
+            this[`${type}Active`] = isActive;
             elementRef.style.backgroundColor = newBackgroundColor;
             elementRef.style.color = newColor;
             elementRef.childNodes[0].style.backgroundImage = `url(${require(`/src/assets/resource/theme/img/icon/${newIcon}`)})`;
+       
+            await this.changeMap(this.mylocation);
+            this.overlayS = true;
         },
         
         //현재 위치 가져오기
@@ -126,8 +193,8 @@ export default {
             return new Promise((resolve, reject)=> {
                 // get position
                 navigator.geolocation.getCurrentPosition(pos => {
-                    this.latitude = pos.coords.latitude;
-                    this.longitude = pos.coords.longitude;
+                    this.mypositionList[0].lat = pos.coords.latitude;
+                    this.mypositionList[0].lng = pos.coords.longitude;
                     resolve(true);
                 }, err => {
                     this.textContent = err.message;
@@ -155,10 +222,10 @@ export default {
 
             var container = document.getElementById("map");
             let center = null;
-            console.log(this.latitude)
+            
             //보여지는 위치 변경하기위해 초기값 세팅
             if (this.mylocation) {
-                center = new kakao.maps.LatLng(this.latitude, this.longitude);
+                center = new kakao.maps.LatLng(this.mypositionList[0].lat, this.mypositionList[0].lng);
             }
             else {
                 center = new kakao.maps.LatLng(33.450701, 126.570667);
@@ -167,8 +234,7 @@ export default {
             if (this.map) {
                 this.map.panTo(center);
             }
-            
-
+        
             var options = {
                 //지도 생성 옵션
                 center: center,
@@ -184,20 +250,39 @@ export default {
             this.changeMap(this.mylocation);
 
         },
+
         //맵의 마커 초기화
-        clearMarker() {
-            for(let marker of this.markers) {
+        clearMarker(markerList) {
+            for(let marker of markerList) {
                 marker.setMap(null);
             }
         },
 
         //일정이 바뀔때 맵을 변경 (현재는 위치가 잇다면 - 변경할예정)
         async changeMap(mylocation) {
-            //마커가 있으면 없애줘
-            if (this.markers) this.clearMarker()
+
+            //마커들이 있으면 초기화
+            if (this.mypositionMarkers) this.clearMarker(this.mypositionMarkers)
+            if (this.attractionMarkers) this.clearMarker(this.attractionMarkers)
+            if (this.bicycleMarkers) this.clearMarker(this.bicycleMarkers)
+            if (this.carMarkers) this.clearMarker(this.carMarkers)
+
+            this.mypositionMarkers = []
+            this.attractionMarkers = []
+            this.bicycleMarkers = []
+            this.carMarkers = []
+
+            this.setMarker(mylocation, "myposition");
+            this.setMarker(mylocation, "attraction");
+            if (this.bicycleActive) this.setMarker(mylocation, "bicycle");
+            if (this.carActive) this.setMarker(mylocation, "car");
+        },
+
+        async setMarker(mylocation, type){
 
             if (mylocation) {
-                let imageSrc = await require("/src/assets/resource/theme/img/icon/map_myposition.png");
+                //이미지 설정
+                let imageSrc = await require(`/src/assets/resource/theme/img/icon/map_${type}.png`);
                 
                 // 마커 이미지의 이미지 크기 입니다
                 var imageSize = await new kakao.maps.Size(58, 60);
@@ -205,32 +290,55 @@ export default {
                 // 마커 이미지를 생성합니다
                 var markerImage = await new kakao.maps.MarkerImage(imageSrc, imageSize);
 
-                // 마커를 생성합니다
-                var marker = await new kakao.maps.Marker({
-                    map: this.map, // 마커를 표시할 지도
-                    position: new kakao.maps.LatLng(this.latitude, this.longitude), // 마커를 표시할 위치
-                    title: "내위치", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                    image: markerImage, // 마커 이미지
-                    //클릭이벤트를 위한 임의 키값 생성
-                });
+                //포지션 추가
+                var positions = [];
+                for (var mapP of this[`${type}List`]) {
+                    positions.push({
+                        name: mapP.name,
+                        latlng: new kakao.maps.LatLng(mapP.lat, mapP.lng),
+                        contentId: mapP.contentId,
+                        description : mapP.description,
+                        imagePath : mapP.imagePath,
+                        contentTypeId : mapP.contentTypeId,
+                    });                    
+                }
+                console.log(positions)
 
-                await this.markers.push(marker);
-                
+                for (var i = 0; i < positions.length; i++) {
+                    // 마커를 생성합니다
+                    let marker = await new kakao.maps.Marker({
+                        map: this.map,
+                        position: positions[i].latlng,
+                        title: positions[i].name,
+                        image: markerImage,
+                    });
 
-                //첫번째 값이동을위 한 세팅
-                let center = await new kakao.maps.LatLng(this.latitude, this.longitude);
-                this.map.panTo(center)
+                    marker.info = positions[i];
+                    
+                    await this[`${type}Markers`].push(marker);
+                    //관광지 일때만 click해서 오버레이 열리는 이벤트 발생
+                    if (type === "attraction") { 
+                        kakao.maps.event.addListener(marker, 'click', () => {
+                            this.openOverlay(marker.info);
+                        });
+                    }
+
+                }
             }
-
         },
-
-
         //리스트 보는화면으로
         async listView() {
             console.log("실행되나요?");
             this.searchListActivate = await true;
             this.$router.push({ name: "MapList" });
+        },
+
+        openOverlay(markerInfo) {
+            console.log("test", markerInfo);
+            this.overlayInfo = markerInfo;
+            this.overlayS = true;
         }
+        
     }
 }
 </script>
@@ -294,12 +402,21 @@ export default {
         line-height:30px;
         width:auto;
         margin:5px;
-        background-color: white;
-        border: 2px solid #164C97;
         border-radius: 5px;
-        color: #164C97;
         font-weight: bold;
         box-shadow: 3px 3px 4px rgba(99, 99, 99, 0.453);
+    }
+
+    .car{
+        background-color: white;
+        color:#33B122;
+        border:2px solid #33B122;
+    }
+
+    .bicycle{
+        background-color: white;
+        color:#FDAE02;
+        border:2px solid #FDAE02;
     }
 
     .filterbox > div > div {

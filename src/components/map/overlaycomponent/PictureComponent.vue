@@ -1,4 +1,4 @@
-<template lang="">
+<template>
     <div class="picture_component_box">
         <div class="picture_content">
             <div>
@@ -30,7 +30,6 @@ export default {
 }
 </script>
 <style>
-
     .picture_content > div {
         margin:0px auto;
         display: flex;

@@ -24,15 +24,14 @@ export default {
             holdActive: false,
             coin: 100,
             itemList:
-                [
-                    { name: "balloon" },
-                    { name: "heart" },
-                    { name: "lollipop" },
-                    { name: "monocle" },
-                    { name: "sunglasses1" },
-                    { name: "sunglasses2" }
-                ],
-
+            [
+                { name: "balloon" },
+                { name: "heart" },
+                { name: "lollipop" },
+                { name: "monocle" },
+                { name: "sunglasses1" },
+                { name: "sunglasses2" }
+            ], 
         }
     },
     methods: {
@@ -75,6 +74,10 @@ export default {
     .shopbox_list > div {
         background-color: white;
     }
+
+    .shopbox_list_active{
+        background-color: #BBD4F8 !important;
+    }
     
     .shopbox_content {
         width:100%;
@@ -97,9 +100,7 @@ export default {
         
     }
 
-    .shopbox_list_active{
-        background-color: #BBD4F8 !important;
-    }
+    
     .shopbox_content_item{
         flex: 0 0 calc(25% - 1rem);
         /* display: inline-block; */
