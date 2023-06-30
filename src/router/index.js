@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
+
 import AppMain from "@/views/AppMain"
 import AppMap from "@/views/AppMap";
 import AppMypage from "@/views/AppMypage";
@@ -9,6 +11,7 @@ import UserLogin from "@/components/user/UserLogin";
 import TestVue from "@/components/map/MarkerOverlay";
 import MapSearchList from "@/components/map/MapSearchList";
 import UserRegister from "@/components/user/UserRegister";
+
 
 Vue.use(VueRouter);
 
@@ -68,6 +71,13 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   ignoreDuplicateNavigation: true,
   routes,
+}); 
+
+//router 페이지 이동할때
+router.beforeEach((to, from, next) => {
+  store.commit("PreviewStore/SET_PREVIEW_ITEM", null);
+
+  next();
 });
 
 export default router;

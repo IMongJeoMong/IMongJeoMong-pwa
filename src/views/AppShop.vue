@@ -1,8 +1,6 @@
 <template>
     <div class="background" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/background/background1.png') + ')'}">
         <user-infomation></user-infomation>
-        <!-- 저장하기 버튼 -->
-        <div class="shopbtn savebtn">저장하기</div>
         <!-- 캐릭터 설정 버튼 -->
         <div class="shopbtn characterbtn">캐릭터 설정</div>
         <!-- 배경 설정 버튼 -->
@@ -13,8 +11,9 @@
 
          <!-- 캐릭터 따로 빼도 될듯 ?-->
         <user-character class="characterbox"></user-character>
-        <!-- 구매하기 -->
-        <div class="shopbtn buybtn">구매하기</div>
+        <!-- 구매하기 및 저장하기 -->
+        <div v-show="saveBtnToggle" class="shopbtn savebtn">저장하기</div>
+        <div v-show="buyBtnToggle" class="shopbtn buybtn">구매하기</div>
         <shop-board></shop-board>
         <the-footer></the-footer>
     </div>
@@ -25,12 +24,44 @@ import TheFooter from "@/components/inc/footer/TheFooter";
 import UserInfomation from "@/components/inc/header/UserInfomation";
 import ShopBoard from "@/components/shop/ShopBoard";
 import UserCharacter from "@/components/user/UserCharacter";
+import { mapGetters } from "vuex";
+
 export default {
     components : {
         TheFooter,
         UserInfomation,
         ShopBoard,
         UserCharacter,
+    },
+    data() {
+        return {
+            buyBtnToggle: false,
+            saveBtnToggle: false,
+        }
+    },
+    async created() {
+        this.$store.dispatch('PreviewStore/setItemList');
+    },
+    methods: {
+        //있는지 없는지 비교
+        isHoldItem(item) {
+            return this.holdItemList.some(holdItem => holdItem.itemId === item.itemId);
+        }
+    },
+    computed: {
+        ...mapGetters("PreviewStore", ["getPreviewItem"]),
+    },
+    watch: {
+        getPreviewItem(newVal) {
+            if (newVal.holdState) {
+                this.saveBtnToggle = true;
+                this.buyBtnToggle = false;
+            }
+            else {
+                this.saveBtnToggle = false;
+                this.buyBtnToggle = true;
+            }
+        }
     },
 }
 </script>
@@ -65,10 +96,17 @@ export default {
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.39);
     }
     .savebtn{
-        z-index:5;
-        top:90px;
+        z-index:20;
+        bottom:260px;
         color: #d9d9d9;
         background-color:#144284;
+    }
+
+    .buybtn{
+        z-index:20;
+        bottom:260px;
+        background-color: #144284;
+        color:white;   
     }
 
     .characterbtn{
@@ -78,12 +116,6 @@ export default {
         background-color:#d9d9d9;
     }
 
-    .buybtn{
-        z-index:20;
-        bottom:260px;
-        background-color: #144284;
-        color:white;   
-    }
 
     .background_set{
         font-size: 40px;
