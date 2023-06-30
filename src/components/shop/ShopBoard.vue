@@ -1,37 +1,37 @@
 <template>
     <div class="shopbox">
         <div class="shopbox_list">
-            <div class="shopbox_list_shopping" @click="toggleChange()" :class="{'shopbox_list_active': shoppingActive}" >상점</div>
-            <div class="shopbox_list_hold" @click="toggleChange()" :class="{'shopbox_list_active': holdActive}">보유중</div>
+            <div class="shopbox_list_shopping shopbox_list_active">상점</div>
+            <!-- <div class="shopbox_list_shopping" @click="toggleChange()" :class="{'shopbox_list_active': shoppingActive}" >상점</div> -->
+            <!-- <div class="shopbox_list_hold" @click="toggleChange()" :class="{'shopbox_list_active': holdActive}">보유중</div> -->
         </div>
         <!-- 데이터 받으면 for문으로 -->
         <div class="shopbox_content">
             <div>
-                <div v-for="(item, index) in itemList" :key="index" class="shopbox_content_item" @click="Preview(item.name)">
+                <div v-for="(item, index) in itemList" :key="index" 
+                    class="shopbox_content_item" @click="Preview(item)"
+                    :class="{'shopbox_content_item_not_hold' : !item.holdState}"
+                >
                     <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require(`@/assets/resource/common/img/item/shop/shop_${item.name}.png`) + ')'}"></div>
-                    <div class="shopbox_content_item_coin">{{ coin }}</div>
+                    <div v-if="item.holdState" class="shopbox_content_item_coin">보유중</div>
+                    <div v-else class="shopbox_content_item_coin">{{ item.price }}</div>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-export default {
+import { mapGetters } from 'vuex';
 
+export default {
+    props: {
+        itemList : Object,
+    },
     data() {
         return {
             shoppingActive: true,
             holdActive: false,
-            coin: 100,
-            itemList:
-            [
-                { name: "balloon" },
-                { name: "heart" },
-                { name: "lollipop" },
-                { name: "monocle" },
-                { name: "sunglasses1" },
-                { name: "sunglasses2" }
-            ], 
+            coin: 100,  
         }
     },
     methods: {
@@ -39,10 +39,16 @@ export default {
             this.shoppingActive = !this.shoppingActive;
             this.holdActive = !this.holdActive;
         },
-        Preview(itemName) {
-            this.$store.commit("PreviewStore/SET_PREVIEW_ITEM", itemName);
+        Preview(item) {
+            this.$store.commit("PreviewStore/SET_PREVIEW_ITEM", item);
         },
     },
+    mounted() {
+        console.log("gg", this.itemList);
+    },
+    computed: {
+        ...mapGetters("PreviewStore", ["itemList" , "holdItemList"]),
+    }
 }
 </script>
 <style>
@@ -113,6 +119,10 @@ export default {
         overflow:hidden;
         /* padding:10px; */
         
+    }
+
+    .shopbox_content_item_not_hold {
+        filter: brightness(70%);
     }
 
     .shopbox_content_item_img{
