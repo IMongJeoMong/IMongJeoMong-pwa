@@ -1,7 +1,7 @@
 <template>
-    <div class="marker_overlay">
-        <div class="marker_overlay_drage"></div>
-        <marker-small-overlay></marker-small-overlay>
+    <div class="marker_overlay" ref="overlaydiv">
+        <div class="marker_overlay_drage" @click="overlayHeightChange"></div>
+        <marker-small-overlay :attInfo="overlayInfo"></marker-small-overlay>
         <div class="tab_menu_box">
             <div v-for="(tab, index) in tabs" :key="index"
                 :class="['tab_menu_box_' + tab.name, { active: activeTab === tab.name }]"
@@ -11,7 +11,7 @@
             </div>
         </div>
         <div v-for="(tab, index) in tabs" :key="index">
-            <div v-if="activeTab === tab.name">
+            <div v-if="activeTab === tab.name" :ref="`${tab.name}ComponentDiv`">
                 <component class="tab_menu_component" :is="tab.component"></component>
             </div>
         </div>
@@ -26,7 +26,9 @@ import BlogComponent from './overlaycomponent/BlogComponent.vue';
 
 
 export default {
- 
+    props: {
+      attInfo : Object,  
+    },
     components: {
         MarkerSmallOverlay,
         HomeComponent,
@@ -43,16 +45,54 @@ export default {
                 { name: 'picture', label: '사진', component: 'picture-component' },
                 { name: 'blog', label: '블로그', component: 'blog-component' },
             ],
-            overlayHeight: 300, 
-            startHeight: 0,
-            startY: 0,
+            overlayInfo: Object,
+            overlayHeight : false,
         } 
+    },
+    mountde() {
+        this.componentMenuHeight();
     },
     methods: {
         toggleComponent(tab) {
             this.activeTab = this.activeTab === tab ? null : tab;
+            this.$nextTick(() => {
+                this.componentMenuHeight();
+            });
+
+        },
+        overlayHeightChange() {
+            if (this.overlayHeight) {
+                this.$refs.overlaydiv.style.height = "40%";
+                this.overlayHeight = false;
+            }
+            else {
+                this.$refs.overlaydiv.style.height = "calc(100% - 25rem)";
+                this.overlayHeight = true;
+            }
+            this.componentMenuHeight();
+        },
+        componentMenuHeight() {
+             // overlaydiv 레퍼런스를 이용해 실제 높이를 픽셀 단위로 구함
+            let overlayDivHeight = this.$refs.overlaydiv.offsetHeight;
+            console.log(overlayDivHeight)
+            // 높이 계싼 수행
+            let componentDivHeight = overlayDivHeight - 240;
+            console.log(componentDivHeight)
+            console.log(this.$refs.componentdiv)
+            // componentdiv 레퍼런스의 높이로 설정합니다.
+            this.$refs[this.activeTab + 'ComponentDiv'][0].style.height = `${componentDivHeight}px`;
+            
         },
     },
+    watch: {
+        attInfo: {
+            immediate: true, //컴포넌트가 생성될 떄도 watch 콜백 함수 호출
+            deep : true, //중첩된 객체의 변경까지 감지
+            handler(newVal) {
+                this.overlayInfo = newVal
+            }
+        }
+    }
 }
 </script>
 <style>
@@ -66,6 +106,7 @@ export default {
     width: 95%;
     background-color: white;
     border-radius: 10px;
+    height: 40%;
 }
 
 .marker_overlay_drage{
@@ -96,5 +137,7 @@ export default {
 .tab_menu_component{
     /* border: 1px solid black; */
     margin: 0 15px;
+    overflow: scroll;
+    height: 100%;
 }
 </style>

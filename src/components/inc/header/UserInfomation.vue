@@ -15,11 +15,11 @@
                 <div class="alarm_bg"></div>
             </div>
         </div>
-        <div v-show="news" class="alarmBox">
+        <!-- <div v-show="news" class="alarmBox">
             <div>
                 {{ msgStart }}{{ keyword }}<br/>{{ msgEnd }}
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>

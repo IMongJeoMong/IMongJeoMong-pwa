@@ -1,11 +1,12 @@
 <template>
-    <div class="marker_overlay_small">
-        <div class="overlay_img"  v-bind:style="{'background-image' : 'url('+image+')'}"></div>
+    <div class="marker_overlay_small" @click="openOverlay">
+        <div v-if="attInfo.imagePath == null"  :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}" class="overlay_img"></div>
+        <div v-else :style="{'background-image': 'url('+ attInfo.imagePath + ')'}" class="overlay_img"></div>
         <div class="overlay_infobox">
             <div class="overlay_infobox_dis">{{dis}} m </div>
             <div class="overlay_infobox_bookmark"></div>
-            <div class="overlay_infobox_title">{{ title }}</div>
-            <div class="overlay_infobox_content">{{ content }}</div>
+            <div class="overlay_infobox_title">{{ attInfo.name }}</div>
+            <div class="overlay_infobox_content">{{ attInfo.description }}</div>
             <div class="compensation_box">
                 <div class="compensation_box_exp">
                     <div class="compensation_box_exp_icon"></div>
@@ -21,22 +22,24 @@
 </template>
 <script>
 export default {
+    props: {
+      attInfo : Object,  
+    },
     data() {
         return {
             dis: 150,
-            title: "성심당",
-            content:"간략한 설명 요약 ^_^ 인데 테스트로  길게 적어볼까해요 그래요 이렇게 말이죠 너무  행복한  하루입니다. 아직 잘몰라요 어떡게 될지 좀더 ㄱ ㅣㄹ게 적어볼까요?ㅁㄴㅇㄻㄴㅇㄴㅇㄹㄴㅇ",
             exp: 100,
             coin: 1000,
-            image: require("@/assets/resource/theme/img/character/character1.png"),
         }
-    }
-    
+    }, 
+    methods: {
+        openOverlay() {
+            this.$emit('overlayOpen')
+        }
+    } 
 }
 </script>
 <style>
-
-
     .marker_overlay_small{
         left:2.5%;
         width: 95%;
@@ -51,7 +54,7 @@ export default {
     .overlay_img{
         width: 35%;
         /* border: 1px solid black; */
-        background-size: 75%;
+        background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
     }
