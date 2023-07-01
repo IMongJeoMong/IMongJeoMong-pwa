@@ -1,5 +1,13 @@
 <template>
-    <div class="exploration_board">
+    <div v-if = "findPlace == null" class="exploration_board">
+        <div class="exploration_text">
+            탐색을 <b>실패</b> <br/>하였습니다!
+        </div>
+        <div class="exploration_btns">
+           <div class="exploration_btn_cancel">확인</div>
+        </div>
+    </div>
+    <div v-else class="exploration_board">
         <div class="exploration_text">
             <b>{{ findPlace.name  }}</b> 이(가)<br>발견되었어요!
         </div>
@@ -16,9 +24,10 @@
 export default {
     data() {
         return {
-            findPlace: {
-                name: "성심당",         
-            }
+            // findPlace: {
+            //     name: "성심당",         
+            // },
+            findPlace : null,
         }
     },
 }
