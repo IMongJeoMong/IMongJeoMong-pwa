@@ -1,7 +1,9 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import dayjs from "dayjs";
 
-const baseURL = "http://localhost";
+// baseURL: process.env.VUE_APP_AWS_API_URL,
+const baseURL = "http://localhost:8800";
 
 const tokenHttp = axios.create({
     baseURL,

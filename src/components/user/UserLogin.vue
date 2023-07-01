@@ -5,11 +5,11 @@
             <div class="login_box">
                 <div class="login_id_box">
                     <div>아이디</div>
-                    <input type="text" />
+                    <input type="text" v-model="id" v-on:keyup.enter="userLogin"/>
                 </div>
                 <div class="login_pw_box">
                     <div>비밀번호</div>
-                    <input type="password" />
+                    <input type="password" v-model="password" v-on:keyup.enter="userLogin"/>
                 </div>
             </div>
             <div class="login_find_box">
@@ -34,7 +34,7 @@
                 <div class="register_btn">
                     <div>회원가입</div>
                 </div>
-                <div class="login_btn">
+                <div class="login_btn" @click="userLogin()"> 
                     <div>로그인</div>
                 </div>
             </div>
@@ -49,8 +49,31 @@
     </div>
 </template>
 <script>
+
 export default {
-    
+    data() {
+        return {
+            id: "",
+            password : "",
+        }
+    },
+    methods: {
+        async userLogin() {
+
+            if (this.id == "" || this.password == "") {
+                alert("아이디와 비밀번호를 입력해주세요");
+            } else {
+
+                let loginInfo = await {
+                    "email": this.id,
+                    "password": this.password,
+                };
+                console.log(loginInfo)
+                this.$store.dispatch('UserInfoStore/setUserInfo' , loginInfo);
+            }
+        },
+    }
+   
 }
 </script>
 <style>
