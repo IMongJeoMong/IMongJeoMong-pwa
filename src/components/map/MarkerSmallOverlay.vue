@@ -39,7 +39,7 @@ export default {
     } 
 }
 </script>
-<style>
+<style scoped> 
     .marker_overlay_small{
         left:2.5%;
         width: 95%;
