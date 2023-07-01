@@ -1,17 +1,15 @@
 <template>
     <div class="questboard">
         <div class="questlist">
-            <div :class="{'active': questNum===1}" @click="questNum = 1">일일미션</div>
-            <div :class="{'active': questNum===2}" @click="questNum = 2">메인업적</div>
+            <div>일일 퀘스트</div>
+            <!-- <div :class="{'active': questNum===1}" @click="questNum = 1">일일미션</div> -->
         </div>
-        <today-quest v-show="questNum === 1"></today-quest>
-        <main-quest v-show="questNum === 2"></main-quest>
+        <today-quest class="today_quest"></today-quest>
     </div>
 </template>
 <script>
 
 import TodayQuest from "@/components/main/quest/TodayQuest";
-import MainQuest from "@/components/main/quest/MainQuest";
 
 export default {
     data() {
@@ -20,31 +18,30 @@ export default {
         }
     },
     components :{
-        TodayQuest,
-        MainQuest
+        TodayQuest
     },
 }
 </script>
 <style scoped>
     .questboard{
-        background-color: #144284;
+        background-color: #164C97;
         position: absolute;
         z-index:20;
         top:20%;
         left:10%;
         width:80%;
-        height:45%;
-        border-radius: 15px;
+        height:40%;
+        border-radius: 10px;
     }
 
     .questlist{
-        height: 45px;
+        height: 55px;
         background-color: white;
-        border:3px solid #144284;
-        border-radius: 15px;
+        border:4px solid #164C97;
+        border-radius: 10px;
         display: flex;
         justify-content: space-around;
-        line-height: 45px;
+        line-height: 55px;
         color: #144284;
         font-weight:500;
     }
@@ -52,10 +49,18 @@ export default {
     .questlist > div {
         height:35px;
         padding-bottom:1px;
+        font-size: 30px;
+        font-weight: bold;
     }
 
     .active{
-        border-bottom: 2px solid #144284;  
+        border-bottom: 2px solid #164C97;  
+    }
+
+    .today_quest{
+        margin : 3%;
+        width: 94%;
+        height: calc(100% - 6rem);
     }
 
 </style>

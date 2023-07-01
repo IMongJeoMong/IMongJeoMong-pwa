@@ -5,13 +5,16 @@
       <UserInfomation class="topInfomation"></UserInfomation>
       <!-- 캐릭터 -->
       <user-character class="characterbox"></user-character>
-
+      
       <!--퀘스트 보드 -->
-      <quest-board v-show="questBoardActive"></quest-board>
+      <quest-board v-if="questBoardActive" v-click-outside="onClickquQuestOutside"></quest-board>
+      
+      <!-- 탐색 보드 -->
+      <exploration-board v-if="explorationBoardActive" v-click-outside="onClickEltOutside"></exploration-board>
 
       <!-- 탐색 박스 -->
       <div class="homeside">
-        <div class="findbtn">
+        <div class="findbtn" @click="explorationActive()">
           <div class="findimg"></div>
           <div>탐색하기</div>
         </div>
@@ -30,12 +33,18 @@ import UserInfomation from "@/components/inc/header/UserInfomation";
 import TheFooter from "@/components/inc/footer/TheFooter";
 import QuestBoard from "@/components/main/QuestBoard";
 import UserCharacter from "@/components/user/UserCharacter";
+import ExplorationBoard from "@/components/main/ExplorationBoard";
 
+//import axioshttp from "@/api/axioshttp";
+import {directive as clickOutside} from 'v-click-outside'
 export default {
-
+  directives: {
+        clickOutside
+    },
   data() {
     return {
       questBoardActive: false,
+      explorationBoardActive: false,
     }
   },
   components : {
@@ -43,13 +52,28 @@ export default {
     TheFooter,
     QuestBoard,
     UserCharacter,
+    ExplorationBoard,
   },
   methods: {
     qusetActive() {
       if (this.questBoardActive) this.questBoardActive = false;
       else this.questBoardActive = true;
+    },
+    explorationActive() {
+      if (this.explorationBoardActive) this.explorationBoardActive = false;
+      else this.explorationBoardActive = true;
+    },
+    onClickquQuestOutside() {
+      this.questBoardActive = false;
+    },
+    onClickEltOutside() {
+      this.explorationBoardActive = false;
     }
-  }
+  },
+  //created() {
+  //   axioshttp.get("/item/list")
+  //   .then((response) => {console.log(response)})
+  // },
   
 }
 </script>
@@ -107,7 +131,7 @@ export default {
     border:4px solid #164C97;
     background-color:white;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.39);
-    
+    z-index:15;
     font-weight:bold;
     display:flex;
     justify-content: center;
