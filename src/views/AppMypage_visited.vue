@@ -4,7 +4,7 @@
         <div class="mypage2_box_title">방문기록</div>
         <div class="blank"></div>
         <ul class="col-12 tree_list_con">
-            <challenge-list v-for="list in lists" :key="list.no" :list="list" v-bind="list"></challenge-list>
+            <visited-list v-for="list in lists" :key="list.no" :list="list" v-bind="list"></visited-list>
         </ul>
         <the-footer></the-footer>
     </div>
@@ -12,10 +12,10 @@
 <script>
 
 import TheFooter from "@/components/inc/footer/TheFooter";
-import challengeList from '@/components/challenge/challengeList';
+import visitedList from '@/components/visited/visitedList';
 export default {
     components: {
-        TheFooter, challengeList,
+        TheFooter, visitedList,
     },
     data() {
         return {
