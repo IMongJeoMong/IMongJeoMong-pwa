@@ -3,7 +3,7 @@
         <span class="mypage2_box_icon mypage_visited"></span>
         <div class="mypage2_box_title">방문기록</div>
         <div class="blank"></div>
-        <ul class="col-12 tree_list_con">
+        <ul>
             <visited-list v-for="list in lists" :key="list.no" :list="list" v-bind="list"></visited-list>
         </ul>
         <the-footer></the-footer>
@@ -21,16 +21,32 @@ export default {
         return {
             lists: [
                 {
-                    title:"대전 관광지 방문하기",
+                    title:"성심당",
+                    isWrote:true,
+                    date:"2023.06.28",
+                    address:"대전 중구 대종로 480번길 15",
+                    img:"",
                 },
                 {
-                    title:"출석하기",
+                    title:"유성온천",
+                    isWrote:true,
+                    date:"2023.06.28",
+                    address:"대전 중구 대종로 480번길 15",
+                    img:"",
                 },
                 {
-                    title:"리뷰 작성하기",
+                    title:"한밭대학교",
+                    isWrote:false,
+                    date:"2023.06.28",
+                    address:"대전 중구 대종로 480번길 15",
+                    img:"",
                 },
                 {
-                    title:"아이템 구매하기",
+                    title:"대전역",
+                    isWrote:true,
+                    date:"2023.06.28",
+                    address:"대전 중구 대종로 480번길 15",
+                    img:"",
                 },
             ],
         }

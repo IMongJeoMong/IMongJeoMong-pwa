@@ -1,15 +1,23 @@
 <template>
     <li>
-        <div class="challenge_box">
-            <span>{{title}}</span>
+        <div class="visited_box">
+            <img src="../../assets/resource/common/img/default_Img.png" alt="">
             <div>
-                <span class="challenge_icon medal_bronze"></span>
-                <span class=" medal_next"></span>
-                <span class="challenge_icon medal_silver"></span>
-                <span class=" medal_next"></span>
-                <span class="challenge_icon medal_gold"></span>
-                <span class=" medal_next"></span>
-                <span class="challenge_icon medal_award"></span>
+                <div class="visited_title">{{ title }}</div>
+                <div v-if="isWrote == false">
+                    <div class="Review write">
+                        <span>리뷰작성</span>
+                        <span class="icon review_write"></span>
+                    </div>
+                </div>
+                <div v-else>
+                    <div class="Review modify">
+                        <span>리뷰수정</span>
+                        <span class="icon review_modify"></span>
+                    </div>
+                </div>
+                <div class="visited_date">{{ date }}</div>
+                <div class="visited_addr">{{ address }}</div>
             </div>
         </div>
         <!-- <div v-if="lockStatus == false" :class="{ 'active': activeStatus == true }">
@@ -29,70 +37,96 @@ export default {
     name: 'visitedList',
     props: {
         title: String,
-        // treeIdx: Number,
-        // treeName: String,
-        // count: Number,
-        // weight: String,
-        // activeStatus: Boolean,
-        // treeImg: String,
-        // treeInActiveImg: String,
-        // lockStatus: Boolean,
+        isWrote: Boolean,
+        date: String,
+        address: String,
+        img: String,
     }
 }
 </script>
 <style scoped>
-.challenge_box {
+.visited_box {
+    display: flex;
     border: 1px solid #82ACE7;
     border-radius: 10px;
     background-color: #F3F8FE;
     text-align: center;
     width: 350px;
-    height: 130px;
+    height: 80px;
     margin: 0 auto;
     margin-top: 20px;
 }
 
-.challenge_box>span {
-    display: block;
-    margin-top: 10px;
-    font-size: 20px;
+.visited_box>img {
+    margin-top: 5px;
+    width: fit-content;
+    height: 70px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.visited_title {
+    font-size: 23px;
+    padding-top: 3px;
+    width: 140px;
+    text-align: left;
+    margin-right: 10px;
     color: #164C97;
 }
-.challenge_box>div{
 
+.visited_box>div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
-.challenge_icon {
+.Review {
+    right: 0px;    
+    display: flex;
+    align-items: center;
+    width: 80px;
+    height: 23px;
+    border-radius: 30px;
+    padding: 5px;
+}
+
+.write {
+    background-color: #164C97;
+}
+.modify{
+    background-color: #7c7c7c;
+}
+
+.Review>span {
+    margin: 0 auto;
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.review_modify {
+    background-image: url("../../assets/resource/theme/img/icon/review_modify.png");
+}
+.review_write{
+    background-image: url("../../assets/resource/theme/img/icon/review_write.png");
+}
+
+.icon {
     display: inline-block;
     width: 20%;
     background-position: center;
-    background-size: 55px 55px;
+    background-size: 15px 15px;
     background-repeat: no-repeat;
-    height: 80px;
 }
-
-.medal_bronze {
-    background-image: url("/src/assets/resource/theme/img/icon/medal_bronze.png");
+.visited_date{
+    width: 200px;
+    text-align: left;
+    font-size: 12px;
 }
-.medal_silver {
-    background-image: url("/src/assets/resource/theme/img/icon/medal_silver.png");
+.visited_addr{
+    width: 200px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 300;
 }
-.medal_gold {
-    background-image: url("/src/assets/resource/theme/img/icon/medal_gold.png");
-}
-.medal_award {
-    background-image: url("/src/assets/resource/theme/img/icon/medal_award.png");
-}
-.medal_next {
-    background-image: url("/src/assets/resource/theme/img/icon/medal_next.png");
-    display: inline-block;
-    width: 15px;
-    background-position: center;
-    background-size: 9px 14px;
-    background-repeat: no-repeat;
-    height: 80px;
-}
-
-
 </style>
   

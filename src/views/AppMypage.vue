@@ -16,14 +16,14 @@
                     <span class="mypage_box_icon mypage_box_btnicon"></span>
                 </div>
             </router-link>
-            <router-link :to="{ name: 'MypageChallenge' }">
+            <router-link :to="{ name: 'MypageBackground' }">
                 <div>
                     <span class="mypage_box_icon mypage_background"></span>
                     <span class="mypage_box_text">획득한 배경</span>
                     <span class="mypage_box_icon mypage_box_btnicon"></span>
                 </div>
             </router-link>
-            <router-link :to="{ name: 'MypageChallenge' }">
+            <router-link :to="{ name: 'MypageCharacter' }">
                 <div>
                     <span class="mypage_box_icon mypage_charter"></span>
                     <span class="mypage_box_text">획득한 캐릭터</span>
@@ -46,6 +46,12 @@
                     <span class="mypage_box_icon mypage_box_btnicon"></span>
                 </div>
             </router-link>
+            <a>
+                <div class="logout">
+                    <span class="mypage_box_text">로그아웃</span>
+                </div>
+            </a>
+            
         </div>
         <the-footer></the-footer>
     </div>
@@ -167,5 +173,9 @@ export default {
     background-color: #ebebeb !important;
     color: #313131 !important;
     border: 2px solid #585858 !important;
+}
+.logout{
+    margin-top: 50px !important;
+    display: block !important; 
 }
 </style>
