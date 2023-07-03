@@ -7,6 +7,9 @@ import AppMap from "@/views/AppMap";
 import AppMypage from "@/views/AppMypage";
 import AppMypageChallenge from "@/views/AppMypage_challenge.vue";
 import AppMypageVisited from "@/views/AppMypage_visited.vue";
+import AppMypageBackground from "@/views/AppMypage_background.vue";
+import AppMypageCharacter from "@/views/AppMypage_character.vue";
+import AppMypageModify from "@/views/AppMypage_modify.vue";
 import AppShop from "@/views/AppShop";
 import AppUser from "@/views/AppUser";
 import UserLogin from "@/components/user/UserLogin";
@@ -52,6 +55,21 @@ const routes = [
     path: "/mypage/visited",
     name: "MypageVisited",
     component: AppMypageVisited,
+  },
+  {
+    path: "/mypage/background",
+    name: "MypageBackground",
+    component: AppMypageBackground,
+  },
+  {
+    path: "/mypage/character",
+    name: "MypageCharacter",
+    component: AppMypageCharacter,
+  },
+  {
+    path: "/mypage/modify",
+    name: "MypageModify",
+    component: AppMypageModify,
   },
   {
     path: "/user",
