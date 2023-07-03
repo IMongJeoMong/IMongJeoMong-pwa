@@ -32,7 +32,7 @@
             </router-link>
         </div>
         <div class="mypage_box_footer">
-            <router-link :to="{ name: 'MypageChallenge' }">
+            <router-link :to="{ name: 'MypageModify' }">
                 <div>
                     <span class="mypage_box_icon mypage_user"></span>
                     <span class="mypage_box_text">회원정보 수정</span>
@@ -86,12 +86,6 @@ export default {
     display: flex;
     justify-content: space-between;
     line-height: 50px;
-}
-
-
-.mypage_box>div>div:active {
-    transform: scale(0.9);
-    transition: 0.2s;
 }
 
 .mypage_box_icon {
