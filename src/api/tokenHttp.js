@@ -27,7 +27,7 @@ tokenHttp.interceptors.request.use(async (req) => {
 
     // access token 이 만료되지 않았다면 access-token 을 넣어 요청 실행
     if (isExpired) {
-        req.headers["access-token"] = `Bearer ${accessToken}`;
+        req.headers["Authorization"] = `Bearer ${accessToken}`;
         return req;
     }
 
@@ -40,7 +40,7 @@ tokenHttp.interceptors.request.use(async (req) => {
       {},
       {
         headers: {
-          "refresh-token": sessionStorage.getItem("refresh-token"),
+          "Authorization": sessionStorage.getItem("refresh-token"),
         },
       }
     )
@@ -56,7 +56,7 @@ tokenHttp.interceptors.request.use(async (req) => {
       throw new Error("expire token");
     });
 
-  req.headers["access-token"] = sessionStorage.getItem("access-token");
+  req.headers["Authorization"] = sessionStorage.getItem("access-token");
   return req;
 });
 

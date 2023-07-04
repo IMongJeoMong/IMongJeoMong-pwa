@@ -69,7 +69,7 @@ export default {
                     "password": this.password,
                 };
                 console.log(loginInfo)
-                this.$store.dispatch('UserInfoStore/setUserInfo' , loginInfo);
+                this.$store.dispatch('UserInfoStore/setUserlogin' , loginInfo);
             }
         },
     }
