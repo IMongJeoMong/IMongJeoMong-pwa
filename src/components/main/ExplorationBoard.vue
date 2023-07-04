@@ -4,7 +4,7 @@
             탐색을 <b>실패</b> <br/>하였습니다!
         </div>
         <div class="exploration_btns">
-           <div class="exploration_btn_cancel">확인</div>
+           <div class="exploration_btn_cancel" @click="$emit('closeBoard', false)">확인</div>
         </div>
     </div>
     <div v-else class="exploration_board">
@@ -12,7 +12,7 @@
             <b>{{ findPlace.name  }}</b> 이(가)<br>발견되었어요!
         </div>
         <div class="exploration_btns">
-           <div class="exploration_btn_cancel">취소</div>
+           <div class="exploration_btn_cancel" @click="$emit('closeBoard', false)">취소</div>
            <div class="exploration_btn_okey">방문</div>
         </div>
     </div>

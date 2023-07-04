@@ -10,7 +10,7 @@
       <quest-board v-if="questBoardActive" v-click-outside="onClickquQuestOutside"></quest-board>
       
       <!-- 탐색 보드 -->
-      <exploration-board v-if="explorationBoardActive" v-click-outside="onClickEltOutside"></exploration-board>
+      <exploration-board v-if="explorationBoardActive" v-click-outside="onClickEltOutside" @closeBoard="onCloseBoard"></exploration-board>
 
       <!-- 탐색 박스 -->
       <div class="homeside">
@@ -68,12 +68,14 @@ export default {
     },
     onClickEltOutside() {
       this.explorationBoardActive = false;
+    },
+    onCloseBoard(data) {
+      this.explorationBoardActive = data;
     }
   },
-  //created() {
-  //   axioshttp.get("/item/list")
-  //   .then((response) => {console.log(response)})
-  // },
+  created() {
+    this.$store.dispatch('UserInfoStore/setUserInfo');
+  },
   
 }
 </script>

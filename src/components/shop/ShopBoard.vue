@@ -24,9 +24,6 @@
 import { mapGetters } from 'vuex';
 
 export default {
-    props: {
-        itemList : Object,
-    },
     data() {
         return {
             shoppingActive: true,
