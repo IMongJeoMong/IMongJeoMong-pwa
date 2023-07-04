@@ -9,16 +9,22 @@ const UserInfoStore = {
     },
     getters: {
         getUserInfo : (state) => {
-            return state.previewItem;
+            return state.userInfo;
+        },
+        getSelectMong: (state) => {
+            return state.userInfo.selectedMong;
+        },
+        getSelectItem : (state) =>{
+            return state.userInfo.selectedItem;
         },
     },
     mutations: {
         SET_USER_INFO(state, data) {
-            state.previewItem = data;
+            state.userInfo = data;
         }
     },
     actions: {
-        setUserInfo({ state }, loginInfo) {
+        setUserlogin({ state }, loginInfo) {
             // console.log("vueX", loginInfo)
             axioshttp.post("/member/login", loginInfo
                 ).then((res) => {
@@ -29,7 +35,7 @@ const UserInfoStore = {
                     
                     tokenHttp.get(`member/${loginInfo.email}`)
                         .then((res) => {
-                            state.userInfo = res.data;
+                            state.userInfo = res.data.data;
                             router.push({ name: "Main" });
                     })
                 })
@@ -38,6 +44,46 @@ const UserInfoStore = {
                     console.log("login fail");
                     alert("로그인 실패했습니다.\n아이디와 비밀번호를 확인해주세요");
                 })
+        },
+        setUserInfo({ state }) {
+            // console.log(state.userInfo)${state.userInfo.data.email}
+            tokenHttp.get(`member/d@naver.com`)
+                .then((res) => {
+                    state.userInfo = res.data.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        },
+        modifyMongId({ state }, data) {
+            tokenHttp.patch("member/modify", { "selected_mong_id": data })
+                .then((res) => {
+                    console.log("유저(캐릭터)정보 변경완료")
+                    state.userInfo = res.data.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        },
+        modifyItemId({ state }, data) {
+            // tokenHttp.patch("member/modify", { "selected_item_id": data })
+            //     .then((res) => {
+            //         console.log("유저(아이템)정보 변경완료")
+            //         state.userInfo = res.data.data;
+            //     })
+            //     .catch((err) => {
+            //         console.log(err);
+            //     })
+            console.log("유저(아이템)정보 변경완료", data)
+            state.userInfo.selectedItem = 2;
+        },
+        getItemName({ state }, id) {
+            console.log("없으면 에러야 ~", state);
+            axioshttp.get("item/"+id)
+                .then((res) => {
+                    console.log(res.data);
+                    return res.data.name;
+            })
         }
     },
   };
