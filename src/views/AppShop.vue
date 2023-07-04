@@ -2,17 +2,17 @@
     <div class="background" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/background/background1.png') + ')'}">
         <user-infomation></user-infomation>
         <!-- 캐릭터 설정 버튼 -->
-        <div class="shopbtn characterbtn">캐릭터 설정</div>
+        <!-- <div class="shopbtn characterbtn">배경 설정</div> -->
         <!-- 배경 설정 버튼 -->
         <div class="background_set">
-            <div class="background_set_left"> &lt; </div>
-            <div class="background_set_right"> &gt;</div>
+            <div class="background_set_left" @click="beforeBtn()"> &lt; </div>
+            <div class="background_set_right" @click="nextBtn()"> &gt;</div>
         </div>
 
          <!-- 캐릭터 따로 빼도 될듯 ?-->
         <user-character class="characterbox"></user-character>
         <!-- 구매하기 및 저장하기 -->
-        <div v-show="saveBtnToggle" class="shopbtn savebtn">저장하기</div>
+        <div v-show="saveBtnToggle" class="shopbtn savebtn" @click="itemOn()">장착하기</div>
         <div v-show="buyBtnToggle" class="shopbtn buybtn">구매하기</div>
         <shop-board></shop-board>
         <the-footer></the-footer>
@@ -41,15 +41,31 @@ export default {
     },
     async created() {
         this.$store.dispatch('PreviewStore/setItemList');
+        this.$store.dispatch('PreviewStore/setMongList');
     },
     methods: {
         //있는지 없는지 비교
         isHoldItem(item) {
             return this.holdItemList.some(holdItem => holdItem.itemId === item.itemId);
+        },
+        async beforeBtn() {
+            let nowIdx = await this.myMongList.findIndex(item => item.id === this.getSelectMong.id)
+            let nextIdx = await nowIdx - 1 < 0 ? this.myMongList.length - 1 : nowIdx - 1;
+            this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].id);       
+        },
+        async nextBtn() {
+            let nowIdx = await this.myMongList.findIndex(item => item.id === this.getSelectMong.id)
+            let nextIdx = await nowIdx + 1 >= this.myMongList.length  ? 0 : nowIdx + 1;
+            this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].id);      
+        },
+        async itemOn() {
+            console.log(this.getPreviewItem.itemId);
+            this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
         }
     },
     computed: {
-        ...mapGetters("PreviewStore", ["getPreviewItem"]),
+        ...mapGetters("PreviewStore", ["getPreviewItem", "myMongList"]),
+        ...mapGetters("UserInfoStore", ["getSelectMong"]),
     },
     watch: {
         getPreviewItem(newVal) {
@@ -96,7 +112,7 @@ export default {
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.39);
     }
     .savebtn{
-        z-index:20;
+        z-index:30;
         bottom:260px;
         color: #d9d9d9;
         background-color:#144284;
@@ -109,12 +125,12 @@ export default {
         color:white;   
     }
 
-    .characterbtn{
+    /* .characterbtn{
         z-index:5;
         top:135px;
         color: #144284;
         background-color:#d9d9d9;
-    }
+    } */
 
 
     .background_set{

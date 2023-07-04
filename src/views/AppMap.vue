@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="mylocationbox" @click="loadMap()"></div>
-        <marker-small-overlay v-show="overlayS" class="samll_overlay" :attInfo="overlayInfo"  v-click-outside="onClickOutside" @overlayOpen="overlayChange"></marker-small-overlay>
-        <marker-overlay  v-show="overlay" class="default_overlay" :attInfo="overlayInfo" v-click-outside="onClickOutside2"></marker-overlay>
+        <marker-small-overlay v-if="overlayS" class="samll_overlay" :attInfo="overlayInfo"  v-click-outside="onClickOutside" @overlayOpen="overlayChange"></marker-small-overlay>
+        <marker-overlay  v-if="overlay" class="default_overlay" :attInfo="overlayInfo" v-click-outside="onClickOutside2"></marker-overlay>
 
         <div id="map" style="width:100%; height:100%; margin:0px auto;"></div>
         <the-footer></the-footer>
