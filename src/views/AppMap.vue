@@ -32,6 +32,7 @@ import TheFooter from "@/components/inc/footer/TheFooter";
 import MarkerSmallOverlay from "@/components/map/MarkerSmallOverlay";
 import MarkerOverlay from "@/components/map/MarkerOverlay";
 import {directive as clickOutside} from 'v-click-outside'
+import tokenHttp from "@/api/tokenHttp";
 
 export default {
     //clickOutside 함수 선언!
@@ -150,7 +151,8 @@ export default {
         }
 
         //VUE-X
-        this.$store.commit('AttractionInfoStore/SET_ATTINFO_LIST', this.attractionList);
+        this.$store.dispatch('AttractionInfoStore/setAttractionList')
+        //this.$store.commit('AttractionInfoStore/SET_ATTINFO_LIST', this.attractionList);
     },
     methods: {
 

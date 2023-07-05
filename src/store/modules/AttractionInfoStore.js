@@ -1,3 +1,5 @@
+import tokenHttp from "@/api/tokenHttp";
+
 const AttractionInfoStore = {
     namespaced: true,
     state: {
@@ -14,7 +16,18 @@ const AttractionInfoStore = {
         }
     },
     actions: {
-
+        setAttractionList({ state }, lat, lng, keyword) {
+            let page = 0;
+            let size = 30;
+            tokenHttp.get("/attraction/list?page" + page + "&size=" + size + "&lat=" + lat + "&lng=" + lng + "&keyword=" + keyword)
+                .then((res) => {
+                    console.log(res.data.data)
+                    state.attInfoList = res.data.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        },
     },
   };
     
