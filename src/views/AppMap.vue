@@ -4,7 +4,7 @@
             <div class="searchbox">
                 <div class="searchcontainer">
                     <div class="searchicon"></div>
-                    <input class="searchinput" placeholder="장소를 검색해주세요"/>
+                    <input class="searchinput" placeholder="장소를 검색해주세요" v-model="keyword"  v-on:keyup.enter="keywordSerch()" @click="keywordSerch()">
                 </div>
                 <div class="listbtn"><div @click="listView()"></div></div>
             </div>
@@ -32,7 +32,6 @@ import TheFooter from "@/components/inc/footer/TheFooter";
 import MarkerSmallOverlay from "@/components/map/MarkerSmallOverlay";
 import MarkerOverlay from "@/components/map/MarkerOverlay";
 import {directive as clickOutside} from 'v-click-outside'
-import tokenHttp from "@/api/tokenHttp";
 
 export default {
     //clickOutside 함수 선언!
@@ -58,6 +57,7 @@ export default {
                 backColor: "white",
                 activebackColor: "#33B122",
             },
+            keyword : null,
             mypositionList: [
                 {
                     name: "현재 위치",
@@ -151,11 +151,15 @@ export default {
         }
 
         //VUE-X
-        this.$store.dispatch('AttractionInfoStore/setAttractionList')
-        //this.$store.commit('AttractionInfoStore/SET_ATTINFO_LIST', this.attractionList);
+        //this.$store.dispatch('AttractionInfoStore/setAttractionList')
+        //삭제 되어야할거 
+        this.$store.commit('AttractionInfoStore/SET_ATTINFO_LIST', this.mypositionList[0].lat, this.mypositionList[0].lng);
     },
     methods: {
 
+        keywordSerch() {
+            this.$store.commit('AttractionInfoStore/SET_ATTINFO_LIST', this.mypositionList[0].lat, this.mypositionList[0].lng,  this.keyword);
+        },
         overlayChange() {
             this.overlayS = false;  
             this.overlay = true;
