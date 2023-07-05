@@ -1,218 +1,191 @@
 <template>
-    <div class="login_container">
-        <div>
-            <div class="login_log"></div>
-            <div class="login_box">
-                <div>아이디</div>
-                <div class="login_id_box">
-                    <input type="text" />
-                </div>
-                <div>비밀번호</div>
-                <div class="login_pw_box">
-                    <input type="password" />
-                </div>
-            </div>
-            
-            <div class="local_btn_box">
-                <div class="register_btn">
-                    <div>취소</div>
-                </div>
-                <div class="login_btn">
-                    <div>회원가입</div>
-                </div>
-            </div>
-        </div>
+  <div class="mypage_box">
+    <img src="../../assets/resource/theme/img/icon/map_myposition.png" alt />
+    <div>
+      <div class="confirm_container">
+        <span class="inputTitle">이메일</span>
+        <div class="confirmBtn">중복확인</div>
+      </div>
+      <input class="inputBox" type="email" v-model="email" />
     </div>
+    <div>
+      <div class="confirm_container">
+        <span class="inputTitle">닉네임</span>
+        <div class="confirmBtn">중복확인</div>
+      </div>
+      <input class="inputBox" type="nickname" v-model="nickname" />
+    </div>
+    <div>
+      <span class="inputTitle">비밀번호</span>
+      <input class="inputBox" type="password" v-model="password" />
+    </div>
+    <div>
+      <span class="inputTitle">비밀번호 확인</span>
+      <input class="inputBox" type="password" v-model="passwordConfirm" />
+    </div>
+    <div class="gender_container">
+      <span>성별</span>
+      <div class="gender_radio">
+        <label>
+          <input type="radio" name="gender" value="M" v-model="gender" />남
+        </label>
+        <label>
+          <input type="radio" name="gender" value="F" v-model="gender" />여
+        </label>
+      </div>
+    </div>
+    <div class="birth_container">
+      <span>생일</span>
+      <input type="date" v-model="birth" />
+    </div>
+    <div class="birth_container">
+      <span>거주 지역</span>
+      <select v-model="location">
+        <option value>시를 선택하세요</option>
+        <option value="서울특별시">서울특별시</option>
+        <option value="부산광역시">부산광역시</option>
+        <option value="대구광역시">대구광역시</option>
+        <option value="대전광역시">대전광역시</option>
+      </select>
+    </div>
+    <div class="button_container">
+      <span class="cancle">취소</span>
+      <span class="modify">회원가입</span>
+    </div>
+  </div>
 </template>
-<script>
+  <script>
 export default {
-    
-}
+  components: {},
+  data() {
+    return {
+      email: "",
+      nickname: "",
+      password: "",
+      passwordConfirm: "",
+      gender: "M",
+      birth: "",
+      location: "대전광역시",
+    };
+  },
+  methods: {
+    updateSelected(list) {
+      this.lists.forEach((item) => {
+        item.isSelected = item === list;
+      });
+    },
+  },
+};
 </script>
-<style>
+  <style scoped>
+.mypage_box {
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* 스크롤이 필요한 경우에만 표시 */
+}
+.mypage_box > div {
+  margin-top: 30px;
+  /* border: 1px solid saddlebrown; */
+}
+.mypage_box > img {
+  margin-top: 30px;
+  width: 150px;
+}
+.inputTitle {
+  font-size: 15px;
+  display: block;
+  margin-bottom: 10px;
+  color: #164c97;
+}
+.inputBox {
+  border: none;
+  width: 300px;
+  height: 40px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 20px;
+  background-color: #e2efff;
+  color: #164c97;
+  font-family: "GmarketSans";
+}
+.confirm_container {
+  display: flex;
+  justify-content: center;
+}
+.confirm_container > span {
+  margin-right: 50px;
+  margin-left: 140px;
+}
+.confirmBtn {
+  width: 80px;
+  font-size: 13px;
+  height: 30px;
+  margin-top: -5px;
+  padding-top: 7px;
+  border-radius: 10px;
+  background-color: #abc5ed;
+  color: #164c97;
+}
+input[type="radio"] {
+  -webkit-appearance: radio;
+  appearance: radio;
+  width: 15px;
+}
+.gender_container {
+}
+.gender_container > span {
+  font-size: 15px;
+  color: #164c97;
+  margin-right: 30px;
+}
+.gender_radio {
+  display: inline-block;
+}
+.gender_radio > label {
+  margin-right: 20px;
+  font-size: 15px;
+  color: #164c97;
+}
+.birth_container > span {
+  font-size: 15px;
+  color: #164c97;
+  margin-right: 30px;
+}
+input[type="date"] {
+  width: 120px;
+}
+select {
+  width: 130px;
+  height: 30px;
+  border-radius: 10px;
+  font-size: 15px;
+  /* background-color: #ececec; */
+  color: #164c97;
+  font-family: "GmarketSans";
+  border: 1px solid #8b8b8b;
+}
 
-    .login_container{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100vh;
-    }
-
-    .login_log{
-        width: 100%;
-        height: 30rem;
-        background-image: url("/src/assets/logo.png");
-        background-position: center;
-        background-size: contain;
-        background-repeat: no-repeat;
-        margin: 0 auto;
-    }
-
-    .login_box{
-        margin: 0 auto 0 auto;
-        width: 100%;
-    }
-
-    .login_box > div{
-        display:flex;
-        justify-content: center;
-        margin: 20px calc(10% - 1rem) 5px calc(10% - 1rem);
-    }
-
-    .login_box > div > div{
-       width: 100px;
-       font-size: 17px;
-       color: #164C97;
-       text-align: left;
-       height: 35px;
-       line-height: 40px;
-    }
-
-    .login_box > div > input {
-        width: 70%;
-        height: 35px;
-        /* border: 3px solid #ABC5ED; */
-        border : none;
-        border-radius: 8px;
-        background-color: #E2EFFF;
-        text-align: left;
-        padding:10px;
-        margin:0px;
-    }
-
-
-    .login_find_box{
-        width: 100%;
-        height: 50px;
-    }
-
-      /* 토글  관련 */
-    .login_find_box_auto_login{
-        display:flex;
-        width: 100%;
-        height: 50px;
-        /* border: 1px solid black; */
-        justify-content: space-around;
-        font-size:13px;
-        color:#164C97;
-    }
-
-    .togglebox{
-        display: flex;
-        line-height: 50px;
-        width:120px;
-    }
-
-    .onoffToggle {
-        width: 45px;
-        height: 26px;
-        display: block;
-        position: relative;
-        border-radius: 20px;
-        background: #fff;
-        border: 2px solid #afafaf;
-        cursor: pointer;
-    }
-
-    .onoffToggle .onoffBall {
-        width: 21px;
-        height: 21px;
-        position: absolute;
-        top: 50%;
-        left: 2px;
-        transform: translateY(-50%);
-        border-radius: 50%;
-        background: #164C97;
-    }
-
-    .onoff:checked + .onoffToggle {
-        border: 2px solid #164C97;
-        background: #164C97;
-    }
-
-    .onoff:checked ~ .onoffToggle .onoffBall {
-        left: 30px;
-        left: calc(100% - 21px);
-        border: 2px solid #fff;
-        background: #fff;
-    }
-
-    .onoffToggle,
-    .onoffBall {
-        transition: all 0.2s ease-in;
-    }
-
-    .toggleContainer {
-        display:inline-block;
-        margin: 0 auto;
-        margin-top: 10px; 
-    }
-
-    /* 찾기 */
-
-    .findbox{
-        display: inline-block;
-        /* border: 1px solid black; */
-        line-height: 50px;
-    }
-
-
-    .findbox > span{
-        margin:2px;
-    }
-    
-    .local_btn_box{
-        width:100%;
-        display:flex;
-        justify-content: center;
-    }
-
-    .local_btn_box > div{
-        width:28%;
-        height:40px;
-        line-height: 42px;
-        border-radius: 12px;
-        font-size: 15px;
-        margin:10px;
-    }
-
-    .login_btn{
-        /* border:1px solid black; */
-        background-color: #164C97;
-        color: white;
-    }
-
-    .register_btn{
-        background-color: #ABABAB;
-        color: white;
-    }
-
-    .social_register_box{
-        margin: 25px auto 10px auto;
-        height: 20px;
-        font-size: 13px;
-        color: #164C97;
-        
-    }
-
-    .social_login_box > div{
-        display:inline-block;
-        width: 110px;
-        height: 45px;
-        background-position: center;
-        background-size:cover;
-        border-radius: 5px;
-    }
-
-    .kakao_login_btn{
-        background-image :  url("/src/assets/resource/theme/img/icon/Kakao_login_icon.png");
-        margin-right:10px;
-    }
-
-    .naver_login_btn{ 
-        background-image :  url("/src/assets/resource/theme/img/icon/Naver_login_icon.png");
-        margin-left:10px;
-    }
-
-    
+/* 선택된 옵션의 스타일 */
+select option:checked {
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #164c97;
+}
+.button_container > span {
+  display: inline-block;
+  width: 100px;
+  margin-right: 10px;
+  margin-left: 10px;
+  font-size: 15px;
+  padding: 5px;
+  border-radius: 30px;
+}
+.button_container > .cancle {
+  background-color: #9b9b9b;
+  color: white;
+}
+.button_container > .modify {
+  background-color: #164c97;
+  color: white;
+}
 </style>
