@@ -3,7 +3,7 @@
     <img src="../assets/resource/theme/img/icon/map_myposition.png" alt />
     <div>
       <span class="inputTitle">이메일</span>
-      <input class="inputBox" type="email" :placeholder="email" />
+      <input class="inputBox" type="email" :placeholder="email" v-model="email"  />
     </div>
     <div>
       <div class="confirm_container">
