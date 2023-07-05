@@ -6,6 +6,7 @@ const UserInfoStore = {
     namespaced: true,
     state: {
         userInfo: Object,
+        selectItemPath : "",
     },
     getters: {
         getUserInfo : (state) => {
@@ -17,6 +18,9 @@ const UserInfoStore = {
         getSelectItem : (state) =>{
             return state.userInfo.selectedItem;
         },
+        getSelectItemPath: (state) => {
+            return state.selectItemPath;
+        }
     },
     mutations: {
         SET_USER_INFO(state, data) {
@@ -77,12 +81,12 @@ const UserInfoStore = {
             console.log("유저(아이템)정보 변경완료", data)
             state.userInfo.selectedItem = 2;
         },
-        getItemName({ state }, id) {
+        getItemPath({ state }, data) {
             console.log("없으면 에러야 ~", state);
-            axioshttp.get("item/"+id)
+            let itemId = data.itemDto.itemId;
+            axioshttp.get("item/"+itemId)
                 .then((res) => {
-                    console.log(res.data);
-                    return res.data.name;
+                    state.selectItemPath = res.data.data.charImagePath;
             })
         }
     },

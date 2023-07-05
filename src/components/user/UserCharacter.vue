@@ -1,18 +1,26 @@
 <template>
     <div>
         <!-- 착용한 아이템 갯수만큼 for -->
+
+        <!-- 만약에 프리뷰가 있다면-->
         <div v-if="getPreviewItem != null"  class ="user_select_item">
-            <img :src="require(`@/assets/resource/common/img/item/character/ch_${getPreviewItem.name}.png`)"/>
+            <!-- 프리뷰의 정보값을 보여줘 -->
+            <img :src="(`${getSelectItemPath}`)"/>
         </div>
+
+        <!-- 프리뷰가 없다면 -->
         <div v-else class ="user_select_item">
-            <img v-if="getSelectItem != null" :src="require(`@/assets/resource/common/img/item/character/ch_${itemName}.png`)"/>
+            <!-- 현재 장착한게 있다면 -->
+            <img v-if="getSelectItem != null" :src="(`${getSelectItemPath}`)"/>
         </div>
+
+
         <!-- 선택된 캐릭터 -->
         <div class="user_character">
             <!-- 나중에 삭제할 값  -->
             <!-- <img :src="require('@/assets/resource/common/img/character/character1.gif')"/> -->
             <!-- 로직 구현 테스트 (최종 값 )-->
-            <img v-if="getSelectMong != null" :src="require(`@/assets/resource/common/img/character/character${getSelectMong.id}.gif`)"/>
+            <img v-if="getSelectMong != null" :src="(`${getSelectMong.mong.imagePath}`)"/>
         </div>
     </div>
 </template>
@@ -23,16 +31,16 @@ import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
-            itemName : "",
+            itemPath : "",
         }
     },
     computed: {
         ...mapGetters("PreviewStore", ["getPreviewItem"]),
-        ...mapGetters("UserInfoStore", ["getSelectMong", "getSelectItem"]),
+        ...mapGetters("UserInfoStore", ["getSelectMong", "getSelectItem", "getSelectItemPath"]),
     },
     watch: {
-        getSelectItem(newVal) {
-            this.itemName = this.$store.dispatch("UserInfoStore/getItemName", newVal)
+        async getSelectItem(newVal) {
+            this.$store.dispatch("UserInfoStore/getItemPath", newVal)
         }
         
     }

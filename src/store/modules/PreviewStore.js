@@ -1,3 +1,6 @@
+import tokenHttp from "@/api/tokenHttp";
+import axioshttp from "@/api/axioshttp";
+
 const PreviewStore = {
     namespaced: true,
     state: {
@@ -38,65 +41,30 @@ const PreviewStore = {
         },
     },
     actions: {
-        setItemList({ state }) {
-            state.itemList = [
-                {
-                    itemId: 1,
-                    name: "balloon",
-                    price: 1000,
-                },
-                {
-                    itemId: 2,
-                    name: "heart",
-                    price: 1000,
-                },
-                {
-                    itemId: 3,
-                    name: "lollipop",
-                    price: 1000,
-                },
-                {
-                    itemId: 4,
-                    name: "monocle",
-                    price: 1000,
-                },
-                {
-                    itemId: 5,
-                    name: "sunglasses1",
-                    price: 1000,
-                },
-                {
-                    itemId: 6,
-                    name: "sunglasses2",
-                    price: 1000,
-                }
-            ];
+        async setItemList({ state }) {
 
-            state.holdItemList = [
-                {
-                    itemId : 3,
-                    name: "lollipop",
-                    price: 1000,
-                },
-                {
-                    itemId : 4,
-                    name: "monocle",
-                    price: 1000,
-                },
-                {
-                    itemId : 5,
-                    name: "sunglasses1",
-                    price: 1000,
-                },
-            ]
+            tokenHttp.get("item/mine/list")
+                .then((res) => {
+                    console.log(res.data.data);
+                    state.itemList = res.data.data;
+                })
+            
+            axioshttp.get("item/list")
+                .then((res) => {
+                    console.log(res.data.data)
+                    state.holdItemList = res.data.data;
+            })
 
-            for (let i = 0; i < state.itemList.length; i++) {
-                let holdState = state.holdItemList.some(holdItem => holdItem.itemId === state.itemList[i].itemId)
-                state.itemList[i]["holdState"] = holdState;
-            }
+            await Promise.resolve()
+
+            // for (let i = 0; i < state.itemList.length; i++) {
+            //     let holdState = state.holdItemList.some(holdItem => holdItem.itemId == state.itemList[i].itemId)
+            //     state.itemList[i] = await holdState;
+            // }
             
         },
-        setMongList({ state }){
+        setMongList({ state }) {
+            
             state.mongList =[ {
                 "id": 1,
                 "name": "a",

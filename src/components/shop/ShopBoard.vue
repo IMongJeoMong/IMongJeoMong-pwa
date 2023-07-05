@@ -8,11 +8,11 @@
         <!-- 데이터 받으면 for문으로 -->
         <div class="shopbox_content">
             <div>
-                <div v-for="(item, index) in itemList" :key="index" 
+                <div v-for="(item, index) in holdItemList" :key="index" 
                     class="shopbox_content_item" @click="Preview(item)"
-                    :class="{'shopbox_content_item_not_hold' : !item.holdState}"
+                    :class="{'shopbox_content_item_not_hold' : item.own}"
                 >
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + require(`@/assets/resource/common/img/item/shop/shop_${item.name}.png`) + ')'}"></div>
+                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + (`${item.shopImagePath}`) + ')'}"></div>
                     <div v-if="item.holdState" class="shopbox_content_item_coin">보유중</div>
                     <div v-else class="shopbox_content_item_coin">{{ item.price }}</div>
                 </div>
