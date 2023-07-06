@@ -3,14 +3,14 @@
         <div>
             <div class="quest_list_box">
                 <div v-for="(quest, index) in todayQuest" :key="index" class="quest_box">
-                    <div class="quest_list_box_title">{{ quest.title }}</div>
+                    <div class="quest_list_box_name">{{ quest.name }}</div>
                     <div class="quest_list_box_compensattion">
-                        <div v-if="!quest.completionState">
+                        <div v-if="!quest.clearFlag">
                             <div class="quest_list_compensation_exp_icon"></div>
-                            <div class="quest_list_compensation_exp_text">{{ quest.addExp}} EXP</div>
+                            <div class="quest_list_compensation_exp_text">{{ quest.exp}} EXP</div>
                         </div>
-                        <div v-if="quest.completionState && !quest.getState" @click="rewarded(quest)"> <div>보상받기</div></div>
-                        <div v-if="quest.completionState && quest.getState" id="quest_end">완료</div>
+                        <div v-if="quest.clearFlag && !quest.rewardFlag" @click="rewarded(quest)"> <div>보상받기</div></div>
+                        <div v-if="quest.clearFlag && quest.rewardFlag" id="quest_end">완료</div>
                     </div>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                     </div>
                     <div class="compensation_box_coin">
                         <div class="compensation_box_coin_icon"></div>
-                        <div class="compensation_box_text">{{todayAllClear.coin}} p</div>
+                        <div class="compensation_box_text">{{todayAllClear.gold}} p</div>
                     </div>
                 </div>
             </div>
@@ -31,44 +31,29 @@
     </div>
 </template>
 <script>
+
+import tokenHttp from '@/api/tokenHttp';
+
 export default {
     data() {
         return {
-            todayQuest: [
-                {
-                    questCode: 200,
-                    title: "출석 하기",
-                    addExp: 10,
-                    completionState: true,
-                    getState: true,
-                },
-                {
-                    questCode: 300,
-                    title: "관광지 방문하기",
-                    addExp: 20,
-                    completionState: true,
-                    getState: false,
-                },
-                {
-                    questCode: 400,
-                    title: "리뷰 작성하기",
-                    addExp: 30,
-                    completionState: false,
-                    getState: false,
-                },
-            ],
-            todayAllClear: {
-                exp: 1000,
-                coin : 500,
-            }
+            todayQuest: [ ],
+            todayAllClear: {}
         }
     },
     methods: {
         rewarded(quest) {
             console.log(quest)
-            alert(`${quest.title} 보상 UI 만들어야합니다`);
+            alert(`${quest.name} 보상 UI 만들어야합니다`);
         }
-    }
+    },
+    async created() {
+        tokenHttp.get("quest/daily")
+            .then((res) => {
+                this.todayQuest = res.data.data;
+                this.todayAllClear = this.todayQuest.pop();
+        }).catch((err) => console.log(err))
+    },
 }
 </script>
 <style>
@@ -95,7 +80,7 @@ export default {
         display: flex;
     }
     
-    .quest_list_box_title{
+    .quest_list_box_name{
         width:70%;
         font-size:17px;
         text-align: center;

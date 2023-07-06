@@ -90,6 +90,9 @@ export default {
             deep : true, //중첩된 객체의 변경까지 감지
             handler(newVal) {
                 this.overlayInfo = newVal
+                //나중에 값 전송해줘야함 ! id값 
+                this.$store.dispatch("ReviewStore/setAttractionInfo", this.attInfo.contentId);
+                this.$store.dispatch("ReviewStore/setReviewList");
             }
         }
     }

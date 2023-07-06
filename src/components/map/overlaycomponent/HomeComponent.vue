@@ -2,21 +2,30 @@
     <div class="home_component_box">
         <div>
             <div class="home_component_img img_address"></div>
-            <div class="home_component_text">{{ address }}</div>
+            <div class="home_component_text">{{ getAttractionInfo.address }}</div>
         </div>
         <div>
             <div class="home_component_img img_phone"></div>
-            <div class="home_component_text">{{ phone }}</div>
+            <div class="home_component_text">{{ getAttractionInfo.tel == "" ? "전화번호가 없습니다" : getAttractionInfo.tel}}</div>
+        </div>
+        <div>
+            <div class="home_component_img">설명</div>
+            <div class="home_component_full_text">{{ getAttractionInfo.description}}</div>
         </div>
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     data() {
         return {
             address: "주소가 올곳 입니다줄넘김을 테스트 해보려고해요 어떤가요 ? 잘 되었나요?",
             phone : "전화번호 가 올곳입니다",
         }
+    },
+    computed:{
+        ...mapGetters("ReviewStore", ["getAttractionInfo"]),
     }
     
 }
@@ -33,6 +42,10 @@ export default {
 
     .home_component_text {
         overflow: scroll;
+        text-align: left;
+    }
+
+    .home_component_full_text{
         text-align: left;
     }
 

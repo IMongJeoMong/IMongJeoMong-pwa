@@ -1,29 +1,24 @@
 <template>
     <!-- v-for 예정 -->
     <div>
-        <div class="review_component_box">
-            <div class="review_img" :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}"></div>
+        <div v-for="(review, index) in getReviewList" :key="index" class="review_component_box">
+            <div class="review_img" :style="{'background-image': 'url(' +review.imagePath + ')'}"></div>
             <div class="review_content">
-                <div class="review_content_username">{{ userName }}</div>
-                <div class="review_content_text">{{ userReview }}</div>
-            </div>
-        </div>
-        <div class="review_component_box">
-            <div class="review_img" :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}"></div>
-            <div class="review_content">
-                <div class="review_content_username">{{ userName }}</div>
-                <div class="review_content_text">{{ userReview }}</div>
+                <div class="review_content_username">{{ review.memberName }}</div>
+                <div class="review_content_text">{{ review.content }}</div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
-            userName: "이름입니다",
-            userReview: "여기 맛집이니다 조항요"
         }
+    },
+    computed:{
+        ...mapGetters("ReviewStore", ["getReviewList"]),
     }
 }
 </script>
@@ -36,18 +31,18 @@ export default {
     }
 
     .review_img{
-        width: 30%;
+        width: 35%;
         /* border: 1px solid black; */
         border-radius: 10px;
         margin-right: 20px;
         background-position: center;
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: cover;
     }
 
     .review_content{ 
         text-align:left;
-        width:65%;
+        width:60%;
     }
 
     .review_content_username{
