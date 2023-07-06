@@ -57,6 +57,7 @@ const UserInfoStore = {
                 })
         },
         modifyMongId({ state }, data) {
+            console.log("mongChange", data)
             tokenHttp.patch("member/modify", { "selected_mong_id": data })
                 .then((res) => {
                     console.log("유저(캐릭터)정보 변경완료")

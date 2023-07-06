@@ -40,6 +40,9 @@ export default {
             this.$store.dispatch("UserInfoStore/getItemPath", newVal)
         }
         
+    },
+    created() {
+      
     }
 }
 </script>
