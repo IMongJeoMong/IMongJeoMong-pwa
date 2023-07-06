@@ -23,7 +23,7 @@
                     </div>
                     <div class="compensation_box_coin">
                         <div class="compensation_box_coin_icon"></div>
-                        <div class="compensation_box_text">{{todayAllClear.coin}} p</div>
+                        <div class="compensation_box_text">{{todayAllClear.gold}} p</div>
                     </div>
                 </div>
             </div>
@@ -37,33 +37,8 @@ import tokenHttp from '@/api/tokenHttp';
 export default {
     data() {
         return {
-            todayQuest: [
-                {
-                    id: 200,
-                    name: "출석 하기",
-                    exp: 10,
-                    clearFlag: true,
-                    rewardFlag: true,
-                },
-                {
-                    id: 300,
-                    name: "관광지 방문하기",
-                    exp: 20,
-                    clearFlag: true,
-                    rewardFlag: false,
-                },
-                {
-                    id: 400,
-                    name: "리뷰 작성하기",
-                    exp: 30,
-                    clearFlag: false,
-                    rewardFlag: false,
-                },
-            ],
-            todayAllClear: {
-                exp: 1000,
-                coin : 500,
-            }
+            todayQuest: [ ],
+            todayAllClear: {}
         }
     },
     methods: {
@@ -76,8 +51,9 @@ export default {
         tokenHttp.get("quest/daily")
             .then((res) => {
                 this.todayQuest = res.data.data;
+                this.todayAllClear = this.todayQuest.pop();
         }).catch((err) => console.log(err))
-    }
+    },
 }
 </script>
 <style>

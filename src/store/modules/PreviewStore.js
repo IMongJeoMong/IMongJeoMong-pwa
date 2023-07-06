@@ -38,7 +38,7 @@ const PreviewStore = {
     actions: {
         setItemList({ state }) {
 
-            tokenHttp.get("/item/all-own/list")
+            tokenHttp.get("/item/all-own/list" )
             .then((res) => {
                 state.itemList = res.data.data;
             })
@@ -87,8 +87,13 @@ const PreviewStore = {
                     "level": 0,
                     "exp": 0
                 }
-            ]
+                ]
+            
+            
+            
         },
+
+        
     },
   };
     

@@ -1,32 +1,34 @@
 <template>
-    <div>
+    <div class="serch_list_component">
         <div class="search_list_box_title">내 주변 장소</div>
         <!-- for문으로 구현예정 -->
-        <div v-for="(att, index) in getattInfoList" :key = "index" class="search_list_box">
-            <div v-if="att.imagePath == null"  :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}" class="search_list_box_img"></div>
-            <div v-else :style="{'background-image': 'url('+ att.imagePath + ')'}" class="search_list_box_img"></div>
-            <div class="search_list_box_info">
-                <div class="search_list_box_info_header">
-                    <div class="info_header_title">{{ att.name }}</div>
-                    
-                </div>
-                <div class="info_header_box">
-                        <div class="info_header_box_exp">
-                            <div class="info_header_box_exp_icon"></div>
-                            <div>{{exp}} Exp</div>
-                        </div>
-                        <div class="info_header_box_coin">
-                            <div class="info_header_box_coin_icon"></div>
-                            <div>{{coin}} p</div>
-                        </div>
-                    </div>  
-                <div class="search_list_box_info_main">
-                    <div>{{dis}} m</div>
-                    <div>|</div>
-                    <div class="location_text">{{ att.address }}</div>
-                </div>
-                <div class="search_list_box_info_footer">
-                   {{ att.description }}
+        <div class="search_list_box_component">
+            <div v-for="(att, index) in attractionList" :key = "index" class="search_list_box">
+                <div v-if="att.imagePath == null"  :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}" class="search_list_box_img"></div>
+                <div v-else :style="{'background-image': 'url('+ att.imagePath + ')'}" class="search_list_box_img"></div>
+                <div class="search_list_box_info">
+                    <div class="search_list_box_info_header">
+                        <div class="info_header_title">{{ att.name }}</div>
+                        
+                    </div>
+                    <div class="info_header_box">
+                            <div class="info_header_box_exp">
+                                <div class="info_header_box_exp_icon"></div>
+                                <div>{{exp}} Exp</div>
+                            </div>
+                            <div class="info_header_box_coin">
+                                <div class="info_header_box_coin_icon"></div>
+                                <div>{{coin}} p</div>
+                            </div>
+                        </div>  
+                    <div class="search_list_box_info_main">
+                        <div>{{dis}} m</div>
+                        <div>|</div>
+                        <div class="location_text">{{ att.address }}</div>
+                    </div>
+                    <div class="search_list_box_info_footer">
+                    {{ att.description }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,20 +51,31 @@ export default {
         TheFooter,
     },
     computed: {
-        ...mapGetters('AttractionInfoStore', ["getattInfoList"]),
+        ...mapGetters('AttractionInfoStore', ["attractionList"]),
     }
 }
 </script>
 <style>
+    .serch_list_component{
+        height:100%;    
+    }
 
     .search_list_box_title{
+        position: absolute;
         margin:5%;
         display:flex;
         align-items: end;
-        height: 10%;
+        height: 6%;
         text-align: left;
         color:#164C97;
         font-size: 30px;
+    }
+
+    .search_list_box_component{
+        position: absolute;
+        margin-top: 20%;
+        height: calc(100% - 17rem);
+        overflow: scroll;
     }
 
     .search_list_box{
