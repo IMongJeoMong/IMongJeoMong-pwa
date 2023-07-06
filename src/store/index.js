@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import PreviewStore from "@/store/modules/PreviewStore";
 import AttractionInfoStore from "@/store/modules/AttractionInfoStore";
 import UserInfoStore from "@/store/modules/UserInfoStore";
+import ReviewStore from "@/store/modules/ReviewStore";
 
 Vue.use(Vuex);
 
@@ -12,5 +13,6 @@ export default new Vuex.Store({
     PreviewStore,
     AttractionInfoStore,
     UserInfoStore,
+    ReviewStore,
   }
 });
