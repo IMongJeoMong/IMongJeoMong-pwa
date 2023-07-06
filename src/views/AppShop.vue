@@ -57,23 +57,26 @@ export default {
         async beforeBtn() {
             let nowIdx = await this.myMongList.findIndex(item => item.id === this.getSelectMong.id)
             let nextIdx = await nowIdx - 1 < 0 ? this.myMongList.length - 1 : nowIdx - 1;
+            //console.log(this.myMongList[nextIdx].id)
             this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].id);       
         },
         //다음캐릭터
         async nextBtn() {
             let nowIdx = await this.myMongList.findIndex(item => item.id === this.getSelectMong.id)
-            let nextIdx = await nowIdx + 1 >= this.myMongList.length  ? 0 : nowIdx + 1;
+            let nextIdx = await nowIdx + 1 >= this.myMongList.length ? 0 : nowIdx + 1;
+            //console.log(this.myMongList[nextIdx].id)
             this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].id);      
         },
         //장착하기
         async itemOn() {
             console.log(this.getPreviewItem.itemId);
-            this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
+            console.log(this.getPreviewItem)
+            //this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
         },
         //구매하기
         async itemBuyBoardOpen(){
             console.log(this.getPreviewItem.itemId);
-            
+            console.log(this.getPreviewItem)
             // this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
         }
     },
