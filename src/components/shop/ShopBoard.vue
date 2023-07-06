@@ -5,16 +5,20 @@
             <!-- <div class="shopbox_list_shopping" @click="toggleChange()" :class="{'shopbox_list_active': shoppingActive}" >상점</div> -->
             <!-- <div class="shopbox_list_hold" @click="toggleChange()" :class="{'shopbox_list_active': holdActive}">보유중</div> -->
         </div>
-        <!-- 데이터 받으면 for문으로 -->
         <div class="shopbox_content">
             <div>
-                <div v-for="(item, index) in holdItemList" :key="index" 
+                <div v-for="(item, index) in itemList" :key="index" 
                     class="shopbox_content_item" @click="Preview(item)"
-                    :class="{'shopbox_content_item_not_hold' : item.own}"
+                    :class="{'shopbox_content_item_not_hold' : !item.own}"
                 >
                     <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + (`${item.shopImagePath}`) + ')'}"></div>
-                    <div v-if="item.holdState" class="shopbox_content_item_coin">보유중</div>
-                    <div v-else class="shopbox_content_item_coin">{{ item.price }}</div>
+                        <div v-if="item.itemId == getSelectItem.myItemId" class="shopbox_content_item_coin">
+                            <div>착용중</div>
+                        </div>
+                    <div v-else class="shopbox_content_item_coin">
+                        <div v-if="item.own">보유중</div>
+                        <div v-else>{{ item.price }}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -40,12 +44,10 @@ export default {
             this.$store.commit("PreviewStore/SET_PREVIEW_ITEM", item);
         },
     },
-    mounted() {
-        console.log("gg", this.itemList);
-    },
     computed: {
-        ...mapGetters("PreviewStore", ["itemList" , "holdItemList"]),
-    }
+        ...mapGetters("PreviewStore", ["itemList"]),
+        ...mapGetters("UserInfoStore", ["getSelectItem"]),
+    }   
 }
 </script>
 <style>
@@ -55,8 +57,6 @@ export default {
         bottom:60px;
         width:100%;
         height:25%;
-        /* background-color: white; */
-        /* border: 1px solid black; */
     }
 
     .shopbox_list {
@@ -67,7 +67,6 @@ export default {
     }
     
     .shopbox_list > div {
-        /* border:2px solid black; */
         border-radius: 10px 10px 0px 0px;
         width:23%;
         height:35px;
@@ -85,7 +84,6 @@ export default {
     .shopbox_content {
         width:100%;
         height: 100%;
-        /* padding-top:10px; */
         background-color: #BBD4F8;
     }
 
@@ -106,16 +104,11 @@ export default {
     
     .shopbox_content_item{
         flex: 0 0 calc(25% - 1rem);
-        /* display: inline-block; */
-        /* text-align: center; */
         width: 80px;
         height: 80px;
         margin:0.5rem;
-        /* border: 1px solid black; */
         border-radius: 15px;
-        overflow:hidden;
-        /* padding:10px; */
-        
+        overflow:hidden;      
     }
 
     .shopbox_content_item_not_hold {

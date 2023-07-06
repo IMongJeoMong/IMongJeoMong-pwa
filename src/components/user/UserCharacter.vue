@@ -5,22 +5,19 @@
         <!-- 만약에 프리뷰가 있다면-->
         <div v-if="getPreviewItem != null"  class ="user_select_item">
             <!-- 프리뷰의 정보값을 보여줘 -->
-            <img :src="(`${getSelectItemPath}`)"/>
+            <img :src="(`${getPreviewItem.charImagePath}`)"/>
         </div>
 
         <!-- 프리뷰가 없다면 -->
         <div v-else class ="user_select_item">
             <!-- 현재 장착한게 있다면 -->
-            <img v-if="getSelectItem != null" :src="(`${getSelectItemPath}`)"/>
+            <img v-if="getSelectItem != null" :src="(`${getSelectItem.charImagePath}`)"/>
         </div>
 
 
         <!-- 선택된 캐릭터 -->
         <div class="user_character">
-            <!-- 나중에 삭제할 값  -->
-            <!-- <img :src="require('@/assets/resource/common/img/character/character1.gif')"/> -->
-            <!-- 로직 구현 테스트 (최종 값 )-->
-            <img v-if="getSelectMong != null" :src="(`${getSelectMong.mong.imagePath}`)"/>
+            <img v-if="getSelectMong != null" :src="(`${getSelectMong.imagePath}`)"/>
         </div>
     </div>
 </template>
@@ -36,7 +33,7 @@ export default {
     },
     computed: {
         ...mapGetters("PreviewStore", ["getPreviewItem"]),
-        ...mapGetters("UserInfoStore", ["getSelectMong", "getSelectItem", "getSelectItemPath"]),
+        ...mapGetters("UserInfoStore", ["getSelectMong", "getSelectItem"]),
     },
     watch: {
         async getSelectItem(newVal) {

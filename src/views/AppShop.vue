@@ -1,19 +1,25 @@
 <template>
     <div class="background" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/background/background1.png') + ')'}">
+        <!-- 상단 유저 인터페이스 -->
         <user-infomation></user-infomation>
-        <!-- 캐릭터 설정 버튼 -->
-        <!-- <div class="shopbtn characterbtn">배경 설정</div> -->
-        <!-- 배경 설정 버튼 -->
+
+        <!-- 캐릭터 변경 버튼 -->
         <div class="background_set">
             <div class="background_set_left" @click="beforeBtn()"> &lt; </div>
             <div class="background_set_right" @click="nextBtn()"> &gt;</div>
         </div>
 
-         <!-- 캐릭터 따로 빼도 될듯 ?-->
+         <!-- 캐릭터 -->
         <user-character class="characterbox"></user-character>
+        
+        <!-- 상점 구매하기 박스 -->
+        <shop-buy class="shopbuy_board" v-show="shopBuyToggle"></shop-buy>
+
         <!-- 구매하기 및 저장하기 -->
         <div v-show="saveBtnToggle" class="shopbtn savebtn" @click="itemOn()">장착하기</div>
-        <div v-show="buyBtnToggle" class="shopbtn buybtn">구매하기</div>
+        <div v-show="buyBtnToggle" class="shopbtn buybtn" @click="itemBuyBoardOpen()">구매하기</div>
+        
+        <!-- 상점 보드 및 기본 푸터 -->
         <shop-board></shop-board>
         <the-footer></the-footer>
     </div>
@@ -24,6 +30,7 @@ import TheFooter from "@/components/inc/footer/TheFooter";
 import UserInfomation from "@/components/inc/header/UserInfomation";
 import ShopBoard from "@/components/shop/ShopBoard";
 import UserCharacter from "@/components/user/UserCharacter";
+import ShopBuy from "@/components/shop/ShopBuy";
 import { mapGetters } from "vuex";
 
 export default {
@@ -32,11 +39,13 @@ export default {
         UserInfomation,
         ShopBoard,
         UserCharacter,
+        ShopBuy
     },
     data() {
         return {
             buyBtnToggle: false,
             saveBtnToggle: false,
+            shopBuyToggle : false,
         }
     },
     async created() {
@@ -44,38 +53,48 @@ export default {
         this.$store.dispatch('PreviewStore/setMongList');
     },
     methods: {
-        //있는지 없는지 비교
-        isHoldItem(item) {
-            return this.holdItemList.some(holdItem => holdItem.itemId === item.itemId);
-        },
+        //이전캐릭터
         async beforeBtn() {
             let nowIdx = await this.myMongList.findIndex(item => item.id === this.getSelectMong.id)
             let nextIdx = await nowIdx - 1 < 0 ? this.myMongList.length - 1 : nowIdx - 1;
             this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].id);       
         },
+        //다음캐릭터
         async nextBtn() {
             let nowIdx = await this.myMongList.findIndex(item => item.id === this.getSelectMong.id)
             let nextIdx = await nowIdx + 1 >= this.myMongList.length  ? 0 : nowIdx + 1;
             this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].id);      
         },
+        //장착하기
         async itemOn() {
             console.log(this.getPreviewItem.itemId);
             this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
+        },
+        //구매하기
+        async itemBuyBoardOpen(){
+            console.log(this.getPreviewItem.itemId);
+            
+            // this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
         }
     },
     computed: {
         ...mapGetters("PreviewStore", ["getPreviewItem", "myMongList"]),
-        ...mapGetters("UserInfoStore", ["getSelectMong"]),
+        ...mapGetters("UserInfoStore", ["getSelectMong", "getSelectItem"]),
     },
     watch: {
         getPreviewItem(newVal) {
-            if (newVal.holdState) {
-                this.saveBtnToggle = true;
-                this.buyBtnToggle = false;
-            }
-            else {
+            if(newVal.itemId == this.getSelectItem.myItemId){
                 this.saveBtnToggle = false;
-                this.buyBtnToggle = true;
+                this.buyBtnToggle = false;
+            }else{
+                if (newVal.own) {
+                    this.saveBtnToggle = true;
+                    this.buyBtnToggle = false;
+                }
+                else {
+                    this.saveBtnToggle = false;
+                    this.buyBtnToggle = true;
+                }
             }
         }
     },
@@ -159,4 +178,12 @@ export default {
         filter: drop-shadow(3px 5px 2px #0a0a0a76);
 
     }
+
+
+    .shopbuy_board{
+        position: absolute;
+        top: 50%;
+        z-index: 50;
+    }
+
 </style>

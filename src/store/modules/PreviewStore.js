@@ -1,11 +1,9 @@
 import tokenHttp from "@/api/tokenHttp";
-import axioshttp from "@/api/axioshttp";
 
 const PreviewStore = {
     namespaced: true,
     state: {
         itemList: [],
-        holdItemList: [],
         mongList: [],
         myMongList: [],
         previewItem: null,
@@ -20,9 +18,6 @@ const PreviewStore = {
         },
         itemList: (state) => {
             return state.itemList;
-        },
-        holdItemList: (state) => {
-            return state.holdItemList;
         },
         mongList: (state) => {
             return state.mongList;
@@ -41,27 +36,13 @@ const PreviewStore = {
         },
     },
     actions: {
-        async setItemList({ state }) {
+        setItemList({ state }) {
 
-            tokenHttp.get("item/mine/list")
-                .then((res) => {
-                    console.log(res.data.data);
-                    state.itemList = res.data.data;
-                })
-            
-            axioshttp.get("item/list")
-                .then((res) => {
-                    console.log(res.data.data)
-                    state.holdItemList = res.data.data;
+            tokenHttp.get("/item/all-own/list")
+            .then((res) => {
+                state.itemList = res.data.data;
             })
 
-            await Promise.resolve()
-
-            // for (let i = 0; i < state.itemList.length; i++) {
-            //     let holdState = state.holdItemList.some(holdItem => holdItem.itemId == state.itemList[i].itemId)
-            //     state.itemList[i] = await holdState;
-            // }
-            
         },
         setMongList({ state }) {
             

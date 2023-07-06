@@ -6,7 +6,7 @@ const UserInfoStore = {
     namespaced: true,
     state: {
         userInfo: Object,
-        selectItemPath : "",
+        selectItemChPath : "",
     },
     getters: {
         getUserInfo : (state) => {
@@ -18,9 +18,6 @@ const UserInfoStore = {
         getSelectItem : (state) =>{
             return state.userInfo.selectedItem;
         },
-        getSelectItemPath: (state) => {
-            return state.selectItemPath;
-        }
     },
     mutations: {
         SET_USER_INFO(state, data) {
@@ -70,25 +67,13 @@ const UserInfoStore = {
                 })
         },
         modifyItemId({ state }, data) {
-            // tokenHttp.patch("member/modify", { "selected_item_id": data })
-            //     .then((res) => {
-            //         console.log("유저(아이템)정보 변경완료")
-            //         state.userInfo = res.data.data;
-            //     })
-            //     .catch((err) => {
-            //         console.log(err);
-            //     })
-            console.log("유저(아이템)정보 변경완료", data)
-            state.userInfo.selectedItem = 2;
-        },
-        getItemPath({ state }, data) {
-            console.log("없으면 에러야 ~", state);
-            let itemId = data.itemDto.itemId;
-            axioshttp.get("item/"+itemId)
-                .then((res) => {
-                    state.selectItemPath = res.data.data.charImagePath;
+            console.log("test", data)
+            tokenHttp.patch("member/modify", { "selected_item_id": data })
+            .then((res) => {
+                console.log("유저(아이템)정보 변경완료")
+                state.userInfo = res.data.data;
             })
-        }
+        },
     },
   };
     
