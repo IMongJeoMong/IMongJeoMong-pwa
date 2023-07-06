@@ -2,30 +2,22 @@
     <div class="picture_component_box">
         <div class="picture_content">
             <div>
-                <div v-for="(item, index) in picktureList" :key="index" class="picture_content_item">
-                    <div v-if ="item.name === null" class="picture_content_item_img" :style="{'background-image': 'url(' + require(`@/assets/resource/common/img/default_Img.png`) + ')'}"></div>
+                <div v-for="(item, index) in getReviewList" :key="index" class="picture_content_item">
+                    <div class="picture_content_item_img" :style="{'background-image': 'url(' + item.imagePath + ')'}"></div>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return { 
-            picktureList: [
-                { name : null },
-                { name: null },
-                { name: null },
-                { name : null },
-                { name: null },
-                { name: null },
-                { name: null },
-                { name : null },
-            
-
-            ]
         }
+    },
+    computed:{
+        ...mapGetters("ReviewStore", ["getReviewList"]),
     }
 }
 </script>
@@ -54,11 +46,12 @@ export default {
 
     .picture_content_item_img{
         width: 100%;
-        height: 100%;
+        height: 90%;
         background-color: white;
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 90%;
+        background-size: cover;
+        border-radius: 10px;
     }
 
 </style>

@@ -4,7 +4,7 @@
             <div class="searchbox">
                 <div class="searchcontainer">
                     <div class="searchicon"></div>
-                    <input class="searchinput" placeholder="장소를 검색해주세요" v-model="keyword"  v-on:keyup.enter="keywordSerch()" @click="keywordSerch()">
+                    <input class="searchinput" placeholder="장소를 검색해주세요" v-model="keyword"  v-on:keyup.enter="keywordSerch()">
                 </div>
                 <div class="listbtn"><div @click="listView()"></div></div>
             </div>
@@ -32,6 +32,7 @@ import TheFooter from "@/components/inc/footer/TheFooter";
 import MarkerSmallOverlay from "@/components/map/MarkerSmallOverlay";
 import MarkerOverlay from "@/components/map/MarkerOverlay";
 import {directive as clickOutside} from 'v-click-outside'
+import { mapGetters } from "vuex";
 
 export default {
     //clickOutside 함수 선언!
@@ -42,7 +43,7 @@ export default {
     data(){
         return {
             mylocation: false,
-            mapLevel: 3,
+            mapLevel: 5,
             carActive: false,
             bicycleActive: false,
             bicycleStyle: {
@@ -57,45 +58,13 @@ export default {
                 backColor: "white",
                 activebackColor: "#33B122",
             },
-            keyword : null,
+            keyword : "",
             mypositionList: [
                 {
                     name: "현재 위치",
                     lat: null,
                     lng: null,
                 }
-            ],
-            attractionList: [
-                {
-                    name: "유성 관광특구",
-                    address: "대전광역시 유성구 대덕대로 480",
-                    lat: 36.3776292298, 
-                    lng: 127.3878559242,
-                    description: "여기는 관광특구입니다 쩔죠 대박이죠 너무 좋아요 그러니 모드 칭찬합시다!",
-                    contentId: 1958042,
-                    imagePath: "http://tong.visitkorea.or.kr/cms/resource/06/1201206_image3_1.jpg",
-                    contentTypeId : 12,
-                },
-                {
-                    name: "유성 족욕체험장",
-                    address: "대전광역시 유성구 봉명동",
-                    lat: 36.3550449502, 
-                    lng: 127.3454325546,
-                    description: "여기는 유성 족욕체험장 입니다요 ~ 에헤이!!",
-                    contentId: 2605899,
-                    imagePath: "http://tong.visitkorea.or.kr/cms/resource/91/2605891_image2_1.jpg",
-                    contentTypeId : 12,
-                },
-                {
-                    name: "유성온천공원",
-                    address: "대전광역시 유성구 계룡로123번길",
-                    lat: 36.3552810320, 
-                    lng: 127.3453047821,
-                    description: "여기는 유성 온천입니다용용요",
-                    contentId: 2760707,
-                    imagePath: "http://tong.visitkorea.or.kr/cms/resource/00/2760700_image2_1.jpg",
-                    contentTypeId: 12,
-                },
             ],
             bicycleList: [
                 {
@@ -133,7 +102,10 @@ export default {
         MarkerSmallOverlay,
         MarkerOverlay,
     },
-    async mounted() {
+    computed: {
+        ...mapGetters("AttractionInfoStore", ["attractionList"]),  
+    },
+    async created() {
 
         // 현재 위치 가져오기
         this.mylocation = await this.geofind();
@@ -150,15 +122,25 @@ export default {
             this.loadKakaoScript();
         }
 
-        //VUE-X
-        //this.$store.dispatch('AttractionInfoStore/setAttractionList')
-        //삭제 되어야할거 
-        this.$store.commit('AttractionInfoStore/SET_ATTINFO_LIST', this.mypositionList[0].lat, this.mypositionList[0].lng);
+        await Promise.resolve(); 
+
+        //VUE-X 초기 값 세팅 
+        let mapdata = {
+            lat: this.mypositionList[0].lat,
+            lng: this.mypositionList[0].lng,
+            keyword: this.keyword,
+        }
+        this.$store.dispatch('AttractionInfoStore/setAttractionList', mapdata )
     },
     methods: {
 
-        keywordSerch() {
-            this.$store.commit('AttractionInfoStore/SET_ATTINFO_LIST', this.mypositionList[0].lat, this.mypositionList[0].lng,  this.keyword);
+        async keywordSerch() {
+            let mapdata = {
+                lat: this.mypositionList[0].lat,
+                lng: this.mypositionList[0].lng,
+                keyword: this.keyword
+            }
+            this.$store.dispatch('AttractionInfoStore/setAttractionList', mapdata);
         },
         overlayChange() {
             this.overlayS = false;  
@@ -253,7 +235,7 @@ export default {
             }
 
             //현재 내위치
-            this.changeMap(this.mylocation);
+            //this.changeMap(this.mylocation);
 
         },
 
@@ -278,10 +260,12 @@ export default {
             this.bicycleMarkers = []
             this.carMarkers = []
 
-            this.setMarker(mylocation, "myposition");
+            
             this.setMarker(mylocation, "attraction");
             if (this.bicycleActive) this.setMarker(mylocation, "bicycle");
             if (this.carActive) this.setMarker(mylocation, "car");
+            this.setMarker(mylocation, "myposition");
+
         },
 
         async setMarker(mylocation, type){
@@ -302,7 +286,7 @@ export default {
                     positions.push({
                         name: mapP.name,
                         latlng: new kakao.maps.LatLng(mapP.lat, mapP.lng),
-                        contentId: mapP.contentId,
+                        contentId: mapP.id,
                         description : mapP.description,
                         imagePath : mapP.imagePath,
                         contentTypeId : mapP.contentTypeId,
@@ -330,6 +314,13 @@ export default {
                     }
 
                 }
+                if (this.keyword != "") {
+                    let moveLatLon = new kakao.maps.LatLng(this.attractionList[0].lat, this.attractionList[0].lng);
+                    this.map.panTo(moveLatLon);    
+                } else {
+                    let moveLatLon = new kakao.maps.LatLng(this.mypositionList[0].lat, this.mypositionList[0].lng);
+                    this.map.panTo(moveLatLon);
+                }
             }
         },
         //리스트 보는화면으로
@@ -345,6 +336,11 @@ export default {
             this.overlayS = true;
         }
         
+    },
+    watch: {
+        attractionList() {
+            this.changeMap(this.mylocation);
+        }
     }
 }
 </script>

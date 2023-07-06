@@ -1,8 +1,9 @@
+import tokenHttp from "@/api/tokenHttp";
+
 const PreviewStore = {
     namespaced: true,
     state: {
         itemList: [],
-        holdItemList: [],
         mongList: [],
         myMongList: [],
         previewItem: null,
@@ -17,9 +18,6 @@ const PreviewStore = {
         },
         itemList: (state) => {
             return state.itemList;
-        },
-        holdItemList: (state) => {
-            return state.holdItemList;
         },
         mongList: (state) => {
             return state.mongList;
@@ -39,64 +37,15 @@ const PreviewStore = {
     },
     actions: {
         setItemList({ state }) {
-            state.itemList = [
-                {
-                    itemId: 1,
-                    name: "balloon",
-                    price: 1000,
-                },
-                {
-                    itemId: 2,
-                    name: "heart",
-                    price: 1000,
-                },
-                {
-                    itemId: 3,
-                    name: "lollipop",
-                    price: 1000,
-                },
-                {
-                    itemId: 4,
-                    name: "monocle",
-                    price: 1000,
-                },
-                {
-                    itemId: 5,
-                    name: "sunglasses1",
-                    price: 1000,
-                },
-                {
-                    itemId: 6,
-                    name: "sunglasses2",
-                    price: 1000,
-                }
-            ];
 
-            state.holdItemList = [
-                {
-                    itemId : 3,
-                    name: "lollipop",
-                    price: 1000,
-                },
-                {
-                    itemId : 4,
-                    name: "monocle",
-                    price: 1000,
-                },
-                {
-                    itemId : 5,
-                    name: "sunglasses1",
-                    price: 1000,
-                },
-            ]
+            tokenHttp.get("/item/all-own/list" )
+            .then((res) => {
+                state.itemList = res.data.data;
+            })
 
-            for (let i = 0; i < state.itemList.length; i++) {
-                let holdState = state.holdItemList.some(holdItem => holdItem.itemId === state.itemList[i].itemId)
-                state.itemList[i]["holdState"] = holdState;
-            }
-            
         },
-        setMongList({ state }){
+        setMongList({ state }) {
+            
             state.mongList =[ {
                 "id": 1,
                 "name": "a",
@@ -138,8 +87,13 @@ const PreviewStore = {
                     "level": 0,
                     "exp": 0
                 }
-            ]
+                ]
+            
+            
+            
         },
+
+        
     },
   };
     
