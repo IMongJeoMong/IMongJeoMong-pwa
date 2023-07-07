@@ -18,7 +18,12 @@
                     <div>타슈</div>
                 </div>
             </div>
+            <div class="search_this_location">
+                <div class="search_this_location_image"></div>
+                <div>이 지역 재검색</div>
+            </div>
         </div>
+        
         <div class="mylocationbox" @click="loadMap()"></div>
         <marker-small-overlay v-if="overlayS" class="samll_overlay" :attInfo="overlayInfo"  v-click-outside="onClickOutside" @overlayOpen="overlayChange"></marker-small-overlay>
         <marker-overlay  v-if="overlay" class="default_overlay" :attInfo="overlayInfo" v-click-outside="onClickOutside2"></marker-overlay>
@@ -95,6 +100,7 @@ export default {
             attractionMarkers: [],
             bicycleMarkers: [],
             carMarkers: [],
+            attMarkerOverlays:[],
         }
     },
     components : {
@@ -254,6 +260,7 @@ export default {
             if (this.attractionMarkers) this.clearMarker(this.attractionMarkers)
             if (this.bicycleMarkers) this.clearMarker(this.bicycleMarkers)
             if (this.carMarkers) this.clearMarker(this.carMarkers)
+            if (this.attMarkerOverlays) this.clearMarker(this.attMarkerOverlays)
 
             this.mypositionMarkers = []
             this.attractionMarkers = []
@@ -304,10 +311,26 @@ export default {
                     });
 
                     marker.info = positions[i];
+
                     
                     await this[`${type}Markers`].push(marker);
                     //관광지 일때만 click해서 오버레이 열리는 이벤트 발생
-                    if (type === "attraction") { 
+                    if (type === "attraction") {
+                        
+                        let overlayContent = `
+                            <div class="marker_overlay_box">
+                                <div>${positions[i].name}</div>
+                            </div>
+                        `
+                        let markerName = new kakao.maps.CustomOverlay({
+                            content: overlayContent,
+                            map: this.map,
+                            yAnchor: -0.3,
+                            position: marker.getPosition()       
+                        });
+
+                        this.attMarkerOverlays.push(markerName);
+
                         kakao.maps.event.addListener(marker, 'click', () => {
                             this.openOverlay(marker.info);
                         });
@@ -449,4 +472,48 @@ export default {
         background-repeat: no-repeat
     }
 
+    /* 마커 오버레이 이름  */
+    .marker_overlay_box{
+        background-color: white;
+        width: 80px;
+        height: 23px;
+        line-height: 27px;
+        text-align: center;
+        border-radius: 10px;
+        font-weight: 500;
+    }
+
+    .marker_overlay_box > div{
+        width:68px;
+        margin: 0 auto;
+        overflow: hidden;
+        height:20px;
+        font-size:14px;
+    }
+
+    /* 이위치 검색 */
+    .search_this_location{
+        background-color: #164C97;
+        color:white;
+        margin: 20px auto;
+        width: 45%;
+        height: 40px;
+        border-radius: 20px;
+        font-size: 15px;
+        font-weight: 300;
+        display: flex;
+        justify-content: center;
+        line-height: 42px;
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.39);
+    }
+
+    .search_this_location_image{
+        width: 18px;
+        height: 40px;
+        margin-right:8px;
+        background-image: url("/src/assets/resource/theme/img/icon/location_refresh_icon.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
 </style>
