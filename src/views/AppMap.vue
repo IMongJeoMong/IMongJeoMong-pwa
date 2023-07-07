@@ -18,7 +18,7 @@
                     <div>타슈</div>
                 </div>
             </div>
-            <div class="search_this_location">
+            <div class="search_this_location" @click="thisLocationSearch()">
                 <div class="search_this_location_image"></div>
                 <div>이 지역 재검색</div>
             </div>
@@ -47,6 +47,7 @@ export default {
 
     data(){
         return {
+            
             mylocation: false,
             mapLevel: 5,
             carActive: false,
@@ -71,25 +72,9 @@ export default {
                     lng: null,
                 }
             ],
-            bicycleList: [
-                {
-                    id: 142,
-                    lat: 36.35213,
-                    lng: 127.346011,
-                    address: "유성구 봉명동 328-22",
-                },
 
-            ],
-            carList: [
-                {
-                    id: 605,
-                    name: "청주해장국[대전 유성 16호점]",
-                    lat: 36.35551841647418,
-                    lng: 127.34520542527122,
-                    address: "대전 유성구 봉명동 538-16",
-                },
-            ],
-
+            mapCenter : null,
+ 
             //오버레이
             overlay: false,
             overlayS: false,
@@ -109,7 +94,7 @@ export default {
         MarkerOverlay,
     },
     computed: {
-        ...mapGetters("AttractionInfoStore", ["attractionList"]),  
+        ...mapGetters("AttractionInfoStore", ["attractionList", "bicycleList", "carList"]),  
     },
     async created() {
 
@@ -136,9 +121,27 @@ export default {
             lng: this.mypositionList[0].lng,
             keyword: this.keyword,
         }
+
         this.$store.dispatch('AttractionInfoStore/setAttractionList', mapdata )
+        this.$store.dispatch('AttractionInfoStore/setBicycleList' )
+        this.$store.dispatch('AttractionInfoStore/setCarList', mapdata )
+        
+       
+
     },
     methods: {
+
+        thisLocationSearch(){
+            this.keyword = "";
+            this.mapCenter = this.map.getCenter();
+            console.log(this.mapCenter);
+            let mapdata = {
+                lat : this.mapCenter.Ma,
+                lng : this.mapCenter.La,
+                keyword : this.keyword
+            }
+            this.$store.dispatch('AttractionInfoStore/setAttractionList', mapdata);
+        },
 
         async keywordSerch() {
             let mapdata = {
@@ -272,7 +275,7 @@ export default {
             if (this.bicycleActive) this.setMarker(mylocation, "bicycle");
             if (this.carActive) this.setMarker(mylocation, "car");
             this.setMarker(mylocation, "myposition");
-
+            
         },
 
         async setMarker(mylocation, type){
@@ -340,7 +343,12 @@ export default {
                 if (this.keyword != "") {
                     let moveLatLon = new kakao.maps.LatLng(this.attractionList[0].lat, this.attractionList[0].lng);
                     this.map.panTo(moveLatLon);    
-                } else {
+                } 
+                else if(this.mapCenter != null){
+                    let moveLatLon = new kakao.maps.LatLng(this.mapCenter.Ma, this.mapCenter.La);
+                    this.map.panTo(moveLatLon);    
+                }
+                else {
                     let moveLatLon = new kakao.maps.LatLng(this.mypositionList[0].lat, this.mypositionList[0].lng);
                     this.map.panTo(moveLatLon);
                 }
@@ -348,13 +356,11 @@ export default {
         },
         //리스트 보는화면으로
         async listView() {
-            console.log("실행되나요?");
             this.searchListActivate = await true;
             this.$router.push({ name: "MapList" });
         },
 
         openOverlay(markerInfo) {
-            console.log("test", markerInfo);
             this.overlayInfo = markerInfo;
             this.overlayS = true;
         }

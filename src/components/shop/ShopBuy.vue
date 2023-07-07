@@ -18,7 +18,7 @@ export default {
         ...mapGetters("PreviewStore", ["getPreviewItem"])
     },
     methods: {
-        buyItem(){
+        async buyItem(){
             this.$store.dispatch("UserInfoStore/itmeBuy", this.getPreviewItem.itemId);
             this.$emit('closeBoard', false)
         }

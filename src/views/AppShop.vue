@@ -4,7 +4,7 @@
         <user-infomation></user-infomation>
 
         <!-- 캐릭터 변경 버튼 -->
-        <div class="background_set">
+        <div class="background_set" v-if="myMongList.length > 1">
             <div class="background_set_left" @click="beforeBtn()"> &lt; </div>
             <div class="background_set_right" @click="nextBtn()"> &gt;</div>
         </div>
@@ -55,17 +55,17 @@ export default {
     methods: {
         //이전캐릭터
         async beforeBtn() {
-            let nowIdx = await this.myMongList.findIndex(item => item.id === this.getSelectMong.id)
+            let nowIdx = await this.myMongList.findIndex(mong => mong.mongId === this.getSelectMong.mongId)
             let nextIdx = await nowIdx - 1 < 0 ? this.myMongList.length - 1 : nowIdx - 1;
             //console.log(this.myMongList[nextIdx].id)
-            this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].id);       
+            this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].myMongId);       
         },
         //다음캐릭터
         async nextBtn() {
-            let nowIdx = await this.myMongList.findIndex(item => item.id === this.getSelectMong.id)
+            let nowIdx = await this.myMongList.findIndex(mong => mong.mongId === this.getSelectMong.mongId)
             let nextIdx = await nowIdx + 1 >= this.myMongList.length ? 0 : nowIdx + 1;
             //console.log(this.myMongList[nextIdx].id)
-            this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].id);      
+            this.$store.dispatch('UserInfoStore/modifyMongId', this.myMongList[nextIdx].myMongId);      
         },
         //장착하기
         async itemOn() {
@@ -78,7 +78,6 @@ export default {
             console.log(this.getPreviewItem.myItemId);
             console.log(this.getPreviewItem)
             this.shopBuyToggle = true;
-            //this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
         },
         //상점 창 닫기 
         cloaseBoard(){
