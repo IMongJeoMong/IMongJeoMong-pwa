@@ -26,7 +26,7 @@ const UserInfoStore = {
         }
     },
     actions: {
-        setUserlogin({ state }, loginInfo) {
+        async setUserlogin({ state }, loginInfo) {
             // console.log("vueX", loginInfo)
             axioshttp.post("/member/login", loginInfo
                 ).then((res) => {
@@ -70,19 +70,19 @@ const UserInfoStore = {
                 })
         },
         modifyItemId({ state }, data) {
-            console.log("test", data)
+            console.log("itemChange", data)
             tokenHttp.patch("member/modify", { "selected_item_id": data })
             .then((res) => {
                 console.log("유저(아이템)정보 변경완료")
                 state.userInfo = res.data.data;
             })
         },
-        itmeBuy(content, data){
+        itmeBuy(context, data){
             tokenHttp.post("item/buy/"+ data)
             .then((res)=> {
                 console.log(res)
                 alert(res.data.message)
-                content.dispatch("PreviewStore/setItemList")
+                context.dispatch("PreviewStore/setItemList")
             })
         }
     },
