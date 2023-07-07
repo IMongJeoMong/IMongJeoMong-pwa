@@ -6,18 +6,18 @@
         <span class="inputTitle">이메일</span>
         <div class="confirmBtn">중복확인</div>
       </div>
-      <input class="inputBox" type="email" v-model="email" />
+      <input class="inputBox" type="email" v-model="registInfo.email" />
     </div>
     <div>
       <div class="confirm_container">
         <span class="inputTitle">닉네임</span>
         <div class="confirmBtn">중복확인</div>
       </div>
-      <input class="inputBox" type="nickname" v-model="nickname" />
+      <input class="inputBox" type="nickname" v-model="registInfo.nickname" />
     </div>
     <div>
       <span class="inputTitle">비밀번호</span>
-      <input class="inputBox" type="password" v-model="password" />
+      <input class="inputBox" type="password" v-model="registInfo.password" />
     </div>
     <div>
       <span class="inputTitle">비밀번호 확인</span>
@@ -27,45 +27,49 @@
       <span>성별</span>
       <div class="gender_radio">
         <label>
-          <input type="radio" name="gender" value="M" v-model="gender" />남
+          <input type="radio" name="gender" value="M" v-model="registInfo.gender" />남
         </label>
         <label>
-          <input type="radio" name="gender" value="F" v-model="gender" />여
+          <input type="radio" name="gender" value="F" v-model="registInfo.gender" />여
         </label>
       </div>
     </div>
     <div class="birth_container">
       <span>생일</span>
-      <input type="date" v-model="birth" />
+      <input type="date" v-model="registInfo.birth" />
     </div>
     <div class="birth_container">
       <span>거주 지역</span>
-      <select v-model="location">
+      <select v-model="registInfo.sido_code">
         <option value>시를 선택하세요</option>
-        <option value="서울특별시">서울특별시</option>
-        <option value="부산광역시">부산광역시</option>
-        <option value="대구광역시">대구광역시</option>
-        <option value="대전광역시">대전광역시</option>
+        <option value="0">서울특별시</option>
+        <option value="1">부산광역시</option>
+        <option value="2">대구광역시</option>
+        <option value="3">대전광역시</option>
       </select>
     </div>
     <div class="button_container">
       <span class="cancle">취소</span>
-      <span class="modify">회원가입</span>
+      <span class="modify" @click="regist()">회원가입</span>
     </div>
   </div>
 </template>
   <script>
+import axioshttp from "../../api/axioshttp";
+import router from '@/router';
 export default {
   components: {},
   data() {
     return {
-      email: "",
-      nickname: "",
-      password: "",
+      registInfo: {
+        email: "",
+        nickname: "",
+        password: "",
+        gender: "",
+        birth: "",
+        sido_code: 3,
+      },
       passwordConfirm: "",
-      gender: "M",
-      birth: "",
-      location: "대전광역시",
     };
   },
   methods: {
@@ -73,6 +77,19 @@ export default {
       this.lists.forEach((item) => {
         item.isSelected = item === list;
       });
+    },
+    regist() {
+      axioshttp
+        .post("/member/signup", this.registInfo)
+        .then((res) => {
+          console.log(res.data);
+          alert("회원가입에 성공하였습니다.");
+          router.push({ name: "UserLogin" });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("회원가입에 실패했습니다.");
+        });
     },
   },
 };
