@@ -2,13 +2,13 @@
     <div id="topInfoBox">
         <div class="topInfo">
             <div class="level_gauge_bar">
-                <div class="player_level">{{level}}</div>
+                <div class="player_level">{{getSelectMong.level}}</div>
                 <div class="level_gauge_bar_bg"></div>
                 <div class="level_gauge_bar_progress" ref="levelGaugeBarProgress"></div>
             </div>
             <div class="coin_bar">
                 <div class="coin_img"></div>
-                <div class="coin_bar_number">{{coin}} P</div>
+                <div class="coin_bar_number">{{getUserInfo.gold}} P</div>
             </div>
             <div class="alarm_btn">
                 <div class="alarm_cnt">{{alarm}}</div>
@@ -23,28 +23,30 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
 
     data() {
         return {
-            news: true,
-            msgStart: "주변에 ",
-            keyword: "성심당",
-            msgEnd: " (이)가 발견되었습니다!",
-            level: 10,
-            exp: 80,
-            coin: 10320,
+            news: false,
             alarm: 10,
         }
+
     },
-    mounted() {
+    computed: {
+        ...mapGetters("UserInfoStore", ["getUserInfo", "getSelectMong"]),
+    },
+    async mounted() {
         setTimeout(() => {
             if (this.$refs.levelGaugeBarProgress) {
-                this.$refs.levelGaugeBarProgress.style.width = this.exp + '%';
+                console.log(this.getSelectMong.expPercent + '%')
+                this.$refs.levelGaugeBarProgress.style.width = this.getSelectMong.expPercent + '%';
             }
         }, 500);
     },
     
+   
 }
 </script>
 <style scoped>

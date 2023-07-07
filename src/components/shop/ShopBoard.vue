@@ -11,7 +11,7 @@
                     class="shopbox_content_item" @click="Preview(item)"
                     :class="{'shopbox_content_item_not_hold' : !item.own}"
                 >
-                    <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + (`${item.shopImagePath}`) + ')'}"></div>
+                    <div class="shopbox_content_item_img"  :class="{'clear-icon': index == 0}" :style="{'background-image': 'url(' + (`${item.shopImagePath}`) + ')'}"></div>
                         <div v-if="item.itemId == getSelectItem.itemId" class="shopbox_content_item_coin">
                             <div class="Wear_text">착용중</div>
                         </div>
@@ -47,7 +47,7 @@ export default {
     computed: {
         ...mapGetters("PreviewStore", ["itemList"]),
         ...mapGetters("UserInfoStore", ["getSelectItem"]),
-    }   
+    },
 }
 </script>
 <style>
@@ -139,4 +139,7 @@ export default {
         font-weight:400;
     }
 
+    .clear-icon{
+        background-size: 50px 50px;
+    }
 </style>
