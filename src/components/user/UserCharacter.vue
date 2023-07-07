@@ -35,15 +35,12 @@ export default {
         ...mapGetters("PreviewStore", ["getPreviewItem"]),
         ...mapGetters("UserInfoStore", ["getSelectMong", "getSelectItem"]),
     },
-    watch: {
-        async getSelectItem(newVal) {
-            this.$store.dispatch("UserInfoStore/getItemPath", newVal)
-        }
+    // watch: {
+    //     async getSelectItem(newVal) {
+    //         this.$store.dispatch("UserInfoStore/getItemPath", newVal)
+    //     }
         
-    },
-    created() {
-      
-    }
+    // },
 }
 </script>
 <style>

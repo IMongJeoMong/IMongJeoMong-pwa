@@ -1,14 +1,23 @@
+import axioshttp from "@/api/axioshttp";
 import tokenHttp from "@/api/tokenHttp";
 
 const AttractionInfoStore = {
     namespaced: true,
     state: {
         attInfoList : [],
+        bicycleList : [],
+        carList : [],
     },
     getters: {
         attractionList : (state) => {
             return state.attInfoList;
-       }
+        },
+        bicycleList : (state) => {
+            return state.bicycleList;
+        },
+        carList : (state) => {
+            return state.carList;
+        }
     },
     mutations: {
         SET_ATTINFO_LIST(state, data) {
@@ -30,6 +39,18 @@ const AttractionInfoStore = {
                     console.log(err);
                 })
         },
+        setBicycleList({state}){
+            axioshttp.get("tasu/list")
+            .then((res) => {
+                state.bicycleList = res.data.data;
+            })
+        },
+        setCarList({state}){
+            axioshttp.get("parking/list")
+            .then((res) => {
+                state.carList = res.data.data;
+            })
+        }
     },
   };
     

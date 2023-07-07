@@ -37,7 +37,6 @@ const PreviewStore = {
     },
     actions: {
         setItemList({ state }) {
-
             tokenHttp.get("/item/all-own/list" )
             .then((res) => {
                 state.itemList = res.data.data;
@@ -46,51 +45,17 @@ const PreviewStore = {
         },
         setMongList({ state }) {
             
-            state.mongList =[ {
-                "id": 1,
-                "name": "a",
-                "level": 0,
-                "imagePath": "/a.jpg",
-                "description": null
-            },
-            {
-                "id": 2,
-                "name": "b",
-                "level": 0,
-                "imagePath": "/b.jpg",
-                "description": null
-            }],
-            state.myMongList = [
-                {
-                    "id": 1,
-                    "mong": {
-                        "id": 1,
-                        "name": "a",
-                        "level": 0,
-                        "imagePath": "/a.jpg",
-                        "description": null
-                    },
-                    "memberId": 1,
-                    "level": 0,
-                    "exp": 400
-                },
-                {
-                    "id": 2,
-                    "mong": {
-                        "id": 2,
-                        "name": "b",
-                        "level": 0,
-                        "imagePath": "/b.jpg",
-                        "description": null
-                    },
-                    "memberId": 1,
-                    "level": 0,
-                    "exp": 0
-                }
-                ]
-            
-            
-            
+        tokenHttp.get("mong/list")
+           .then((res)=> {
+                console.log("전체 몽 ", res.data.data)
+                state.mongList = res.data.data;
+           })
+
+        tokenHttp.get("mong/own/list")
+           .then((res) =>{
+            console.log("나의 몽 ", res.data.data)
+            state.myMongList = res.data.data;
+           })
         },
 
         
