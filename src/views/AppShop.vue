@@ -13,7 +13,7 @@
         <user-character class="characterbox"></user-character>
         
         <!-- 상점 구매하기 박스 -->
-        <shop-buy class="shopbuy_board" v-show="shopBuyToggle"></shop-buy>
+        <shop-buy class="shopbuy_board" v-show="shopBuyToggle" @closeBoard="cloaseBoard()"></shop-buy>
 
         <!-- 구매하기 및 저장하기 -->
         <div v-show="saveBtnToggle" class="shopbtn savebtn" @click="itemOn()">장착하기</div>
@@ -69,15 +69,20 @@ export default {
         },
         //장착하기
         async itemOn() {
-            console.log(this.getPreviewItem.itemId);
+            console.log(this.getPreviewItem.myItemId);
             console.log(this.getPreviewItem)
-            //this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
+            this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.myItemId);
         },
         //구매하기
         async itemBuyBoardOpen(){
-            console.log(this.getPreviewItem.itemId);
+            console.log(this.getPreviewItem.myItemId);
             console.log(this.getPreviewItem)
-            // this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
+            this.shopBuyToggle = true;
+            //this.$store.dispatch("UserInfoStore/modifyItemId", this.getPreviewItem.itemId);
+        },
+        //상점 창 닫기 
+        cloaseBoard(){
+            this.shopBuyToggle = false;
         }
     },
     computed: {
@@ -125,6 +130,7 @@ export default {
 
     .shopbtn{
         position: absolute;
+        z-index:30;
         width:90px;
         height: 35px;
         line-height:35px;
@@ -134,14 +140,12 @@ export default {
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.39);
     }
     .savebtn{
-        z-index:30;
         bottom:260px;
         color: #d9d9d9;
         background-color:#144284;
     }
 
     .buybtn{
-        z-index:20;
         bottom:260px;
         background-color: #144284;
         color:white;   

@@ -1,22 +1,29 @@
 <template>
     <div class="shop_buy_board">
         <div class="shop_buy_text">
-            <b>ㅇ</b> 을(를)<br>구매하시겠습니까?
+            <b>{{ getPreviewItem.name }}</b> 을(를)<br>구매하시겠습니까?
         </div>
         <div class="shop_buy_btns">
            <div class="shop_buy_btn_cancel" @click="$emit('closeBoard', false)">취소</div>
-           <div class="shop_buy_btn_okey">구매</div>
+           <div class="shop_buy_btn_okey" @click="buyItem()">구매</div>
         </div>
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 
 export default {
-    data() {
-        return {
-           
-        }
+    computed: {
+        ...mapGetters("PreviewStore", ["getPreviewItem"])
     },
+    methods: {
+        buyItem(){
+            this.$store.dispatch("UserInfoStore/itmeBuy", this.getPreviewItem.itemId);
+            this.$emit('closeBoard', false)
+        }
+    }
+    
 }
 </script>
 <style scoped>

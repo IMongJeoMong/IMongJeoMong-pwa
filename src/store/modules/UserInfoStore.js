@@ -7,6 +7,7 @@ const UserInfoStore = {
     state: {
         userInfo: Object,
         selectItemChPath : "",
+        userEmail:"",
     },
     getters: {
         getUserInfo : (state) => {
@@ -37,6 +38,7 @@ const UserInfoStore = {
                     tokenHttp.get(`member/${loginInfo.email}`)
                         .then((res) => {
                             state.userInfo = res.data.data;
+                            state.userEmail = res.data.data.email;
                             router.push({ name: "Main" });
                     })
                 })
@@ -48,7 +50,7 @@ const UserInfoStore = {
         },
         setUserInfo({ state }) {
             // console.log(state.userInfo)${state.userInfo.data.email}
-            tokenHttp.get(`member/d@naver.com`)
+            tokenHttp.get(`member/`+state.userEmail)
                 .then((res) => {
                     state.userInfo = res.data.data;
                 })
@@ -75,6 +77,14 @@ const UserInfoStore = {
                 state.userInfo = res.data.data;
             })
         },
+        itmeBuy(content, data){
+            tokenHttp.post("item/buy/"+ data)
+            .then((res)=> {
+                console.log(res)
+                alert(res.data.message)
+                content.dispatch("PreviewStore/setItemList")
+            })
+        }
     },
   };
     

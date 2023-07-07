@@ -12,8 +12,8 @@
                     :class="{'shopbox_content_item_not_hold' : !item.own}"
                 >
                     <div class="shopbox_content_item_img" :style="{'background-image': 'url(' + (`${item.shopImagePath}`) + ')'}"></div>
-                        <div v-if="item.itemId == getSelectItem.myItemId" class="shopbox_content_item_coin">
-                            <div>착용중</div>
+                        <div v-if="item.itemId == getSelectItem.itemId" class="shopbox_content_item_coin">
+                            <div class="Wear_text">착용중</div>
                         </div>
                     <div v-else class="shopbox_content_item_coin">
                         <div v-if="item.own">보유중</div>
@@ -132,6 +132,11 @@ export default {
         font-size:15px;
         font-weight: bold;
         color:#144284;
+    }
+
+    .Wear_text{
+        color: white;
+        font-weight:400;
     }
 
 </style>
