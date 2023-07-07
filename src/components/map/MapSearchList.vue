@@ -14,11 +14,11 @@
                     <div class="info_header_box">
                             <div class="info_header_box_exp">
                                 <div class="info_header_box_exp_icon"></div>
-                                <div>{{exp}} Exp</div>
+                                <div>{{att.exp}} Exp</div>
                             </div>
                             <div class="info_header_box_coin">
                                 <div class="info_header_box_coin_icon"></div>
-                                <div>{{coin}} p</div>
+                                <div>{{att.gold}} p</div>
                             </div>
                         </div>  
                     <div class="search_list_box_info_main">
