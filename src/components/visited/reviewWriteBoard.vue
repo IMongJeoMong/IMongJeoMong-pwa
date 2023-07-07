@@ -2,7 +2,7 @@
   <div class="reviewBoard">
     <span>리뷰작성</span>
     <span>{{name}}</span>
-    <input type="textarea" placeholder="내용을 입력하세요"/>
+    <textarea placeholder="내용을 입력하세요" />
     <div class="imgBtn">
       <img src alt />
       <span>사진첨부</span>
@@ -35,7 +35,7 @@ export default {
   top: 20%;
   left: 10%;
   width: 80%;
-  height: 45%;
+  height: 40%;
   border-radius: 10px;
   border: 1px solid #164c97;
 }
@@ -54,7 +54,7 @@ export default {
   margin-bottom: 20px;
   color: #164c97;
 }
-.reviewBoard > input {
+.reviewBoard > textarea {
   width: 250px;
   height: 150px;
   border: 1px solid #164c97;
@@ -65,8 +65,8 @@ export default {
   padding: 10px;
   color: #164c97;
 }
-.reviewBoard > input::placeholder{
-    color: #a5bcdb;
+.reviewBoard > textarea::placeholder {
+  color: #a5bcdb;
 }
 .imgBtn {
   width: 80px;
