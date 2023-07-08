@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="background" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/background/background1.png') + ')'}">
+    <div class="background" :style="{'background-image': 'url(' + getSelectBackground.imagePath + ')'}">
       <!-- 상단 정보 -->
       <UserInfomation class="topInfomation"></UserInfomation>
       <!-- 캐릭터 -->
@@ -37,6 +37,7 @@ import ExplorationBoard from "@/components/main/ExplorationBoard";
 
 //import axioshttp from "@/api/axioshttp";
 import {directive as clickOutside} from 'v-click-outside'
+import { mapGetters } from "vuex";
 export default {
   directives: {
         clickOutside
@@ -117,7 +118,9 @@ export default {
   created() {
     this.$store.dispatch('UserInfoStore/setUserInfo');
   },
-  
+  computed: {
+    ...mapGetters("UserInfoStore", ["getSelectBackground"])
+  }
 }
 </script>
 <style scoped>

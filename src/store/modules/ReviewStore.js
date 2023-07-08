@@ -1,4 +1,5 @@
 import axioshttp from "@/api/axioshttp";
+import tokenHttp from "@/api/tokenHttp";
 import axios from "axios";
 
 const ReviewStore = {
@@ -6,7 +7,8 @@ const ReviewStore = {
     state: {
         reviewList: [],
         attractionInfo: [],
-        naverBlogList : [],
+        naverBlogList: [],
+        myReviewList :[],
     },
     getters: {
         getReviewList : (state) => {
@@ -17,6 +19,9 @@ const ReviewStore = {
         },
         getNaverBlogList: (state) => {
             return state.naverBlogList;
+        },
+        getMyReviewList: (state) => {
+            return state.myReviewList;
         }
     },
     mutations: {
@@ -43,9 +48,9 @@ const ReviewStore = {
                     state.attractionInfo = res.data.data;
             })
         },
-        async getNaverBlogSearch({state}) {
-            console.log("이름", state.attractionInfo.name)
-            let URL = `/v1/search/blog?query=${encodeURIComponent(state.attractionInfo.name)}`;
+        async getNaverBlogSearch({state}, name) {
+            console.log("이름", name)
+            let URL = `/v1/search/blog?query=${encodeURIComponent(name)}`;
             let clientId = "ipxAvBnOlk_uLsol0LHB";
             let clientSecret = "_8UKL93YWB";
             axios.get(URL, {
@@ -60,6 +65,15 @@ const ReviewStore = {
                     state.naverBlogList = res.data.items;
             })
         },
+        async setMyReviewList({ state }) {
+            await tokenHttp.get("attraction/visited?page=0&size=10")
+                .then((res) => {
+                    console.log(res.data.data);
+                    //state.myReviewList = res.data.data;
+                    //정렬
+                    state.myReviewList = res.data.data.sort((a,b) => new Date(b.visitTime) - new Date(a.visitTime));
+            });
+        }
     },
   };
     

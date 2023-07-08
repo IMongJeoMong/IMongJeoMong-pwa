@@ -78,7 +78,11 @@ export default {
         line-height:28px;
         font-size:23px;
         font-weight: bold;
-        color:#164C97
+        color:#164C97;
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        
     }
 
     .overlay_infobox_content{

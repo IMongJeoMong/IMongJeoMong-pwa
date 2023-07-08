@@ -4,7 +4,7 @@
     <div class="mypage2_box_title">업적</div>
     <div class="blank"></div>
     <ul class="col-12 tree_list_con">
-      <challenge-list v-for="list in lists" :key="list.no" :list="list" v-bind="list"></challenge-list>
+      <challenge-list v-for="list in lists" :key="list.no" :list="list" v-bind="list" @refresh="refreshList"></challenge-list>
     </ul>
 
     <the-footer></the-footer>
@@ -25,11 +25,17 @@ export default {
     };
   },
   async created() {
-    await tokenHttp.get("achievement/mine/list").then((res) => {
-      console.log(res)
-      this.lists = res.data.data;
-    });
+    this.refreshList();
   },
+  methods: {
+    async refreshList() {
+      await tokenHttp.get("achievement/mine/list").then((res) => {
+        console.log(res)
+        this.lists = res.data.data;
+      });
+    }
+  }
+
 };
 </script>
 <style scoped>
@@ -52,10 +58,15 @@ export default {
   text-align: left;
   padding-left: 80px;
   color: #164c97;
-  font-size: 30px;
+  font-size: 35px;
 }
 
 .blank {
   height: 100px;
+}
+
+.mypage_challenge{
+  background-image: url("/src/assets/resource/theme/img/icon/Mypage_challenge_icon.png");
+  background-size: 35px 40px;
 }
 </style>

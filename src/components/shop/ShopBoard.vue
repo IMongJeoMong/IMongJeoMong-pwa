@@ -98,7 +98,6 @@ export default {
         width: 90%;
         height: calc(100% - 7rem);
         overflow:scroll;
-        
     }
 
     
