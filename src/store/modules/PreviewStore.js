@@ -34,6 +34,10 @@ const PreviewStore = {
         SET_PREVIEW_BACKGROUND(state, data) {
             state.previewbackground = data;
         },
+        SET_ITEM_LIsT(state, data) {
+            console.log("그래 실행으되냐?")
+            state.itemList = data;
+        }
     },
     actions: {
         setItemList({ state }) {

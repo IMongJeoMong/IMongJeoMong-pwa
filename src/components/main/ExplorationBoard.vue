@@ -1,35 +1,69 @@
 <template>
-    <div v-if = "findPlace == null" class="exploration_board">
+    <div v-if = "nearAttraction.distance > 30" class="exploration_board">
         <div class="exploration_text">
-            탐색을 <b>실패</b> <br/>하였습니다!
+            <b>[ 주변 탐색 실패 ]</b><br/>
+            관광지가 없습니다
         </div>
         <div class="exploration_btns">
-           <div class="exploration_btn_cancel" @click="$emit('closeBoard', false)">확인</div>
+           <div class="exploration_btn_cancel" @click="closeExploration()">확인</div>
+        </div>
+    </div>
+    <div v-else-if="findFlag == true" class="exploration_board">
+        <div class="exploration_text">
+            <b>[ 방문 결과 ]</b><br/>
+            <p v-if="findResult.code == 200">{{ nearAttraction.name }}</p>
+            {{ findResult.message }}
+            <div class="exploration_btns">
+                <div class="exploration_btn_cancel" @click="closeExploration()">확인</div>
+            </div>
         </div>
     </div>
     <div v-else class="exploration_board">
         <div class="exploration_text">
-            <b>{{ findPlace.name  }}</b> 이(가)<br>발견되었어요!
+            <b>{{ nearAttraction.name  }}</b> 이(가)<br>발견되었어요!
+            <p>( 방문은 하루에 한번 가능합니다! )</p>
         </div>
         <div class="exploration_btns">
-           <div class="exploration_btn_cancel" @click="$emit('closeBoard', false)">취소</div>
-           <div class="exploration_btn_okey">방문</div>
+           <div class="exploration_btn_cancel" @click="closeExploration()">취소</div>
+           <div class="exploration_btn_okey" @click="onExploration()">방문</div>
         </div>
     </div>
 </template>
 <script>
-
+import tokenHttp from '@/api/tokenHttp';
+import { mapGetters } from 'vuex';
 
 
 export default {
     data() {
         return {
-            // findPlace: {
-            //     name: "성심당",         
-            // },
-            findPlace : null,
+            findFlag: false,
+            findResult : null,
         }
     },
+    computed: {
+        ...mapGetters("AttractionInfoStore", ["nearAttraction", "nearMylocation"]),
+    },
+    methods: {
+        closeExploration() {
+            this.findFlag = false;
+            this.findResult = null;
+            this.$emit('closeBoard', false)
+        },
+        onExploration() {
+            this.findFlag = true;
+            tokenHttp.post("attraction/visit/" + this.nearAttraction.id + "?lat=" + this.nearMylocation.lat + "&lng=" + this.nearMylocation.lng)
+                .then((res) => {
+                    console.log(res.data)
+                    this.findResult = res.data;
+                })
+                .catch(
+                    (err) => console.log(err)
+                )
+        }
+
+    },
+
 }
 </script>
 <style scoped>
@@ -40,7 +74,7 @@ export default {
         top:30%;
         left:10%;
         width:80%;
-        height:20%;
+        height: 180px;
         border-radius: 10px;
         border:3px solid #164C97;
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.39);
@@ -49,17 +83,26 @@ export default {
     .exploration_text{
         width: 95%;
         height: 60%;
-        padding: calc(10% - 2rem) 0;
+        padding: calc(10% - 1.5rem) 0;
         margin: 0px auto;
         /* border: 1px solid black; */
-        font-size: 29px;
+        font-size: 23px;
         color: #164C97;
+        word-break: keep-all;
+    }
+
+    .exploration_text > p {
+        font-size: 15px;
+    }
+    
+    .exploration_text > b {
+        font-size : 29px;
     }
 
     .exploration_btns{
-        margin: 0 auto;
+        margin: 3% auto;
         width: 95%;
-        height: 40%;
+        height: 30%;
         display: flex;
         justify-content: space-around;
         
@@ -104,7 +147,7 @@ export default {
         padding-bottom:1px;
         font-size: 30px;
         font-weight: bold;
-    }
+    }a
 
     .active{
         border-bottom: 2px solid #164C97;  
