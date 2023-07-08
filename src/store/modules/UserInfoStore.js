@@ -7,7 +7,8 @@ const UserInfoStore = {
     state: {
         userInfo: Object,
         selectItemChPath : "",
-        userEmail:"",
+        userEmail: "",
+        visitedList : [],
     },
     getters: {
         getUserInfo : (state) => {
@@ -19,10 +20,19 @@ const UserInfoStore = {
         getSelectItem : (state) =>{
             return state.userInfo.selectedItem;
         },
+        getSelectBackground: (state) => {
+            return state.userInfo.selectedBackground;
+        },
+        getVisitedList: (state) => {
+            return state.visitedList;
+        }
     },
     mutations: {
         SET_USER_INFO(state, data) {
             state.userInfo = data;
+        },
+        SET_VISITED_LIST(state, data) {
+            state.visitedList = data;
         }
     },
     actions: {
@@ -92,6 +102,25 @@ const UserInfoStore = {
                     )
                 }
             )
+        },
+        async setVisitedList({ state }) {
+            await tokenHttp.get("attraction/visited?page=0&size=1000")
+                .then((res) => {
+                
+                    let data = res.data.data;
+                    //내림차순 정렬
+                    data.sort((a, b) => new Date(b.visitTime) - new Date(a.visitTime));
+
+                    state.visitedList = [];
+                    let attractionSet = new Set();
+
+                    for (let item of data) {
+                        if (!attractionSet.has(item.attractionId)) {
+                            state.visitedList.push(item);  // 결과 배열에 추가합니다.
+                            attractionSet.add(item.attractionId);  // 현재 attractionId를 Set에 추가합니다.
+                        }
+                    }
+              });
         }
     },
   };

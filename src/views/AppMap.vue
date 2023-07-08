@@ -309,7 +309,10 @@ export default {
                 let imageSrc = await require(`/src/assets/resource/theme/img/icon/map_${type}.png`);
                 
                 // 마커 이미지의 이미지 크기 입니다
-                var imageSize = await new kakao.maps.Size(58, 60);
+                let imageSize = null;
+                if (type == "attraction" || type == "myposition") imageSize = await new kakao.maps.Size(48, 50);
+                else imageSize = await new kakao.maps.Size(32, 35);
+
 
                 // 마커 이미지를 생성합니다
                 var markerImage = await new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -493,7 +496,7 @@ export default {
         right: 10%;
         background-color: white;
         border-radius: 100%;
-        box-shadow: 3px 3px 3px rgba(99, 99, 99, 0.296);
+        box-shadow: 3px 3px 3px rgba(161, 161, 161, 0.296);
         background-image: url("/src/assets/resource/theme/img/icon/locationIcon.png");
         background-position: left 8px top 8px;
         background-size: 35px 35px;
@@ -502,21 +505,22 @@ export default {
 
     /* 마커 오버레이 이름  */
     .marker_overlay_box{
-        background-color: white;
-        width: 80px;
-        height: 23px;
-        line-height: 27px;
+        background-color: rgb(255, 255, 255);
+        width: 70px;
+        height: 18px;
+        line-height: 23px;
         text-align: center;
         border-radius: 10px;
         font-weight: 500;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.39);
     }
 
     .marker_overlay_box > div{
-        width:68px;
+        width:60px;
         margin: 0 auto;
         overflow: hidden;
         height:20px;
-        font-size:14px;
+        font-size:12px;
     }
 
     /* 이위치 검색 */
@@ -543,5 +547,9 @@ export default {
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
+    }
+
+    #map > div > div > div > div > img {
+        /* filter: drop-shadow(1px 2px 1.5px #0a0a0ac0); */
     }
 </style>

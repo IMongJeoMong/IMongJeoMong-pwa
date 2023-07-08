@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="local_btn_box">
-                <div class="register_btn">
+                <div class="register_btn" @click="$router.push({ name :'Register'})">
                     <div>회원가입</div>
                 </div>
                 <div class="login_btn" @click="userLogin()"> 

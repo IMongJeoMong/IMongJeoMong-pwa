@@ -49,7 +49,7 @@
       </select>
     </div>
     <div class="button_container">
-      <span class="cancle">취소</span>
+      <span class="cancle" @click="$router.push({ name :'UserLogin'})">취소</span>
       <span class="modify" @click="regist()">회원가입</span>
     </div>
   </div>

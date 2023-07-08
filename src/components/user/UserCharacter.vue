@@ -1,7 +1,5 @@
 <template>
     <div>
-        <!-- 착용한 아이템 갯수만큼 for -->
-
         <!-- 만약에 프리뷰가 있다면-->
         <div v-if="getPreviewItem != null"  class ="user_select_item">
             <!-- 프리뷰의 정보값을 보여줘 -->
