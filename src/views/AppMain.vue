@@ -45,6 +45,13 @@ export default {
     return {
       questBoardActive: false,
       explorationBoardActive: false,
+      mypositionList: [
+                {
+                    name: "현재 위치",
+                    lat: null,
+                    lng: null,
+                }
+            ],
     }
   },
   components : {
@@ -59,9 +66,43 @@ export default {
       if (this.questBoardActive) this.questBoardActive = false;
       else this.questBoardActive = true;
     },
-    explorationActive() {
+
+      //현재 위치 가져오기
+      async geofind() {
+            if(!("geolocation" in navigator)) {
+                this.textContent = 'Geolocation is not available.';
+                return false;
+            }
+            return new Promise((resolve, reject)=> {
+                // get position
+                navigator.geolocation.getCurrentPosition(pos => {
+                    this.mypositionList.lat = pos.coords.latitude;
+                    this.mypositionList.lng = pos.coords.longitude;
+                    resolve(true);
+                }, err => {
+                    this.textContent = err.message;
+                    reject(false);
+                })    
+            })
+        },
+
+    async explorationActive() {
       if (this.explorationBoardActive) this.explorationBoardActive = false;
-      else this.explorationBoardActive = true;
+      else {
+        let mylocationMain = await this.geofind();
+        this.explorationBoardActive = true;
+        await Promise.resolve();
+        if (mylocationMain) {
+          let mainLocationData = {
+            lat: this.mypositionList.lat,
+            lng: this.mypositionList.lng,
+            keyword: "",
+          }
+          console.log(mainLocationData)
+          //관광지 찾기
+          this.$store.dispatch("AttractionInfoStore/setNearAttraction", mainLocationData)
+        }
+      }
     },
     onClickquQuestOutside() {
       this.questBoardActive = false;

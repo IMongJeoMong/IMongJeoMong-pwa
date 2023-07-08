@@ -77,13 +77,21 @@ const UserInfoStore = {
                 state.userInfo = res.data.data;
             })
         },
-        itmeBuy(context, data){
+        async itmeBuy({ commit }, data){
             tokenHttp.post("item/buy/"+ data)
-            .then((res)=> {
-                console.log(res)
-                alert(res.data.message)
-                context.dispatch("PreviewStore/setItemList")
-            })
+                .then((res)=> {
+                    console.log(res)
+                    //메세지 알림
+                    alert(res.data.message)
+                    tokenHttp.get("/item/all-own/list" )
+                        .then((res) => {
+                            //root : true 옵션은 root store에서 실행하도록 허용
+                            console.log("여기다 여기",res.data.data)
+                            commit("PreviewStore/SET_ITEM_LIsT", res.data.data, {root : true})
+                        }
+                    )
+                }
+            )
         }
     },
   };

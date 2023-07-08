@@ -2,7 +2,7 @@
     <div id="topInfoBox">
         <div class="topInfo">
             <div class="level_gauge_bar">
-                <div class="player_level">{{getSelectMong.level}}</div>
+                <div class="player_level" v-if="getSelectMong">{{getSelectMong.level}}</div>
                 <div class="level_gauge_bar_bg"></div>
                 <div class="level_gauge_bar_progress" ref="levelGaugeBarProgress"></div>
             </div>
@@ -46,7 +46,6 @@ export default {
         }, 500);
     },
     
-   
 }
 </script>
 <style scoped>
