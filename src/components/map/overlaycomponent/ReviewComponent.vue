@@ -1,12 +1,17 @@
 <template>
     <!-- v-for 예정 -->
-    <div>
+    <div v-if="getReviewList.length > 0" >
         <div v-for="(review, index) in getReviewList" :key="index" class="review_component_box">
             <div class="review_img" :style="{'background-image': 'url(' +review.imagePath + ')'}"></div>
             <div class="review_content">
                 <div class="review_content_username">{{ review.memberName }}</div>
                 <div class="review_content_text">{{ review.content }}</div>
             </div>
+        </div>
+    </div>
+    <div v-else> 
+        <div>
+            <div class="noReview">리뷰가 없습니다.</div>
         </div>
     </div>
 </template>
@@ -27,7 +32,10 @@ export default {
         display:flex;
         height: 110px;
         padding: 5px;
-        margin-bottom: 5px;
+        margin: 5px auto;
+        width:95%;
+        border-radius: 5px;
+        box-shadow: 1px 1px 3px rgba(16, 16, 16, 0.266);
     }
 
     .review_img{
@@ -58,5 +66,10 @@ export default {
         overflow:hidden;
     }
 
+    .noReview{
+        text-align: center;
+        width: 100%;
+        font-size:20px;
+    }
 
 </style>

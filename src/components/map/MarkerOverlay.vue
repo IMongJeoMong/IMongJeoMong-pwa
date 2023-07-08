@@ -49,8 +49,12 @@ export default {
             overlayHeight : false,
         } 
     },
+    created() {
+      this.$store.dispatch("ReviewStore/getNaverBlogSearch")  
+    },
     mountde() {
         this.componentMenuHeight();
+        
     },
     methods: {
         toggleComponent(tab) {
@@ -92,7 +96,7 @@ export default {
                 this.overlayInfo = newVal
                 //나중에 값 전송해줘야함 ! id값 
                 this.$store.dispatch("ReviewStore/setAttractionInfo", this.attInfo.contentId);
-                this.$store.dispatch("ReviewStore/setReviewList");
+                this.$store.dispatch("ReviewStore/setReviewList", this.attInfo.contentId);
             }
         }
     }
@@ -126,6 +130,7 @@ export default {
     justify-content: space-around;
     font-size: 17px;
     color: #164C97;
+    box-shadow: 0px 4px 3px rgba(16, 16, 16, 0.163);
 }
 
 .tab_menu_box > div {
@@ -134,7 +139,8 @@ export default {
 }
 
 .active {
-    border-bottom: 1px solid #164C97;
+    border-bottom: 3px solid #164C97;
+    border-radius: 2.5px;
 }
 
 .tab_menu_component{
