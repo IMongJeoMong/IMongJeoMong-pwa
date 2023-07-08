@@ -53,7 +53,7 @@ export default {
 
     .picture_content_item_img{
         width: 100%;
-        height: 90%;
+        height: 100%;
         background-color: white;
         background-repeat: no-repeat;
         background-position: center;

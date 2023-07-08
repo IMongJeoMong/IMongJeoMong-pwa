@@ -50,7 +50,7 @@ export default {
         } 
     },
     created() {
-      this.$store.dispatch("ReviewStore/getNaverBlogSearch")  
+      this.$store.dispatch("ReviewStore/getNaverBlogSearch", this.attInfo.name)  
     },
     mountde() {
         this.componentMenuHeight();

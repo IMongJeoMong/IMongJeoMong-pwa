@@ -1,43 +1,43 @@
 <template>
   <li>
-    <div class="visited_box">
-      <img :src="imagePath" alt />
+    <div class="visited_box" v-for="(list, index) in getMyReviewList" :key="index">
+      <img :src="list.imagePath" alt />
       <div>
-        <div class="visited_title">{{ name }}</div>
-        <div v-if="wrote == false">
-          <div class="Review write" @click="reviewWrite">
+        <div class="visited_title">{{ list.name }}</div>
+        <div v-if="list.reviewId == null">
+          <div class="Review write" @click="reviewWrite(list)">
             <span>리뷰작성</span>
             <span class="icon review_write"></span>
           </div>
         </div>
         <div v-else>
-          <div class="Review modify" @click="reviewModify()">
+          <div class="Review modify" @click="reviewModify(list)">
             <span>리뷰수정</span>
             <span class="icon review_modify"></span>
           </div>
         </div>
-        <div class="visited_date">{{ visitTime }}</div>
-        <div class="visited_addr">{{ address }}</div>
+        <div class="visited_date">{{ list.visitTime }}</div>
+        <div class="visited_addr">{{ list.address }}</div>
       </div>
     </div>
   </li>
 </template>
   
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "visitedList",
-  props: {
-    name: String,
-    wrote: Boolean,
-    visitTime: String,
-    address: String,
-    imagePath: String,
-    attractionId: String,
-  },
   methods: {
-    reviewWrite() {
-      this.$emit("review-write",this.attractionId, this.name); // 이벤트 발생
+    reviewWrite(list) {
+      this.$emit("review-write", list); // 이벤트 발생
     },
+    reviewModify(list) {
+      this.$emit("review-modify", list);
+    }
+  },
+  computed: {
+    ...mapGetters("ReviewStore", ["getMyReviewList"])
   },
 };
 </script>

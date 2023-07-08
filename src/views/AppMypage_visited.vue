@@ -4,19 +4,16 @@
     <reviewWriteBoard
       v-if="writeActive"
       v-click-outside="onClickOutside"
-      :name="name"
-      :attractionId="attractionId"
+      :reviewInfo="reviewInfo"
+      @closeReview ="onClickOutside"
     ></reviewWriteBoard>
     <span class="mypage2_box_icon mypage_visited"></span>
-    <div class="mypage2_box_title">방문기록</div>
+    <div class="mypage2_box_title">방문일지</div>
     <div class="blank"></div>
     <ul>
       <visited-list
-        v-for="list in lists"
-        :key="list.no"
-        :list="list"
-        v-bind="list"
         @review-write="showReviewWriteBoard"
+        @review-modify="showReviewModifyBoard"
       ></visited-list>
     </ul>
     <the-footer></the-footer>
@@ -25,9 +22,9 @@
 <script>
 import TheFooter from "@/components/inc/footer/TheFooter";
 import visitedList from "@/components/visited/visitedList";
-import tokenHttp from "../api/tokenHttp";
 import reviewWriteBoard from "@/components/visited/reviewWriteBoard.vue";
 import { directive as clickOutside } from "v-click-outside";
+import { mapGetters } from "vuex";
 export default {
   directives: {
     clickOutside,
@@ -39,29 +36,31 @@ export default {
   },
   data() {
     return {
-      lists: [],
-      writeActive: true,
-      modifyActive: false,
-      attractionId: "",
-      name: "",
+      writeActive: false,
+      reviewInfo : null,
     };
   },
   methods: {
-    showReviewWriteBoard(attractionId, name) {
+    showReviewWriteBoard(list) {
       this.writeActive = true;
-      this.attractionId = attractionId;
-      this.name = name;
+      this.reviewInfo = list;
     },
     onClickOutside() {
+      //화면 닫는과 동시에 값 초기화
       this.writeActive = false;
       this.modifyActive = false;
+      this.reviewInfo = null;
     },
+    showReviewModifyBoard(list) {
+      this.writeActive = true;
+      this.reviewInfo = list;
+    }
+  },
+  computed: {
+    ...mapGetters("ReviewStore", ["getMyReviewList"])
   },
   async created() {
-    await tokenHttp.get("attraction/visited?page=0&size=10").then((res) => {
-      console.log(res);
-      this.lists = res.data.data;
-    });
+    this.$store.dispatch("ReviewStore/setMyReviewList");
   },
 };
 </script>
@@ -90,5 +89,11 @@ export default {
 
 .blank {
   height: 100px;
+}
+
+
+.mypage_visited{
+  background-image: url("/src/assets/resource/theme/img/icon/Mypage_visited_icon.png");
+  background-size: 33px 36px;
 }
 </style>
