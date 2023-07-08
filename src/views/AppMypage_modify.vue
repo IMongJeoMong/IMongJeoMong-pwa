@@ -46,7 +46,7 @@
       </select>
     </div>
     <div class="button_container">
-      <span class="cancle">취소</span>
+      <span class="cancle" @click="$router.push({name: 'Mypage'})">취소</span>
       <span class="modify">정보수정</span>
     </div>
     <the-footer></the-footer>
@@ -54,6 +54,7 @@
 </template>
 <script>
 import TheFooter from "@/components/inc/footer/TheFooter";
+import { mapGetters } from "vuex";
 export default {
   components: {
     TheFooter,
@@ -76,6 +77,14 @@ export default {
       });
     },
   },
+  computed: {
+    ...mapGetters("UserInfoStore", ["getUserInfo"])
+  },
+  created() {
+    this.email = this.getUserInfo.email;
+    this.nickname = this.getUserInfo.nickname;
+    this.gender = this.getUserInfo.getnder;
+  }
 };
 </script>
 <style scoped>

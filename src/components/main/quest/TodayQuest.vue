@@ -44,7 +44,18 @@ export default {
     methods: {
         rewarded(quest) {
             console.log(quest)
-            alert(`${quest.name} 보상 UI 만들어야합니다`);
+            //alert(`${quest.name} 보상 UI 만들어야합니다`);
+            tokenHttp.post("quest/" + quest.id)
+                .then((res) => {
+                    console.log(res.message)
+                    tokenHttp.get("quest/daily").then((res) => {
+                        this.todayQuest = res.data.data;
+                        this.todayAllClear = this.todayQuest.pop();
+                    })
+                    this.$store.dispatch("UserInfoStore/setUserInfo")
+                }).err((err) => {
+                console.log(err)
+            })
         }
     },
     async created() {

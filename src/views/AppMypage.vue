@@ -1,57 +1,71 @@
 <template>
-    <div class="mypage_box">
-        <div class="mypage_box_title">마이페이지</div>
-        <div class="mypage_box_header">
-            <router-link :to="{ name: 'MypageChallenge' }">
-                <div>
-                    <span class="mypage_box_icon mypage_challenge"></span>
-                    <span class="mypage_box_text">업적</span>
-                    <span class="mypage_box_icon mypage_box_btnicon"></span>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'MypageVisited' }">
-                <div>
-                    <span class="mypage_box_icon  mypage_visited"></span>
-                    <span class="mypage_box_text">방문기록</span>
-                    <span class="mypage_box_icon mypage_box_btnicon"></span>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'MypageBackground' }">
-                <div>
-                    <span class="mypage_box_icon mypage_background"></span>
-                    <span class="mypage_box_text">획득한 배경</span>
-                    <span class="mypage_box_icon mypage_box_btnicon"></span>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'MypageCharacter' }">
-                <div>
-                    <span class="mypage_box_icon mypage_charter"></span>
-                    <span class="mypage_box_text">획득한 캐릭터</span>
-                    <span class="mypage_box_icon mypage_box_btnicon"></span>
-                </div>
-            </router-link>
-        </div>
-        <div class="mypage_box_footer">
-            <router-link :to="{ name: 'MypageModify' }">
-                <div>
-                    <span class="mypage_box_icon mypage_user"></span>
-                    <span class="mypage_box_text">회원정보 수정</span>
-                    <span class="mypage_box_icon mypage_box_btnicon"></span>
-                </div>
-            </router-link>
-            <router-link :to="{ name: 'MypageChallenge' }">
-                <div>
-                    <span class="mypage_box_icon mypage_update"></span>
-                    <span class="mypage_box_text">업데이트 정보</span>
-                    <span class="mypage_box_icon mypage_box_btnicon"></span>
-                </div>
-            </router-link>
-            <a>
-                <div class="logout">
-                    <span class="mypage_box_text">로그아웃</span>
-                </div>
-            </a>
-            
+    <div class="mypage_container">
+        <div class="mypage_box">
+            <div class="mypage_box_title">마이페이지</div>
+            <div class="mypage_box_header">
+                <router-link :to="{ name: 'MypageChallenge' }">
+                    <div>
+                        <span class="mypage_box_icon mypage_challenge"></span>
+                        <span class="mypage_box_text">업적</span>
+                        <span class="mypage_box_icon mypage_box_btnicon"></span>
+                    </div>
+                </router-link>
+                <router-link :to="{ name: 'MypageVisited' }">
+                    <div>
+                        <span class="mypage_box_icon  mypage_visited"></span>
+                        <span class="mypage_box_text">방문일지</span>
+                        <span class="mypage_box_icon mypage_box_btnicon"></span>
+                    </div>
+                </router-link>
+                <router-link :to="{ name: 'MypageBackground' }">
+                    <div>
+                        <span class="mypage_box_icon mypage_background"></span>
+                        <span class="mypage_box_text">획득한 배경</span>
+                        <span class="mypage_box_icon mypage_box_btnicon"></span>
+                    </div>
+                </router-link>
+                <router-link :to="{ name: 'MypageCharacter' }">
+                    <div>
+                        <span class="mypage_box_icon mypage_charter"></span>
+                        <span class="mypage_box_text">획득한 캐릭터</span>
+                        <span class="mypage_box_icon mypage_box_btnicon"></span>
+                    </div>
+                </router-link>
+                <router-link :to="{ name: 'VisitdCard' }">
+                    <div>
+                        <span class="mypage_box_icon  mypage_visitedCard"></span>
+                        <span class="mypage_box_text">획득한 관광지 카드</span>
+                        <span class="mypage_box_icon mypage_box_btnicon"></span>
+                    </div>
+                </router-link>
+            </div>
+            <div class="mypage_box_footer">
+                <router-link :to="{ name: 'MypageModify' }">
+                    <div>
+                        <span class="mypage_box_icon mypage_user"></span>
+                        <span class="mypage_box_text">회원정보 수정</span>
+                        <span class="mypage_box_icon mypage_box_btnicon"></span>
+                    </div>
+                </router-link>
+                <router-link :to="{ name: 'UpdateInfo' }">
+                    <div>
+                        <span class="mypage_box_icon mypage_update"></span>
+                        <span class="mypage_box_text">업데이트 정보</span>
+                        <span class="mypage_box_icon mypage_box_btnicon"></span>
+                    </div>
+                </router-link>
+                <a @click="logout()">
+                    <div class="logout">
+                        <span class="mypage_box_text">로그아웃</span>
+                    </div>
+                </a>
+                <a>
+                    <div class="Withdrawal">
+                        <span class="mypage_box_text">회원탈퇴</span>
+                    </div>
+                </a>
+                
+            </div>
         </div>
         <the-footer></the-footer>
     </div>
@@ -64,14 +78,24 @@ export default {
     components: {
         TheFooter,
     },
+    methods: {
+        async logout() {
+            sessionStorage.clear(); 
+            this.$router.push({name : "UserLogin"})
+        }
+    }
 }
 </script>
-<style>
+<style scoped>
+.mypage_container{
+    height:100%;
+}
 .mypage_box {
     position: fixed;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 10rem);
     background-color: #FFFFFF;
+    overflow:scroll;
 }
 
 
@@ -97,6 +121,7 @@ export default {
 }
 
 .mypage_challenge {
+    background-size: 25px 30px;
     background-image: url("/src/assets/resource/theme/img/icon/Mypage_challenge_icon.png");
 }
 
@@ -126,6 +151,10 @@ export default {
 
 .mypage_visited {
     background-image: url("/src/assets/resource/theme/img/icon/Mypage_visited_icon.png");
+}
+
+.mypage_visitedCard{
+    background-image: url("/src/assets/resource/theme/img/icon/Mypage_visitedCard_icon.png");
 }
 
 .mypage_box_text {
@@ -170,6 +199,9 @@ export default {
 }
 .logout{
     margin-top: 50px !important;
+    display: block !important; 
+}
+.Withdrawal{
     display: block !important; 
 }
 </style>
