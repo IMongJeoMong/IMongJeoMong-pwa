@@ -1,10 +1,12 @@
 import axioshttp from "@/api/axioshttp";
+import axios from "axios";
 
 const ReviewStore = {
     namespaced: true,
     state: {
         reviewList: [],
-        attractionInfo : [],
+        attractionInfo: [],
+        naverBlogList : [],
     },
     getters: {
         getReviewList : (state) => {
@@ -12,6 +14,9 @@ const ReviewStore = {
         },
         getAttractionInfo: (state) => {
             return state.attractionInfo;
+        },
+        getNaverBlogList: (state) => {
+            return state.naverBlogList;
         }
     },
     mutations: {
@@ -23,37 +28,12 @@ const ReviewStore = {
         }
     },
     actions: {
-        setReviewList({ state }) {
-            state.reviewList = [
-                {
-                    "reviewId": 2,
-                    "memberId": 1,
-                    "attractionId": 125429,
-                    "memberName": "meoldae",
-                    "content": "엑스포 음악분수 최고에요!",
-                    "createTime": "2023-07-06T16:39:04",
-                    "imagePath": "https://imjm-bucket.s3.ap-northeast-2.amazonaws.com/%EC%97%91%EC%8A%A4%ED%8F%AC%20%EC%9D%8C%EC%95%85%EB%B6%84%EC%88%98.jpg"
-                },
-                {
-                    "reviewId": 3,
-                    "memberId": 1,
-                    "attractionId": 125429,
-                    "memberName": "meoldae",
-                    "content": "필수 관광지 추천!",
-                    "createTime": "2023-07-06T17:03:47",
-                    "imagePath": "https://imjm-bucket.s3.ap-northeast-2.amazonaws.com/%EC%97%91%EC%8A%A4%ED%8F%AC%20%EC%9D%8C%EC%95%85%EB%B6%84%EC%88%98.jpg"
-                },
-                {
-                    "reviewId": 4,
-                    "memberId": 1,
-                    "attractionId": 125429,
-                    "memberName": "meoldae",
-                    "content": "테스트!!",
-                    "createTime": "2023-07-06T17:04:05",
-                    "imagePath": "https://imjm-bucket.s3.ap-northeast-2.amazonaws.com/%EC%97%91%EC%8A%A4%ED%8F%AC%20%EC%9D%8C%EC%95%85%EB%B6%84%EC%88%98.jpg"
-                }
-
-          ]
+        setReviewList({ state }, data) {
+            axioshttp.get("review/" + data)
+                .then((res) => {
+                    console.log(res.data.data)
+                    state.reviewList = res.data.data;
+            })
         },
         async setAttractionInfo({ state }, data) {
             console.log("vueX", data)
@@ -62,7 +42,24 @@ const ReviewStore = {
                     console.log(res.data.data)
                     state.attractionInfo = res.data.data;
             })
-        }
+        },
+        async getNaverBlogSearch({state}) {
+            console.log("이름", state.attractionInfo.name)
+            let URL = `/v1/search/blog?query=${encodeURIComponent(state.attractionInfo.name)}`;
+            let clientId = "ipxAvBnOlk_uLsol0LHB";
+            let clientSecret = "_8UKL93YWB";
+            axios.get(URL, {
+                headers: {
+                    Accept: 'application/json',
+                    'X-Naver-Client-Id': clientId,
+                    'X-Naver-Client-Secret': clientSecret,
+                },
+            })
+                .then((res) => {
+                    console.log('검색요청', res)
+                    state.naverBlogList = res.data.items;
+            })
+        },
     },
   };
     
