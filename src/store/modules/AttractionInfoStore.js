@@ -6,7 +6,9 @@ const AttractionInfoStore = {
     state: {
         attInfoList : [],
         bicycleList : [],
-        carList : [],
+        carList: [],
+        nearAttraction: null,
+        nearMylocation : null,
     },
     getters: {
         attractionList : (state) => {
@@ -17,6 +19,12 @@ const AttractionInfoStore = {
         },
         carList : (state) => {
             return state.carList;
+        },
+        nearAttraction: (state) => {
+            return state.nearAttraction;
+        },
+        nearMylocation: (state) => {
+            return state.nearMylocation;
         }
     },
     mutations: {
@@ -50,6 +58,16 @@ const AttractionInfoStore = {
             .then((res) => {
                 state.carList = res.data.data;
             })
+        },
+        setNearAttraction({ state }, data) {
+            //console.log("attraction/list?page=0&size=1&lat=" + data.lat + "&lng=" + data.lng + "&keyword=" + data.keyword)
+            tokenHttp.get("attraction/list?page=0&size=1&lat=" + data.lat + "&lng=" + data.lng + "&keyword=" + data.keyword)
+                .then((res) => {
+                    //console.log(res.data.data[0])
+                    state.nearAttraction = res.data.data[0];
+                    state.nearMylocation = data;
+                })
+                .catch((err) => { console.log(err) });
         }
     },
   };

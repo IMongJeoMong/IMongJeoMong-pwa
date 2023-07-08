@@ -18,13 +18,13 @@
                     <div>타슈</div>
                 </div>
             </div>
-            <div class="search_this_location" @click="thisLocationSearch()">
+            <div class="search_this_location" v-show="thisLocationActive" @click="thisLocationSearch()">
                 <div class="search_this_location_image"></div>
                 <div>이 지역 재검색</div>
             </div>
         </div>
         
-        <div class="mylocationbox" @click="loadMap()"></div>
+        <div class="mylocationbox" @click="mylocationloadMap()"></div>
         <marker-small-overlay v-if="overlayS" class="samll_overlay" :attInfo="overlayInfo"  v-click-outside="onClickOutside" @overlayOpen="overlayChange"></marker-small-overlay>
         <marker-overlay  v-if="overlay" class="default_overlay" :attInfo="overlayInfo" v-click-outside="onClickOutside2"></marker-overlay>
 
@@ -49,7 +49,7 @@ export default {
         return {
             
             mylocation: false,
-            mapLevel: 5,
+            mapLevel: 4,
             carActive: false,
             bicycleActive: false,
             bicycleStyle: {
@@ -73,7 +73,8 @@ export default {
                 }
             ],
 
-            mapCenter : null,
+            mapCenter: null,
+            thisLocationActive: false,
  
             //오버레이
             overlay: false,
@@ -129,15 +130,26 @@ export default {
        
 
     },
+    // async mounted() {
+    //     setInterval(() => {
+    //         console.log("내위치 검색")
+           
+    //     }, 1000000);
+    // },
     methods: {
+
+        async mylocationloadMap() {
+            this.mylocation = await this.geofind();
+            this.loadMap();
+        },
 
         thisLocationSearch(){
             this.keyword = "";
             this.mapCenter = this.map.getCenter();
             console.log(this.mapCenter);
             let mapdata = {
-                lat : this.mapCenter.Ma,
-                lng : this.mapCenter.La,
+                lat : this.map.getCenter().getLat(),
+                lng : this.map.getCenter().getLng(),
                 keyword : this.keyword
             }
             this.$store.dispatch('AttractionInfoStore/setAttractionList', mapdata);
@@ -215,7 +227,7 @@ export default {
             document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
         },
         //맵 로드 (변경할예정!)
-        loadMap() {
+        async loadMap() {
 
             var container = document.getElementById("map");
             let center = null;
@@ -243,13 +255,18 @@ export default {
                 this.map = new kakao.maps.Map(container, options);
             }
 
+            //center 값이 변경이 된다면
+            kakao.maps.event.addListener(this.map, "center_changed", () => {
+                this.thisLocationActive = true;
+            });
+
             //현재 내위치
             //this.changeMap(this.mylocation);
 
         },
 
         //맵의 마커 초기화
-        clearMarker(markerList) {
+        async clearMarker(markerList) {
             for(let marker of markerList) {
                 marker.setMap(null);
             }
@@ -257,25 +274,32 @@ export default {
 
         //일정이 바뀔때 맵을 변경 (현재는 위치가 잇다면 - 변경할예정)
         async changeMap(mylocation) {
+            if (window.kakao && window.kakao.maps && mylocation) {
+                //이위치로부터 검색 초기화
+                this.thisLocationActive = false;
 
-            //마커들이 있으면 초기화
-            if (this.mypositionMarkers) this.clearMarker(this.mypositionMarkers)
-            if (this.attractionMarkers) this.clearMarker(this.attractionMarkers)
-            if (this.bicycleMarkers) this.clearMarker(this.bicycleMarkers)
-            if (this.carMarkers) this.clearMarker(this.carMarkers)
-            if (this.attMarkerOverlays) this.clearMarker(this.attMarkerOverlays)
+                //마커들이 있으면 초기화
+                if (this.mypositionMarkers) this.clearMarker(this.mypositionMarkers)
+                if (this.attractionMarkers) this.clearMarker(this.attractionMarkers)
+                if (this.bicycleMarkers) this.clearMarker(this.bicycleMarkers)
+                if (this.carMarkers) this.clearMarker(this.carMarkers)
+                if (this.attMarkerOverlays) this.clearMarker(this.attMarkerOverlays)
 
-            this.mypositionMarkers = []
-            this.attractionMarkers = []
-            this.bicycleMarkers = []
-            this.carMarkers = []
+                this.mypositionMarkers = []
+                this.attractionMarkers = []
+                this.bicycleMarkers = []
+                this.carMarkers = []
 
-            
-            this.setMarker(mylocation, "attraction");
-            if (this.bicycleActive) this.setMarker(mylocation, "bicycle");
-            if (this.carActive) this.setMarker(mylocation, "car");
-            this.setMarker(mylocation, "myposition");
-            
+
+                this.setMarker(mylocation, "attraction");
+                if (this.bicycleActive) this.setMarker(mylocation, "bicycle");
+                if (this.carActive) this.setMarker(mylocation, "car");
+                this.setMarker(mylocation, "myposition");
+            }
+            else {
+                this.loadKakaoScript();
+            }
+                
         },
 
         async setMarker(mylocation, type){
@@ -344,14 +368,6 @@ export default {
                     let moveLatLon = new kakao.maps.LatLng(this.attractionList[0].lat, this.attractionList[0].lng);
                     this.map.panTo(moveLatLon);    
                 } 
-                else if(this.mapCenter != null){
-                    let moveLatLon = new kakao.maps.LatLng(this.mapCenter.Ma, this.mapCenter.La);
-                    this.map.panTo(moveLatLon);    
-                }
-                else {
-                    let moveLatLon = new kakao.maps.LatLng(this.mypositionList[0].lat, this.mypositionList[0].lng);
-                    this.map.panTo(moveLatLon);
-                }
             }
         },
         //리스트 보는화면으로
@@ -367,7 +383,13 @@ export default {
         
     },
     watch: {
-        attractionList() {
+        async attractionList() {
+            // 현재 위치 가져오기
+            this.mylocation = await this.geofind();
+            this.changeMap(this.mylocation);
+        },
+        //내위치가 바뀔떄마다
+        async mylocation() {
             this.changeMap(this.mylocation);
         }
     }

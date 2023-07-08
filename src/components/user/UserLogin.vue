@@ -72,8 +72,32 @@ export default {
                 this.$store.dispatch('UserInfoStore/setUserlogin' , loginInfo);
             }
         },
+         //카카오 Script가 없다면 ..
+         loadKakaoScript() {
+            const script = document.createElement("script");
+            let kakaoKey = "19b4f102b8b222489a051ece56dc8f58";
+            script.src =
+                "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&libraries=services&appkey=" + kakaoKey;
+
+            //스크립트 로드가 끝나면 지도를 실행될 준비가 되어 있다면 지도가 실행되도록 구현
+            script.addEventListener("load", () => {
+                /* global kakao */
+                kakao.maps.load(this.loadMap);
+            });
+            document.head.appendChild(script); // html>head 안에 스크립트 소스를 추가
+        },
+    },
+    created() {
+    
+        //VUE 카카오맵 동적
+        if (window.kakao && window.kakao.maps) {
+           console.log("카카오 API 추가 완료")
+        } else {
+            //없다면 카카오 스크립트 추가후 맵 실행
+            this.loadKakaoScript();
+        }
     }
-   
+
 }
 </script>
 <style>
