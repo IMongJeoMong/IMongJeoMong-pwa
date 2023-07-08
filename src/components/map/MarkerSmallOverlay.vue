@@ -1,6 +1,6 @@
 <template>
     <div class="marker_overlay_small" @click="openOverlay">
-        <div v-if="attInfo.imagePath == null"  :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}" class="overlay_img"></div>
+        <div v-if="attInfo.imagePath == ''"  :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}" class="overlay_img"></div>
         <div v-else :style="{'background-image': 'url('+ attInfo.imagePath + ')'}" class="overlay_img"></div>
         <div class="overlay_infobox">
             <div class="overlay_infobox_dis">{{dis}} m </div>

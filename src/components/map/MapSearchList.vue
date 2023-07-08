@@ -1,10 +1,9 @@
 <template>
     <div class="serch_list_component">
         <div class="search_list_box_title">내 주변 장소</div>
-        <!-- for문으로 구현예정 -->
         <div class="search_list_box_component">
             <div v-for="(att, index) in attractionList" :key = "index" class="search_list_box">
-                <div v-if="att.imagePath == null"  :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}" class="search_list_box_img"></div>
+                <div v-if="att.imagePath == ''"  :style="{'background-image': 'url(' + require('@/assets/resource/common/img/default_Img.png') + ')'}" class="search_list_box_img"></div>
                 <div v-else :style="{'background-image': 'url('+ att.imagePath + ')'}" class="search_list_box_img"></div>
                 <div class="search_list_box_info">
                     <div class="search_list_box_info_header">
