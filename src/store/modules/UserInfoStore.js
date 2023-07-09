@@ -114,8 +114,19 @@ const UserInfoStore = {
                     state.visitedList = [];
                     let attractionSet = new Set();
 
+                    // 각 관광지별 카운트를 세기 위한 Map 객체 생성
+                    const attractionMap = new Map();
+                    for (let item of data) {
+                        if (attractionMap.get(item.attractionId) === undefined) {
+                            attractionMap.set(item.attractionId, 1);
+                        } else {
+                            attractionMap.set(item.attractionId, attractionMap.get(item.attractionId) + 1);
+                        }
+                    }
+
                     for (let item of data) {
                         if (!attractionSet.has(item.attractionId)) {
+                            item.count = attractionMap.get(item.attractionId);  // count를 추가합니다.
                             state.visitedList.push(item);  // 결과 배열에 추가합니다.
                             attractionSet.add(item.attractionId);  // 현재 attractionId를 Set에 추가합니다.
                         }

@@ -11,7 +11,7 @@
           <div class="card_name">{{list.name}}</div>
           <div class="card_visited">
             <span class="card_visittime">{{ list.visitTime }}</span>
-            <span class="card_visitcnt">2번</span>
+            <span class="card_visitcnt">{{list.count}}번</span>
           </div>
           <div class="card_address">{{ list.address }}</div>
         </div>
