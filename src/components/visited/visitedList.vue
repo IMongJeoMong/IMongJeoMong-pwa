@@ -1,7 +1,9 @@
 <template>
   <li>
     <div class="visited_box" v-for="(list, index) in getMyReviewList" :key="index">
-      <img :src="list.imagePath" alt />
+      <img v-if="list.imagePath != '' " :src="list.imagePath" alt />
+      <img v-else :src ="require('@/assets/resource/common/img/default_Img.png')">
+      
       <div>
         <div class="visited_title">{{ list.name }}</div>
         <div v-if="list.reviewId == null">
