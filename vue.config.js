@@ -1,6 +1,7 @@
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
   transpileDependencies: true,
+  proxy :  process.env.VUE_APP_BASE_API,
 });
 module.exports = {
   devServer: {
