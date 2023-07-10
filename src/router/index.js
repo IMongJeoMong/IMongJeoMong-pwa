@@ -43,6 +43,7 @@ const routes = [
   {
     path: "/",
     name: 'Main',
+    beforeEnter: onlyAuthUser,
     component: AppMain,
   },
   {
