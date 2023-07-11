@@ -1,5 +1,5 @@
 <template>
-    <div class="background" :style="{'background-image': 'url(' + require('@/assets/resource/theme/img/background/background1.png') + ')'}">
+    <div class="background" :style="{'background-image': 'url(' + getSelectBackground.imagePath + ')'}">
         <!-- 상단 유저 인터페이스 -->
         <user-infomation></user-infomation>
 
@@ -86,7 +86,7 @@ export default {
     },
     computed: {
         ...mapGetters("PreviewStore", ["getPreviewItem", "myMongList"]),
-        ...mapGetters("UserInfoStore", ["getSelectMong", "getSelectItem"]),
+        ...mapGetters("UserInfoStore", ["getSelectMong", "getSelectItem", "getSelectBackground"]),  
     },
     watch: {
         getPreviewItem(newVal) {
@@ -134,12 +134,13 @@ export default {
         height: 35px;
         line-height:35px;
         right:10px;
+        bottom:30%;
         border-radius: 8px;
         font-size:13px;
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.39);
     }
     .savebtn{
-        bottom:260px;
+        bottom:30%;
         color: #d9d9d9;
         background-color:#144284;
     }
