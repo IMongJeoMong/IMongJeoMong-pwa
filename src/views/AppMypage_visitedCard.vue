@@ -98,7 +98,9 @@
   .cards_all_box{
     width: 36rem;
     overflow: scroll;
-    height:50%;
+    height: auto;
+    max-height: calc(100vh - 200px);
+    overflow: scroll;
     /* border:1px solid black; */
     display: flex;
     margin:0px auto;
