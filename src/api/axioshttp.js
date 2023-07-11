@@ -4,7 +4,8 @@ import axios from "axios";
 export default axios.create({
   // baseURL: process.env.VUE_APP_AWS_API_URL,
   // baseURL: "http://localhost:8800",
-  baseURL: "http://3.34.77.175:8800",
+  baseURL: "https://imjm-back.store",
+  //baseURL: "http://3.34.77.175:8800",
   // 서로 다른 도메인(크로스 도메인)에 요청을 보낼 때 요청에 credential 정보를 담아서 보낼 지를 결정하는 항목
   withCredentials: false,
   headers: {

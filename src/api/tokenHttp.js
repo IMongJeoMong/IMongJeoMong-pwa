@@ -3,8 +3,9 @@ import jwt_decode from "jwt-decode";
 import dayjs from "dayjs";
 
 // baseURL: process.env.VUE_APP_AWS_API_URL,
-// const baseURL = "http://localhost:8800";
-const baseURL = "http://3.34.77.175:8800";
+//const baseURL = "http://localhost:8800";
+//const baseURL = "http://3.34.77.175:8800";
+const baseURL = "https://imjm-back.store";
 
 const tokenHttp = axios.create({
   baseURL,

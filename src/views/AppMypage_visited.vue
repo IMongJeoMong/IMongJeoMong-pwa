@@ -96,4 +96,10 @@ export default {
   background-image: url("/src/assets/resource/theme/img/icon/Mypage_visited_icon.png");
   background-size: 33px 36px;
 }
+
+.mypage_box > ul{
+  overflow: scroll;
+  height: calc(100vh - 210px);
+  width: 100%;
+}
 </style>
