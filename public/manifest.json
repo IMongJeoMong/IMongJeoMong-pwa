@@ -1,11 +1,11 @@
 {
-    "theme_color": "#3eaf7c",
-    "background_color": "#3eaf7c",
+    "theme_color": "#164c97",
+    "background_color": "#164c97",
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "Vue PWA",
-    "short_name": "PWA",
+    "name": "이몽저몽",
+    "short_name": "이몽저몽",
     "icons": [
       {
         "src": "img/icons/android-chrome-192x192.png",
