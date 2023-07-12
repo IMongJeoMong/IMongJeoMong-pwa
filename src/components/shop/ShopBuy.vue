@@ -20,10 +20,10 @@ export default {
     methods: {
         async buyItem(){
             this.$store.dispatch("UserInfoStore/itmeBuy", this.getPreviewItem.itemId);
+            //this.$store.dispatch("UserInfoStore/setUserInfo");
             this.$emit('closeBoard', false)
         }
     }
-    
 }
 </script>
 <style scoped>

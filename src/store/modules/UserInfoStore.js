@@ -98,8 +98,10 @@ const UserInfoStore = {
                             //root : true 옵션은 root store에서 실행하도록 허용
                             console.log("여기다 여기",res.data.data)
                             commit("PreviewStore/SET_ITEM_LIsT", res.data.data, {root : true})
+                            commit("UserInfoStore/setUserInfo")
                         }
                     )
+                    
                 }
             )
         },

@@ -146,7 +146,7 @@ export default {
     }
 
     .buybtn{
-        bottom:260px;
+        bottom:30%;
         background-color: #144284;
         color:white;   
     }

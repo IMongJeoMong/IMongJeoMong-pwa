@@ -1,5 +1,5 @@
 <template>
-    <div v-if = "nearAttraction.distance > 30" class="exploration_board">
+    <div v-if = "nearAttraction.distance > 30000" class="exploration_board">
         <div class="exploration_text">
             <b>[ 주변 탐색 실패 ]</b><br/>
             관광지가 없습니다
