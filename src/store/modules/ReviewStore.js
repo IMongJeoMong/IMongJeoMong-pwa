@@ -1,6 +1,5 @@
 import axioshttp from "@/api/axioshttp";
 import tokenHttp from "@/api/tokenHttp";
-import axios from "axios";
 
 const ReviewStore = {
     namespaced: true,
@@ -50,16 +49,8 @@ const ReviewStore = {
         },
         async getNaverBlogSearch({state}, name) {
             console.log("이름", name)
-            let URL = `/v1/search/blog?query=${encodeURIComponent(name)}`;
-            let clientId = "ipxAvBnOlk_uLsol0LHB";
-            let clientSecret = "_8UKL93YWB";
-            axios.get(URL, {
-                headers: {
-                    Accept: 'application/json',
-                    'X-Naver-Client-Id': clientId,
-                    'X-Naver-Client-Secret': clientSecret,
-                },
-            })
+            let URL = "naver/blog/"+name;
+            axioshttp.get(URL)
                 .then((res) => {
                     console.log('검색요청', res)
                     state.naverBlogList = res.data.items;
