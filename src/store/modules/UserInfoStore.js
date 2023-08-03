@@ -96,9 +96,9 @@ const UserInfoStore = {
                     tokenHttp.get("/item/all-own/list" )
                         .then((res) => {
                             //root : true 옵션은 root store에서 실행하도록 허용
-                            console.log("여기다 여기",res.data.data)
-                            commit("PreviewStore/SET_ITEM_LIsT", res.data.data, {root : true})
-                            commit("UserInfoStore/setUserInfo")
+                            //console.log("여기다 여기",res.data.data)
+                            //commit("UserInfoStore/setUserInfo")
+                            commit("PreviewStore/SET_ITEM_LIsT", res.data.data, { root: true })
                         }
                     )
                     
